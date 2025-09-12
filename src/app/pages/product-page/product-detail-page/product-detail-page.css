@@ -1,0 +1,15 @@
+.product-detail-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.product-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}

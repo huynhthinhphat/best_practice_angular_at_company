@@ -1,0 +1,22 @@
+<header class="header">
+  <div class="header-container">
+    <a routerLink="/home" class="logo">Mini Shop</a>
+
+    <input type="text" class="search-box" placeholder="Search..." list="products" (input)="searchProduct($event.target.value)">
+    <datalist id="products">
+      <option *ngFor="let product of products()" [value]="product.name"></option>
+    </datalist>
+
+    <nav class="nav-menu">
+      <div *ngIf="!isVisible && currentUserSignal() == null" class="auth-buttons">
+        <a routerLink="/login" class="btn btn-login">Login</a>
+        <a routerLink="/register" class="btn btn-register">Register</a>
+      </div>
+
+      <div *ngIf="isVisible && currentUserSignal() != null">
+        <p>Welcome, {{ currentUserSignal()?.fullName }}</p>
+        <button (click)="logout()" class="btn btn-logout">Logout</button>
+      </div>
+    </nav>
+  </div>
+</header>

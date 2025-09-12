@@ -1,0 +1,49 @@
+.category-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+  border: 1px solid transparent;
+  list-style-type: none;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #e9ecef;
+    transform: translateX(5px);
+  }
+
+  &.active {
+    background-color: #e3f2fd;
+    border-color: #90caf9;
+    color: #1976d2;
+  }
+
+  input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+
+    &.count {
+      margin-left: auto;
+      color: #6c757d;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    
+    span {
+      font-size: 13px;
+    }
+  }
+}

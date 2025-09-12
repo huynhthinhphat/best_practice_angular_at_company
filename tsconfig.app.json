@@ -10,7 +10,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/shared/constants/message.constants"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

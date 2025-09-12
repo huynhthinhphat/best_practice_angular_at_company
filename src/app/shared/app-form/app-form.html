@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>{{ formTitle() }}</h2>
+    <div *ngIf="form.get('username')?.hasError('pattern')">
+        <small>{{ errorMessage.invalidUsername }}</small>
+    </div>
+    <div *ngIf="form.get('password')?.errors?.['minlength'] && form.get('password')?.touched">
+        <small>{{ errorMessage.passwordMinLength }}</small>
+    </div>
+    <div *ngIf="form.errors?.['passwordMismatch'] && !form.get('password')?.errors?.['minlength']">
+        <small>{{ errorMessage.passwordMismatch }}</small>
+    </div>
+    <div *ngIf="errorSignal()">
+        <small>{{ errorSignal() }}</small>
+    </div>
+    <div *ngFor="let field of fields()">
+        <label>{{ field.label }}</label>
+        <input [type]="field.type" [formControlName]="field.name">
+    </div>
+    <button type="submit" [disabled]="form.invalid" [ngClass]="{'invalid-btn' : form.invalid}">{{ buttonLabel() }}</button>
+    <div>
+        <p>{{ formMessage() }}</p> 
+        <a [routerLink]="formLink()">{{ formLinkText() }}</a>
+    </div>
+</form>
