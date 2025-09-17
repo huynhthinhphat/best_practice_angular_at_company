@@ -21,4 +21,8 @@ export class CategoryService {
       this.categories.set([{id: '', name: 'All'}, ...categories]);
     });
   }
+
+  public getCategoryById(id: string): Observable<Category | ''> {
+    return this.http.get<Category | ''>(`${CATEGORY_URL}/${id}`);
+  }
 }

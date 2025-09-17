@@ -3,4 +3,8 @@ export interface User {
     username: string;
     password: string;
     fullName?: string;
+    quantityItems?: number;
+    cartId?: string;
+    role?: string;
+    token?: string;
 }

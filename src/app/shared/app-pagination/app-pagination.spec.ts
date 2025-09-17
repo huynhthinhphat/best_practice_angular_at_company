@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppButtons } from './app-buttons';
+import { AppPagination } from './app-pagination';
 
-describe('AppButtons', () => {
-  let component: AppButtons;
-  let fixture: ComponentFixture<AppButtons>;
+describe('AppPagination', () => {
+  let component: AppPagination;
+  let fixture: ComponentFixture<AppPagination>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppButtons]
+      imports: [AppPagination]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AppButtons);
+    fixture = TestBed.createComponent(AppPagination);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,33 @@
+@if(products().length > 0) {
+<div class="checkout-container">
+    <div class="checkout-content">
+        <div class="cart-list">
+            <h1>Checkout</h1>
+
+            @for(product of products(); track product.id) {
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    <img src="https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp" width="120"
+                        height="150" alt="Product A">
+                </div>
+                <div class="cart-item-info">
+                    <h2>Product A</h2>
+                    <p>Price: {{ product.price | currency: 'VND' }}</p>
+                    <p>Quantity: x{{ product.quantityToBuy }}</p>
+                    <p>Total price: {{ (product.price! * product.quantityToBuy!) | currency: 'VND' }}</p>
+                </div>
+            </div>
+            }
+
+            <div>
+                <h3>Total Amount: {{ totalAmount | currency: 'VND' }}</h3>
+            </div>
+        </div>
+
+        <div class="checkout-form">
+            <app-form [formTitle]="formTitle" [fields]="fields" [buttonLabel]="buttonLabel"
+                (submitForm)="handlePayment($event)"></app-form>
+        </div>
+    </div>
+</div>
+}

@@ -8,6 +8,6 @@ import { LeftSidePage } from '../left-side-page/left-side-page';
   templateUrl: './home-page.html',
   styleUrls: ['./home-page.css']
 })
-export class HomePage {
+export class HomePage{
 
 }

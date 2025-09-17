@@ -4,19 +4,24 @@
 
     <input type="text" class="search-box" placeholder="Search..." list="products" (input)="searchProduct($event.target.value)">
     <datalist id="products">
-      <option *ngFor="let product of products()" [value]="product.name"></option>
+      @for(product of products(); track product.id){
+        <option [value]="product.name"></option>
+      }
     </datalist>
 
     <nav class="nav-menu">
-      <div *ngIf="!isVisible && currentUserSignal() == null" class="auth-buttons">
-        <a routerLink="/login" class="btn btn-login">Login</a>
-        <a routerLink="/register" class="btn btn-register">Register</a>
-      </div>
-
-      <div *ngIf="isVisible && currentUserSignal() != null">
-        <p>Welcome, {{ currentUserSignal()?.fullName }}</p>
-        <button (click)="logout()" class="btn btn-logout">Logout</button>
-      </div>
+      @if(!isVisible && currentUserSignal() == null){
+        <div class="auth-buttons">
+          <a routerLink="/login" class="btn btn-login">Login</a>
+          <a routerLink="/register" class="btn btn-register">Register</a>
+        </div>
+      } @else if(isVisible && currentUserSignal() != null){
+        <div>
+          <p>Welcome, {{ currentUserSignal()?.fullName }}</p>
+          <button [routerLink]="['/cart', currentUserSignal()?.id]" class="btn">🛒 Cart ({{ quantityItems() }})</button>
+          <button (click)="logout()" class="btn btn-logout">Logout</button>
+        </div>  
+      }
     </nav>
   </div>
 </header>

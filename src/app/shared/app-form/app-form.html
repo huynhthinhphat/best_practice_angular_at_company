@@ -1,24 +1,45 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <h2>{{ formTitle() }}</h2>
-    <div *ngIf="form.get('username')?.hasError('pattern')">
-        <small>{{ errorMessage.invalidUsername }}</small>
+
+    @if(form.get('username')?.errors?.['pattern']){
+    <div>
+        <small>{{ errorMessage.INVALID_USERNAME }}</small>
     </div>
-    <div *ngIf="form.get('password')?.errors?.['minlength'] && form.get('password')?.touched">
-        <small>{{ errorMessage.passwordMinLength }}</small>
+    }
+    @if(form.get('phoneNumber')?.errors?.['pattern']){
+    <div>
+        <small>{{ errorMessage.INVALID_PHONE_NUMBER }}</small>
     </div>
-    <div *ngIf="form.errors?.['passwordMismatch'] && !form.get('password')?.errors?.['minlength']">
-        <small>{{ errorMessage.passwordMismatch }}</small>
+    }
+    @if(form.get('password')?.errors?.['minlength'] && form.get('password')?.touched){
+    <div>
+        <small>{{ errorMessage.PASSWORD_MINLENGTH }}</small>
     </div>
-    <div *ngIf="errorSignal()">
+    }
+    @if(form.errors?.['passwordMismatch'] && !form.get('password')?.errors?.['minlength']){
+    <div>
+        <small>{{ errorMessage.PASSWORD_MISMATCH }}</small>
+    </div>
+    }
+    @if(errorSignal()){
+    <div>
         <small>{{ errorSignal() }}</small>
     </div>
-    <div *ngFor="let field of fields()">
+    }
+    @for(field of fields(); track field.name) {
+    <div>
         <label>{{ field.label }}</label>
         <input [type]="field.type" [formControlName]="field.name">
     </div>
-    <button type="submit" [disabled]="form.invalid" [ngClass]="{'invalid-btn' : form.invalid}">{{ buttonLabel() }}</button>
+    }
+    @if(buttonLabel()){
+    <button type="submit" [disabled]="form.invalid" [ngClass]="{'invalid-btn' : form.invalid}">{{ buttonLabel()
+        }}</button>
+    }
+    @if(formMessage() && formLink() && formLinkText()){
     <div>
-        <p>{{ formMessage() }}</p> 
+        <p>{{ formMessage() }}</p>
         <a [routerLink]="formLink()">{{ formLinkText() }}</a>
     </div>
+    }
 </form>

@@ -5,6 +5,7 @@ import { User } from '../../shared/models/user.model';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
 import { SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-page',
@@ -14,6 +15,7 @@ import { SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 })
 export class LoginPage {
   private authService = inject(AuthService);
+  private toastrService = inject(ToastrService);
   private router = inject(Router);
 
   public fields = [
@@ -27,24 +29,22 @@ export class LoginPage {
   public formLinkText = "Đăng ký";
   public Validators = Validators;
 
-  public handleLogin(user: any){
+  public handleLogin(user: User){
     if(!user) return;
     
-    this.authService.getUserByUsernameAndPassword(user.username, user.password).subscribe({
-      next: (res) => {
-        if(res.length === 0){
-          this.authService.errorSignal.set(SUCCESS_MESSAGES.loginFailed);
-          return;
-        }
-        this.authService.saveUserToStorage(res[0]);
+    this.authService.getAccount(user)
+    .subscribe({
+      next: (data) => {
+        if(!data) return;
 
-        this.authService.clearErrorSignal();
-        
-        alert(SUCCESS_MESSAGES.login);
-        window.location.href = '/';
+        let user : User = data;
+        this.authService.currentUserSignal.set(user);
+
+        this.router.navigate(['/']);
+        this.toastrService.success(SUCCESS_MESSAGES.LOGIN);
       },
       error: (error) => {
-        console.error(error);
+        this.authService.errorSignal.set(error.message);
       }
     })
   }

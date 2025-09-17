@@ -7,6 +7,7 @@ import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
 import { USERNAME_PATTERN } from '../../shared/constants/pattern.constant';
 import { SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register-page',
@@ -18,6 +19,7 @@ import { SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 export class RegisterPage {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private toastrService = inject(ToastrService);
 
   public fields = [
     { name: 'fullName', label: 'Họ và tên', type: 'text', validator: [] },
@@ -31,29 +33,20 @@ export class RegisterPage {
   public formLink = "/login";
   public formLinkText = "Đăng nhập";
   public formValidator = PasswordMatchValidator;
-
-  private user!: User;
   public errorMessage = signal<string>('');
 
-  public handleRegister(user : any){
-    this.user = user;
+  public handleRegister(user : User){
+    if(!user) return;
 
-    if(this.user){
-      this.addAccount();
-    }
-  }
-
-  public addAccount(){
-    if(!this.user) return;
-
-    this.authService.addAccount(this.user).subscribe({
-      next:(()=> {
-        alert(SUCCESS_MESSAGES.register);
-        this.authService.clearErrorSignal();
-        this.router.navigate(['/login']);
-      }),
+    this.authService.addAccount(user).subscribe({
+      next: (data) => {
+        if(data){
+          this.toastrService.success(SUCCESS_MESSAGES.REGISTER);
+          this.router.navigate(['/login']);
+        }
+      },
       error: (error) => {
-        this.authService.errorSignal.set(error);
+        this.authService.errorSignal.set(error.message);
       }
     })
   }

@@ -1,0 +1,11 @@
+@if(pagination()?.pages! > 1){
+  <div class="pagination-container">
+    <button [disabled]="currentPage() === 1" (click)="goToPage(1)">First</button>
+    <button [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)">Previous</button>
+    @for(page of range(start, end); track page){
+        <button [ngClass]="{'active': (currentPage()) === page }" (click)="goToPage(page)">{{ page }}</button>
+    }
+    <button [disabled]="currentPage() === pagination()?.last" (click)="goToPage(currentPage() + 1)">Next</button>
+    <button [disabled]="currentPage() === pagination()?.last" (click)="goToPage(pagination()?.last!)">Last</button>
+  </div>
+}

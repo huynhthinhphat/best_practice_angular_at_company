@@ -1,13 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../../shared/services/product-service/product-service';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
+import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 
 @Component({
   selector: 'app-product-page',
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [NgOptimizedImage, AppPagination],
   templateUrl: './product-list-page.html',
-  styleUrl: './product-list-page.css'
+  styleUrl: './product-list-page.css',
+  standalone: true
 })
 export class ProductListPage implements OnInit{
   private productService = inject(ProductService);
@@ -16,18 +18,12 @@ export class ProductListPage implements OnInit{
   public products = this.productService.products;
 
   ngOnInit() {
-    this.setProducts();
-  }
-
-  private setProducts(){
     this.productService.getAllProductsByConditions();
   }
 
-  public trackById(item: any) {
-    return item.id; 
-  }
-
   public onClickProduct(productId: string) {
+    if(!productId) return;
+   
     this.router.navigate(['/products/details', productId]);
   }
 }
