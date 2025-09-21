@@ -1,0 +1,4 @@
+@if(order() && orderDetail().length > 0){
+<app-order-detail [order]="order()" [orderDetail]="orderDetail()"
+    (handleStatusOrder)="updateOrderStatus($event)"></app-order-detail>
+}

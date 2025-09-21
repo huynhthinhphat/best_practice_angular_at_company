@@ -1,12 +1,11 @@
 form {
-  max-width: 400px;             
-  margin: 40px auto;           
+  max-width: 400px;
+  margin: 40px auto;
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 12px;          
+  border-radius: 12px;
   background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 form h2 {
@@ -56,7 +55,7 @@ form button {
 
 form button:hover {
   background-color: #2c3e90;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 form div:last-child {
@@ -84,13 +83,13 @@ form a:hover {
   text-decoration: underline;
 }
 
-form .invalid-btn{
+form .invalid-btn {
   background-color: #747fc2 !important;
   box-shadow: none !important;
   cursor: not-allowed;
 }
 
-small{
+small {
   color: red;
   text-align: center;
 }

@@ -1,0 +1,11 @@
+@if(users().length > 0){
+<div class="user-container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Users</h1>
+    </div>
+    <app-table [columns]="headers" [tableData]="users()"></app-table>
+
+    <app-pagination [pagination]="pagination()" [currentPage]="currentPage()"
+        [onPageChange]="handlePageChange"></app-pagination>
+</div>
+}

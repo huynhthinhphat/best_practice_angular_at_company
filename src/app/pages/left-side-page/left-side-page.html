@@ -1,3 +1,13 @@
-<ul *ngFor="let category of categories()" class="category-item" (click)="onCategoryClick(category.id ?? '')" [ngClass]="{'active': selectedCategoryId === category.id}">
+@if(currentUser()?.role === 'User' || !currentUser()){
+<ul *ngFor="let category of categories()" class="category-item" (click)="onCategoryClick(category.id!)"
+    [ngClass]="{'active': selectedCategoryId() === category.id}">
     <li>{{ category.name }}</li>
 </ul>
+}
+
+@if(currentUser()?.role === 'Admin'){
+<ul *ngFor="let router of routers" class="category-item" [ngClass]="{'active': selectedCategoryId() === router}"
+    [routerLink]="['/admin/' + router]" [state]="{ isAdmin: true }" (click)="onCategoryClick(router)">
+    <li>{{ router }}</li>
+</ul>
+}

@@ -1,0 +1,41 @@
+<table class="table">
+  <thead>
+    <tr>
+      @for(col of columns(); track col){
+      <th scope="col">{{col.headerText}}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @if(tableData().length >= 0){
+    @for(data of tableData(); track data){
+    <tr>
+      @for(col of columns(); track col){
+      @if(col.field){
+      @if(col.field === 'status'){
+      <td style="text-transform: capitalize;">
+        <span [appStatusIcon]="getFieldAsString(data, col.field)"></span>
+        {{data[col.field]}}
+      </td>
+      } @else if(col.field === 'totalPrice'){
+      <td>{{ getFieldAsString(data, col.field) | currency:'VND':'symbol':'1.0-0'}}</td>
+      }@else if(col.field === 'createdAt' || col.field === 'updatedAt'){
+      <td>{{ getFieldAsString(data, col.field) | date: 'hh:MM dd/MM/yyyy'}}</td>
+      }@else {<td>{{data[col.field]}}</td>
+      }
+      } @else if(col.columnType == 'action'){
+      <td>
+        @for(action of col.actions; track action){
+        <button type="button" [title]="action.tooltip" [disabled]="action.disabled?.(data)" [class]="action.class"
+          (click)="actionClick(action, data)">
+          <i [class]="action.icon"></i>{{action.label}}
+        </button>
+        }
+      </td>
+      }
+      }
+    </tr>
+    }
+    }
+  </tbody>
+</table>

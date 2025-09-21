@@ -6,8 +6,10 @@ import { User } from '../../shared/models/user.model';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
 import { USERNAME_PATTERN } from '../../shared/constants/pattern.constant';
-import { SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
+import { CartService } from '../../shared/services/cart-service/cart-service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-register-page',
@@ -18,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterPage {
   private authService = inject(AuthService);
+  private cartService = inject(CartService);
   private router = inject(Router);
   private toastrService = inject(ToastrService);
 
@@ -35,19 +38,28 @@ export class RegisterPage {
   public formValidator = PasswordMatchValidator;
   public errorMessage = signal<string>('');
 
-  public handleRegister(user : User){
-    if(!user) return;
+  public handleRegister(user: User) {
+    if (!user) return;
 
-    this.authService.addAccount(user).subscribe({
-      next: (data) => {
-        if(data){
+    this.authService.addAccount(user)
+      .pipe(
+        switchMap((data: User) => {
+          if (!data) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+
+          const user: User = data;
+          return this.cartService.generateCart(user);
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          if (!data) return;
+
           this.toastrService.success(SUCCESS_MESSAGES.REGISTER);
           this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          this.authService.errorSignal.set(error.message);
         }
-      },
-      error: (error) => {
-        this.authService.errorSignal.set(error.message);
-      }
-    })
+      })
   }
 }

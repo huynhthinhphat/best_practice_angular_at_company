@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, OnInit, inject } from '@angular/core';
+import { Component, input, output, OnInit, inject, viewChildren, ElementRef, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ERROR_MESSAGES } from '../constants/message.constants';
@@ -13,8 +13,9 @@ import { AuthService } from '../services/auth-service/auth';
   styleUrl: './app-form.css',
   standalone: true
 })
-export class AppForm implements OnInit {
-  private fb = inject(FormBuilder);
+export class AppForm implements OnInit, AfterViewInit {
+  private inputs = viewChildren<ElementRef>('formInput');
+  private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
 
   public formTitle = input<string>('Title');
@@ -24,15 +25,18 @@ export class AppForm implements OnInit {
   public formLink = input<string>('');
   public formLinkText = input<string>('');
   public formValidator = input<ValidatorFn>();
-
   public submitForm = output<User>();
-
   public form!: FormGroup;
   public errorMessage = ERROR_MESSAGES;
   public errorSignal = this.authService.errorSignal;
 
   public ngOnInit() {
     this.initForm();
+  }
+
+  public ngAfterViewInit() {
+    const first = this.inputs()[0];
+    if (first) first.nativeElement.focus();
   }
 
   private initForm() {
@@ -44,7 +48,7 @@ export class AppForm implements OnInit {
       return acc;
     }, {} as any)
 
-    this.form = this.fb.group(controls, { validators: this.formValidator() });
+    this.form = this.formBuilder.group(controls, { validators: this.formValidator() });
   }
 
   public onSubmit() {

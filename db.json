@@ -16,6 +16,13 @@
       "password": "1",
       "role": "Admin",
       "token": "admin_token_c105"
+    },
+    {
+      "id": "4b6d",
+      "fullName": "phatne",
+      "username": "phat",
+      "password": "123456",
+      "role": "User"
     }
   ],
   "products": [
@@ -27,7 +34,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": true
     },
     {
       "id": "2",
@@ -37,7 +45,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": true
     },
     {
       "id": "3",
@@ -47,17 +56,19 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": true
     },
     {
       "id": "4",
-      "name": "Smartphone",
-      "price": 799.99,
-      "description": "Latest model smartphone with 5G",
+      "name": "Smartphone1",
+      "price": 1111,
+      "description": "Latest model smartphone with 5G1",
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "1",
-      "categoryName": "Electronics",
-      "stock": 100
+      "categoryId": "2",
+      "categoryName": "Clothing",
+      "stock": 1001111,
+      "isDeleted": false
     },
     {
       "id": "5",
@@ -65,9 +76,10 @@
       "price": 449.99,
       "description": "10-inch tablet with retina display",
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "1",
-      "categoryName": "Electronics",
-      "stock": 100
+      "categoryId": "2",
+      "categoryName": "Clothing",
+      "stock": 111,
+      "isDeleted": false
     },
     {
       "id": "6",
@@ -77,7 +89,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": true
     },
     {
       "id": "7",
@@ -87,7 +100,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "8",
@@ -95,19 +109,21 @@
       "price": 24.99,
       "description": "100% cotton casual t-shirt",
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "2",
-      "categoryName": "Clothing",
-      "stock": 100
+      "categoryId": "1",
+      "categoryName": "Electronics",
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "9",
-      "name": "Dress Shirt",
+      "name": "111",
       "price": 49.99,
       "description": "Formal dress shirt",
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 1001,
+      "isDeleted": false
     },
     {
       "id": "10",
@@ -115,9 +131,10 @@
       "price": 34.99,
       "description": "Comfortable casual shorts",
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "2",
-      "categoryName": "Clothing",
-      "stock": 100
+      "categoryId": "646c",
+      "categoryName": "1231231",
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "11",
@@ -127,7 +144,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "12",
@@ -137,7 +155,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "13",
@@ -147,7 +166,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "14",
@@ -155,9 +175,10 @@
       "price": 39.99,
       "description": "Non-slip yoga mat",
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
-      "categoryId": "3",
-      "categoryName": "Sports",
-      "stock": 100
+      "categoryId": "2",
+      "categoryName": "Clothing",
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "15",
@@ -167,7 +188,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "16",
@@ -177,7 +199,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "17",
@@ -187,7 +210,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "18",
@@ -197,7 +221,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "19",
@@ -207,7 +232,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "20",
@@ -217,7 +243,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "21",
@@ -227,7 +254,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "22",
@@ -237,7 +265,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "23",
@@ -247,7 +276,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "24",
@@ -257,7 +287,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "25",
@@ -267,7 +298,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "26",
@@ -277,7 +309,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "27",
@@ -287,7 +320,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "28",
@@ -297,7 +331,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "29",
@@ -307,7 +342,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "30",
@@ -317,7 +353,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "1",
@@ -327,7 +364,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "2",
@@ -337,7 +375,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "3",
@@ -347,7 +386,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "4",
@@ -357,7 +397,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "5",
@@ -367,7 +408,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "6",
@@ -377,7 +419,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "7",
@@ -387,7 +430,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "8",
@@ -397,7 +441,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "9",
@@ -407,7 +452,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "10",
@@ -417,7 +463,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "11",
@@ -427,7 +474,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "12",
@@ -437,7 +485,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "13",
@@ -447,7 +496,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "14",
@@ -457,7 +507,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "15",
@@ -467,7 +518,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "16",
@@ -477,7 +529,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "17",
@@ -487,7 +540,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "18",
@@ -497,7 +551,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "19",
@@ -507,7 +562,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "20",
@@ -517,7 +573,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "21",
@@ -527,7 +584,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "22",
@@ -537,7 +595,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "23",
@@ -547,7 +606,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "24",
@@ -557,7 +617,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "25",
@@ -567,7 +628,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "26",
@@ -577,7 +639,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "27",
@@ -587,7 +650,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "28",
@@ -597,7 +661,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "29",
@@ -607,7 +672,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "30",
@@ -617,7 +683,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "31",
@@ -627,7 +694,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "32",
@@ -637,7 +705,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "33",
@@ -647,7 +716,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "34",
@@ -657,7 +727,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "35",
@@ -667,7 +738,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "36",
@@ -677,7 +749,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "37",
@@ -687,7 +760,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "38",
@@ -697,7 +771,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "39",
@@ -707,7 +782,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "40",
@@ -717,7 +793,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "41",
@@ -727,7 +804,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "42",
@@ -737,7 +815,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "43",
@@ -747,7 +826,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "44",
@@ -757,7 +837,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "45",
@@ -767,7 +848,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "46",
@@ -777,7 +859,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "47",
@@ -787,7 +870,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "48",
@@ -797,7 +881,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "49",
@@ -807,7 +892,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "50",
@@ -817,7 +903,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "51",
@@ -827,7 +914,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "52",
@@ -837,7 +925,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "53",
@@ -847,7 +936,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "54",
@@ -857,7 +947,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "55",
@@ -867,7 +958,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "2",
       "categoryName": "Clothing",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "56",
@@ -877,7 +969,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "57",
@@ -887,7 +980,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "58",
@@ -897,7 +991,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "59",
@@ -907,7 +1002,8 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": false
     },
     {
       "id": "60",
@@ -917,21 +1013,122 @@
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
       "categoryId": "3",
       "categoryName": "Sports",
-      "stock": 100
+      "stock": 100,
+      "isDeleted": true
+    },
+    {
+      "id": "6d20",
+      "name": "Tablet",
+      "price": 1,
+      "description": "123",
+      "stock": 1,
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440152/wcunyuzxojsbxwzzx9oa.jpg",
+      "categoryId": "1",
+      "categoryName": "Electronics"
+    },
+    {
+      "id": "57a1",
+      "name": "Tablet11223",
+      "price": 1,
+      "description": "123",
+      "stock": 1,
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440180/dcqepby8ibhvrpurxwcw.jpg",
+      "categoryId": "2",
+      "categoryName": "Clothing"
+    },
+    {
+      "id": "00c6",
+      "name": "123",
+      "price": 123,
+      "description": "123",
+      "categoryId": "2",
+      "categoryName": "Clothing",
+      "stock": 123,
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440045/x3sgfg5srfcuoea1ue6d.jpg"
+    },
+    {
+      "id": "03d4",
+      "name": "abcc",
+      "price": 1,
+      "description": "fine bro :v",
+      "categoryId": "1",
+      "categoryName": "Electronics",
+      "stock": 1,
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440118/wemnx9pxonsyqoqcnmfk.jpg"
+    },
+    {
+      "id": "e22d",
+      "name": "123",
+      "price": 1,
+      "description": "123",
+      "categoryId": "",
+      "categoryName": "",
+      "stock": 1,
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440580/hgk3kq3ctuthtyubzugf.jpg"
+    },
+    {
+      "id": "e809",
+      "name": "1111",
+      "price": 123123,
+      "description": "1",
+      "categoryId": "2",
+      "categoryName": "Clothing",
+      "stock": 123,
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440618/e9gf3r6xsqpaomhw7cmo.jpg"
     }
   ],
   "categories": [
     {
       "id": "1",
-      "name": "Electronics"
+      "name": "Electronics",
+      "isDeleted": false
     },
     {
       "id": "2",
-      "name": "Clothing"
+      "name": "Clothing",
+      "isDeleted": false
     },
     {
       "id": "3",
-      "name": "Sports"
+      "name": "Sports",
+      "isDeleted": false
+    },
+    {
+      "id": "69e6",
+      "name": "ok1",
+      "isDeleted": true
+    },
+    {
+      "id": "eb10",
+      "name": "123",
+      "isDeleted": true
+    },
+    {
+      "id": "6108",
+      "name": "11",
+      "isDeleted": true
+    },
+    {
+      "id": "c062",
+      "name": "1231"
+    },
+    {
+      "id": "646c",
+      "name": "1231231"
+    },
+    {
+      "id": "2f9d",
+      "name": "Clothing",
+      "isDeleted": true
+    },
+    {
+      "id": "7928",
+      "name": "Clothing",
+      "isDeleted": true
+    },
+    {
+      "id": "bd12",
+      "name": "12311111"
     }
   ],
   "carts": [
@@ -939,12 +1136,110 @@
       "id": "1",
       "userId": "ede7",
       "totalPrice": 1619.97
+    },
+    {
+      "id": "7b30",
+      "userId": "4b6d",
+      "totalPrice": 0
     }
   ],
-  "cartItems": [
+  "cartItems": [],
+  "orders": [
     {
-      "id": "4794",
-      "cartId": "1",
+      "id": "850c",
+      "username": "1",
+      "phoneNumber": "0325478552",
+      "address": "68/3 Nguyen Thai Hoc, Quy Nhon",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 999.99,
+      "status": "refunded",
+      "createdAt": "2025-09-18T06:58:41.566Z",
+      "updatedAt": "2025-09-21T18:26:54.465Z"
+    },
+    {
+      "id": "a15a",
+      "username": "123",
+      "phoneNumber": "0325412554",
+      "address": "123",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 1299.99,
+      "status": "delivered",
+      "createdAt": "2025-09-18T07:05:19.494Z"
+    },
+    {
+      "id": "677a",
+      "username": "1",
+      "phoneNumber": "0325412558",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 2,
+      "totalPrice": 7279.889999999999,
+      "status": "completed",
+      "createdAt": "2025-09-19T05:36:29.929Z"
+    },
+    {
+      "id": "97df",
+      "username": "1",
+      "phoneNumber": "0325412254",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 159.99,
+      "status": "pending",
+      "createdAt": "2025-09-19T06:46:10.056Z"
+    },
+    {
+      "id": "71d9",
+      "username": "1",
+      "phoneNumber": "0325478851",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 159.99,
+      "status": "cancelled",
+      "createdAt": "2025-09-19T06:50:06.401Z"
+    },
+    {
+      "id": "81e4",
+      "username": "1",
+      "phoneNumber": "0325478851",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 1299.99,
+      "status": "received",
+      "createdAt": "2025-09-19T06:50:16.040Z",
+      "updatedAt": "2025-09-21T16:26:15.156Z"
+    },
+    {
+      "id": "3e69",
+      "username": "phatne",
+      "phoneNumber": "0375204558",
+      "address": "1231231231231",
+      "userId": "4b6d",
+      "quantity": 1,
+      "totalPrice": 2699.94,
+      "status": "refunded",
+      "createdAt": "2025-09-21T15:54:34.654Z",
+      "updatedAt": "2025-09-21T16:27:45.723Z"
+    },
+    {
+      "id": "0bb2",
+      "username": "1",
+      "phoneNumber": "0987654421",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 129.99,
+      "status": "pending",
+      "createdAt": "2025-09-21T18:11:52.614Z"
+    }
+  ],
+  "orderDetails": [
+    {
+      "id": "f1a1",
       "product": {
         "id": "1",
         "name": "Smart TV 65-inch",
@@ -953,11 +1248,154 @@
         "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
         "categoryId": "1",
         "categoryName": "Electronics",
-        "stock": 100
+        "stock": 100,
+        "quantityToBuy": 1
       },
-      "quantity": 1
+      "orderId": "a15a",
+      "quantity": 1,
+      "totalPrice": 999.99
+    },
+    {
+      "id": "eadc",
+      "product": {
+        "id": "2",
+        "name": "Gaming Laptop",
+        "price": 1299.99,
+        "description": "15.6-inch Gaming Laptop with RTX 3070",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "1",
+        "categoryName": "Electronics",
+        "stock": 100,
+        "quantityToBuy": 1
+      },
+      "orderId": "850c",
+      "quantity": 2,
+      "totalPrice": 1299.99
+    },
+    {
+      "id": "536a",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "quantityToBuy": 6
+      },
+      "orderId": "677a",
+      "quantity": 6,
+      "totalPrice": 779.94
+    },
+    {
+      "id": "61d1",
+      "product": {
+        "id": "2",
+        "name": "Gaming Laptop",
+        "price": 1299.99,
+        "description": "15.6-inch Gaming Laptop with RTX 3070",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "1",
+        "categoryName": "Electronics",
+        "stock": 100,
+        "quantityToBuy": 5
+      },
+      "orderId": "677a",
+      "quantity": 5,
+      "totalPrice": 6499.95
+    },
+    {
+      "id": "cc23",
+      "product": {
+        "id": "3",
+        "name": "Wireless Earbuds",
+        "price": 159.99,
+        "description": "Noise-canceling wireless earbuds",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "1",
+        "categoryName": "Electronics",
+        "stock": 100,
+        "quantityToBuy": 1,
+        "cartItemId": "24a5"
+      },
+      "orderId": "97df",
+      "quantity": 1,
+      "totalPrice": 159.99
+    },
+    {
+      "id": "59e3",
+      "product": {
+        "id": "3",
+        "name": "Wireless Earbuds",
+        "price": 159.99,
+        "description": "Noise-canceling wireless earbuds",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "1",
+        "categoryName": "Electronics",
+        "stock": 100,
+        "quantityToBuy": 1,
+        "cartItemId": "24a5"
+      },
+      "orderId": "71d9",
+      "quantity": 1,
+      "totalPrice": 159.99
+    },
+    {
+      "id": "855f",
+      "product": {
+        "id": "2",
+        "name": "Gaming Laptop",
+        "price": 1299.99,
+        "description": "15.6-inch Gaming Laptop with RTX 3070",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "1",
+        "categoryName": "Electronics",
+        "stock": 100,
+        "quantityToBuy": 1,
+        "cartItemId": "1df7"
+      },
+      "orderId": "81e4",
+      "quantity": 1,
+      "totalPrice": 1299.99
+    },
+    {
+      "id": "0012",
+      "product": {
+        "id": "5",
+        "name": "Tablet",
+        "price": 449.99,
+        "description": "10-inch tablet with retina display",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "3",
+        "categoryName": "Sports",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 6,
+        "cartItemId": "dc66"
+      },
+      "orderId": "3e69",
+      "quantity": 6,
+      "totalPrice": 2699.94
+    },
+    {
+      "id": "c9f6",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "0bb2",
+      "quantity": 1,
+      "totalPrice": 129.99
     }
-  ],
-  "orders": [],
-  "orderDetails": []
+  ]
 }

@@ -1,0 +1,73 @@
+@if(order() && orderDetail().length > 0){
+<div class="order-detail-container">
+    <h2>Order Details: {{ order()?.id }}</h2>
+
+    <div class="order-info">
+        <p><strong>Full name:</strong> {{ order()?.username }}</p>
+        <p><strong>Phone number:</strong> {{ order()?.phoneNumber }}</p>
+        <p><strong>Address:</strong> {{ order()?.address }}</p>
+        <p><strong>Status:</strong> {{ order()?.status }} <span [appStatusIcon]="order()?.status!"></span></p>
+        <p><strong>Total products:</strong> {{ order()?.quantity }}</p>
+        <p><strong>Total amount:</strong> {{ order()?.totalPrice | currency:'VND':'symbol':'1.0-0' }}</p>
+        <p><strong>Created at:</strong> {{ order()?.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Updated at:</strong> {{ order()?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+
+    <h3>Product Details</h3>
+    <table class="order-detail-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Unit price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(item of orderDetail(); let index = $index; track item.id){
+            <tr>
+                <td>{{ index + 1}}</td>
+                <td>{{ item.product?.name }}</td>
+                <td>{{ item.product?.price | currency:'VND':'symbol':'1.0-0' }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.product?.price! * item.quantity!| currency:'VND':'symbol':'1.0-0' }}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div class="order-detail-actions">
+        @if(order()?.status === status.PENDING){
+        <button class="button-cancel" (click)="updateOrderStatus(status.CANCELLED)">
+            <span [appStatusIcon]="status.CANCELLED"></span>
+            Cancel order
+        </button>
+
+        @if(currentUser()?.role === 'Admin'){
+        <button class="button-delivered" (click)="updateOrderStatus(status.DELIVERED)">
+            <span [appStatusIcon]="status.DELIVERED"></span>
+            Delivered
+        </button>
+        }
+        }
+
+        @if(order()?.status === status.DELIVERED && currentUser()?.role === 'User'){
+        <button class="button-receive" (click)="updateOrderStatus(status.RECEIVED)">
+            <span [appStatusIcon]="status.RECEIVED"></span>
+            Received
+        </button>
+        <button class="button-return" (click)="updateOrderStatus(status.RETURNING)">
+            <span [appStatusIcon]="status.RETURNING"></span>
+            Return
+        </button>
+        }
+
+        @if(order()?.status === status.RETURNING && currentUser()?.role === 'Admin'){
+        <button class="button-receive" (click)="updateOrderStatus(status.REFUNDED)">
+            <span [appStatusIcon]="status.REFUNDED"></span>
+            Refunded
+        </button>
+        }
+    </div>
+</div>
+}

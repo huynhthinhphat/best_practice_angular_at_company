@@ -1,0 +1,23 @@
+<div class="category-container">
+    @if(category()?.id){
+    <h1>Edit Category</h1>
+    }@else {
+    <h1>Create New Category</h1>
+    }
+
+    <div class="form-input">
+        <input type="text" [(ngModel)]="categoryName">
+    </div>
+    <div class="form-actions">
+        @if(category()?.id){
+        <button type="button" class="btn btn-save" (click)="saveCategory('update')"><i
+                class="pi pi-check"></i>Save</button>
+        }@else {
+        <button type="button" class="btn btn-save" (click)="saveCategory('create')"><i
+                class="pi pi-check"></i>Create</button>
+        }
+        <button type="button" class="btn btn-cancel" (click)="goBack()">
+            <i class="pi pi-times"></i> Cancel
+        </button>
+    </div>
+</div>

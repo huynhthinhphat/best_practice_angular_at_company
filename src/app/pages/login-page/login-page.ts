@@ -6,6 +6,7 @@ import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
 import { SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
+import { CartService } from '../../shared/services/cart-service/cart-service';
 
 @Component({
   selector: 'app-login-page',
@@ -15,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginPage {
   private authService = inject(AuthService);
+  private cartService = inject(CartService);
   private toastrService = inject(ToastrService);
   private router = inject(Router);
 
@@ -22,30 +24,36 @@ export class LoginPage {
     { name: 'username', label: 'Tài khoản', type: 'text', validator: [] },
     { name: 'password', label: 'Mật khẩu', type: 'password', validator: [] },
   ];
-  public formTitle = "Đăng nhập" ;
+  public formTitle = "Đăng nhập";
   public buttonLabel = "Đăng nhập";
   public formMessage = "Bạn chưa có tài khoản?";
   public formLink = "/register";
   public formLinkText = "Đăng ký";
   public Validators = Validators;
 
-  public handleLogin(user: User){
-    if(!user) return;
-    
+  public handleLogin(user: User) {
+    if (!user) return;
+
     this.authService.getAccount(user)
-    .subscribe({
-      next: (data) => {
-        if(!data) return;
+      .subscribe({
+        next: (data) => {
+          if (!data) return;
 
-        let user : User = data;
-        this.authService.currentUserSignal.set(user);
+          let user: User = data;
+          this.authService.currentUserSignal.set(user);
+          this.cartService.setCartId();
 
-        this.router.navigate(['/']);
-        this.toastrService.success(SUCCESS_MESSAGES.LOGIN);
-      },
-      error: (error) => {
-        this.authService.errorSignal.set(error.message);
-      }
-    })
+          if (user.role === 'User') {
+            this.router.navigate(['/']);
+          } else {
+            this.router.navigate(['/admin/users'], { state: { isAdmin: true } });
+          }
+
+          this.toastrService.success(SUCCESS_MESSAGES.LOGIN);
+        },
+        error: (error) => {
+          this.authService.errorSignal.set(error.message);
+        }
+      })
   }
 }

@@ -29,12 +29,13 @@
     @for(field of fields(); track field.name) {
     <div>
         <label>{{ field.label }}</label>
-        <input [type]="field.type" [formControlName]="field.name">
+        <input [type]="field.type" [formControlName]="field.name" #formInput>
     </div>
     }
     @if(buttonLabel()){
-    <button type="submit" [disabled]="form.invalid" [ngClass]="{'invalid-btn' : form.invalid}">{{ buttonLabel()
-        }}</button>
+    <button type="submit" [disabled]="form.invalid" [ngClass]="{'invalid-btn' : form.invalid}">
+        {{ buttonLabel() }}
+    </button>
     }
     @if(formMessage() && formLink() && formLinkText()){
     <div>

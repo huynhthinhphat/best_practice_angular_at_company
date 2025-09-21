@@ -4,24 +4,24 @@
         <div class="cart-list">
             <h1>Checkout</h1>
 
+            <div>
+                <h3>Total Amount: {{ totalAmount | currency:'VND':'symbol':'1.0-0' }}</h3>
+            </div>
+
             @for(product of products(); track product.id) {
             <div class="cart-item">
                 <div class="cart-item-image">
-                    <img src="https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp" width="120"
-                        height="150" alt="Product A">
+                    <img [src]="product.imageUrl" width="160" height="160" alt="{{ product.name }}">
                 </div>
                 <div class="cart-item-info">
-                    <h2>Product A</h2>
-                    <p>Price: {{ product.price | currency: 'VND' }}</p>
+                    <h2>{{ product.name }}</h2>
+                    <p>Price: {{ product.price | currency:'VND':'symbol':'1.0-0' }}</p>
                     <p>Quantity: x{{ product.quantityToBuy }}</p>
-                    <p>Total price: {{ (product.price! * product.quantityToBuy!) | currency: 'VND' }}</p>
+                    <p>Total price: {{ (product.price! * product.quantityToBuy!) | currency:'VND':'symbol':'1.0-0' }}
+                    </p>
                 </div>
             </div>
             }
-
-            <div>
-                <h3>Total Amount: {{ totalAmount | currency: 'VND' }}</h3>
-            </div>
         </div>
 
         <div class="checkout-form">

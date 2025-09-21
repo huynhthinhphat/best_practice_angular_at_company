@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../../shared/services/cart-service/cart-service';
 import { CurrencyPipe } from '@angular/common';
@@ -10,35 +10,38 @@ import { ToastrService } from 'ngx-toastr';
 import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import { Product } from '../../../shared/models/product.model';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2'
+import { DisableButton } from '../../../shared/directives/disable-button/disable-button';
 
 @Component({
   selector: 'app-cart-list-page',
-  imports: [CurrencyPipe, ScrollingModule, FormsModule],
+  imports: [CurrencyPipe, ScrollingModule, FormsModule, DisableButton],
   templateUrl: './cart-list-page.html',
   styleUrl: './cart-list-page.css',
   standalone: true
 })
-export class CartListPage implements OnInit{
+export class CartListPage implements OnInit {
   private cartService = inject(CartService);
   private storageService = inject(StorageService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
+  private toastrService = inject(ToastrService);
 
   public cart!: Cart;
   public cartItems = this.cartService.cartItems;
   public totalPrice = this.cartService.totalPrice;
+  public selectedCartItems = signal<CartItem[]>([]);
+  public isDisable: boolean = false;
 
-  ngOnInit() {
-      this.cartService.getCartByCartId();
+  public ngOnInit() {
+    this.cartService.getCartByCartId();
   }
 
   public onClickProduct(productId: string) {
-    this.router.navigate(['/products/details', productId]);
+    this.router.navigate(['/products/detail', productId]);
   }
 
-  public handleDeleteCartItem(itemId: string | undefined) {
+  public handleDeleteCartItem(itemIdList: string[] = []) {
     Swal.fire({
       title: SWAL_MESSAGES.CONFIRM_DELETE_TITLE,
       text: SWAL_MESSAGES.CONFIRM_DELETE_TEXT,
@@ -49,45 +52,82 @@ export class CartListPage implements OnInit{
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6'
     }).then((result) => {
-      if(!result.isConfirmed || !itemId) return;
-      
-      this.deleteCartItem(itemId);
-    });
-  }
+      if (!result.isConfirmed || !itemIdList) return;
 
-  private deleteCartItem(itemId: string){
-    this.cartService.deleteCartItem(itemId).subscribe({
-      next: () => {
-        this.cartItems.update(items => items.filter(item => item.id !== itemId));
-        this.cartService.setTotalPrice();
-
-        this.storageService.saveData<CartItem[]>(STORAGE_KEYS.CART_ITEMS, this.cartItems());
-        this.cartService.quantityItems.update(val => val - 1);
-
-        this.toastr.success(SUCCESS_MESSAGES.DELETE);
-      },
-      error: (error) => {
-        this.toastr.error(error.message);
+      if (itemIdList.length > 0) {
+        this.deleteCartItems(itemIdList);
+        return;
       }
+
+      const ids = this.selectedCartItems().map(item => item.id as string);
+      if (ids.length === 0) return;
+
+      this.deleteCartItems(ids);
+      this.selectedCartItems.set([]);
     });
   }
 
-  public handleCartItemToCart(product : Product, quantityChange: number){
+  private deleteCartItems(idList: string[]) {
+    if (idList.length === 0) return;
+
+    this.cartService.deleteCartItems(idList).subscribe({
+      next: (() => this.toastrService.success(SUCCESS_MESSAGES.DELETE)),
+      error: (error) => this.toastrService.error(error.message)
+    });
+  }
+
+  public handleCartItemToCart(product: Product, quantityChange: number) {
     const newQuantity = Math.max(1, Math.min(quantityChange, product.stock!));
 
     this.cartService.handleCartItemToUpdate(product, newQuantity).subscribe({
       next: (cart) => {
-        if(cart){
-          this.cartService.getCartByCartId();
-        }
+        if (!cart) return;
+        this.cartService.getCartByCartId();
       },
       error: (error) => {
-        this.toastr.error(error.message);
+        this.toastrService.error(error.message);
       },
     });
   }
 
   public trackById(item: any) {
-    return item.id; 
+    return item.id;
+  }
+
+  public selectedItems(cartItem: CartItem) {
+    if (!cartItem) return;
+
+    const isExist = this.selectedCartItems().find(p => p.id == cartItem.id);
+    if (isExist) {
+      this.selectedCartItems.set([...this.selectedCartItems().filter(p => p.id != cartItem.id)]);
+      return;
+    }
+
+    this.selectedCartItems.set([...this.selectedCartItems(), cartItem]);
+  }
+
+  public selectedAll(checked: boolean) {
+    this.selectedCartItems.set(checked ? [...this.cartItems()] : []);
+  }
+
+  public checkSelected(item: CartItem): boolean {
+    return this.selectedCartItems().some(p => p.id == item.id);
+  }
+
+  public navigateToCheckout(product: Product | null) {
+    let products: Product[] = [];
+
+    if (product) {
+      const item = this.cartItems().filter(item => item.product?.id == product?.id);
+      product = { ...product, quantityToBuy: item[0]?.quantity || 0, cartItemId: item[0].id };
+      products.push(product);
+    } else {
+      products = [...this.selectedCartItems().map(item => ({ ...item.product, quantityToBuy: item.quantity, cartItemId: item.id }))];
+    }
+
+    if (!products || products.length === 0) return;
+
+    this.storageService.saveData<Product[]>(STORAGE_KEYS.CHECKOUT_PRODUCT_LIST, products);
+    this.router.navigate(['/checkout'], { state: { fromCartPage: true } });
   }
 }

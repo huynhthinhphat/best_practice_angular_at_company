@@ -1,0 +1,18 @@
+.btn-create {
+    display: flex;
+    justify-content: end;
+    margin-bottom: .5rem;
+}
+
+.btn-create button {
+    color: white;
+    background-color: #007bff;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 7px;
+}
+
+.btn-create button:hover {
+    background-color: #0056b3;
+}

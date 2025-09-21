@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { ProductService } from '../../shared/services/product-service/product-service';
@@ -10,7 +10,7 @@ import { CartService } from '../../shared/services/cart-service/cart-service';
   templateUrl: './header-page.html',
   styleUrl: './header-page.css'
 })
-export class HeaderPage implements OnDestroy{
+export class HeaderPage {
   private authService = inject(AuthService);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
@@ -21,30 +21,23 @@ export class HeaderPage implements OnDestroy{
   public quantityItems = this.cartService.quantityItems;
   public products = this.productService.products;
   public productName = '';
-  private searchTimeout: any;
 
-  constructor(){
+  constructor() {
     effect(() => {
       this.isVisible = this.authService.currentUserSignal() ? true : false;
     })
   }
 
-  searchProduct(data: string) {
-    this.searchTimeout = setTimeout(() => {
-      if(!this.router.url.includes('/home')){
-        this.router.navigate(['/home']);
-      }
+  public searchProduct(data: string) {
+    if (!this.router.url.includes('/home')) {
+      this.router.navigate(['/home']);
+    }
 
-      this.productService.productName.set(data);
-    }, 1000);
+    this.productService.productName.set(data);
   }
 
-  logout(){
+  public logout() {
     this.authService.logout();
     this.router.navigate(['/']);
-  }
-
-  ngOnDestroy(){
-    clearTimeout(this.searchTimeout);
   }
 }

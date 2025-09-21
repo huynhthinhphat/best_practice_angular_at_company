@@ -1,0 +1,12 @@
+<div class="category-container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Categories</h1>
+        <div class="btn-create">
+            <button [routerLink]="'/admin/categories/create'" [state]="{'isAdmin': true}">Create</button>
+        </div>
+    </div>
+    <app-table [columns]="headers" [tableData]="categories()" (actionClickEmit)="handleAction($event)"></app-table>
+
+    <app-pagination [pagination]="pagination()" [currentPage]="currentPage()"
+        [onPageChange]="handlePageChange"></app-pagination>
+</div>

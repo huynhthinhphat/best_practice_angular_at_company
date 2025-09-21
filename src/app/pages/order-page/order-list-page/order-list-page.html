@@ -1,0 +1,14 @@
+<div class="order-list-container">
+    <h2>📦 Orders</h2>
+
+    @if(status.length > 0){
+    <app-tab-filter [status]="status" (handleSelectedStatus)="updateStatus($event)"></app-tab-filter>
+    }
+
+    @if(headers.length > 0 && orders().length > 0){
+    <app-table [columns]="headers" [tableData]="orders()" (actionClickEmit)="handleAction($event)"></app-table>
+    }
+
+    <app-pagination [pagination]="pagination()" [currentPage]="currentPage()"
+        [onPageChange]="handlePageChange"></app-pagination>
+</div>

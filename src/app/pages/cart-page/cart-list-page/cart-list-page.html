@@ -1,36 +1,59 @@
 <div class="cart-container">
   <h1 class="cart-title">🛒 Your Shopping Cart</h1>
 
-  @if(totalPrice() > 0){
-    <div class="cart-summary">
-      <p><strong>Total:</strong> {{ totalPrice() | currency:'VND':'symbol' }}</p>
+  <div class="cart-summary">
+    @if(cartItems().length > 0){
+    <div class="cart-summary-item">
+      <div>
+        <input type="checkbox" id="select-all" (change)="selectedAll($event.target.checked)" />
+        <label for="select-all">Tất cả</label>
+      </div>
+      <div>
+        <button class="btn-remove" [appDisableButton]="selectedCartItems()" (click)="handleDeleteCartItem()">🗑️ Remove
+          selected items</button>
+        <button class="btn-buy" [appDisableButton]="selectedCartItems()" (click)="navigateToCheckout(null)">🛒 Buy
+          selected items</button>
+      </div>
     </div>
-  }
+    }
+
+    @if(totalPrice() > 0){
+    <div class="cart-summary-item">
+      <p><strong>Total:</strong> {{ totalPrice() | currency:'VND':'symbol':'1.0-0' }}</p>
+    </div>
+    }
+  </div>
+
   @if(cartItems().length > 0){
-    <cdk-virtual-scroll-viewport itemSize="100" class="cart-container-viewport">
-      <div class="cart-item" *cdkVirtualFor="let item of cartItems(); trackBy: trackById">
-        <div (click)="onClickProduct(item.product?.id ?? '')">
-          <div class="cart-item-image">
-            <img [src]="item.product?.imageUrl" [alt]="item.product?.name">
-          </div>
-          <div class="cart-item-info">
-            <h2 class="cart-item-name"><strong>Name: </strong>{{ item.product?.name }}</h2>
-            <p class="cart-item-price"><strong>Price: </strong>{{ item.product?.price | currency:'VND':'symbol' }}</p>
-            <p class="cart-item-price"><strong>Total price: </strong>{{ (item.product?.price || 0) * (item.quantity || 0) | currency:'VND':'symbol' }}</p>
-            <p class="cart-item-stock"><strong>Stock: </strong>{{ item.product?.stock }}</p>
-          </div>
+  <cdk-virtual-scroll-viewport itemSize="100" class="cart-container-viewport">
+    <div class="cart-item" *cdkVirtualFor="let item of cartItems(); trackBy: trackById">
+      <div class="cart-item-details">
+        <input type="checkbox" (change)="selectedItems(item)" [checked]="checkSelected(item)" />
+        <div class="cart-item-image" (click)="onClickProduct(item.product?.id!)">
+          <img [src]="item.product?.imageUrl" [alt]="item.product?.name">
         </div>
-        <div class="cart-item-actions">
-          <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) - 1)">-</button>
-          <input type="number" [(ngModel)]="item.quantity" [min]="1" [max]="item.product?.stock ?? 1" (blur)="handleCartItemToCart(item.product!, item.quantity!)"/>
-          <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) + 1)">+</button>
-        </div>
-        <div class="cart-item-remove">
-          <button class="btn-remove" (click)="handleDeleteCartItem(item.id)">❌</button>
+        <div class="cart-item-info">
+          <h2 class="cart-item-name"><strong>Name: </strong>{{ item.product?.name }}</h2>
+          <p class="cart-item-price"><strong>Price: </strong>{{ item.product?.price | currency:'VND':'symbol':'1.0-0' }}
+          </p>
+          <p class="cart-item-price"><strong>Total price: </strong>{{ (item.product?.price || 0) * (item.quantity || 0)
+            | currency:'VND':'symbol':'1.0-0' }}</p>
+          <p class="cart-item-stock"><strong>Stock: </strong>{{ item.product?.stock }}</p>
         </div>
       </div>
-    </cdk-virtual-scroll-viewport>
+      <div class="cart-item-actions">
+        <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) - 1)">-</button>
+        <input type="number" [(ngModel)]="item.quantity" [min]="1" [max]="item.product?.stock ?? 1"
+          (blur)="handleCartItemToCart(item.product!, item.quantity!)" />
+        <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) + 1)">+</button>
+      </div>
+      <div class="cart-item-button">
+        <button class="btn-remove" (click)="handleDeleteCartItem([item.id!])">🗑️ Remove</button>
+        <button class="btn-buy" (click)="navigateToCheckout(item.product!)">🛒 Buy now</button>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
   } @else {
-    <p class="empty-message">Your cart is empty 🛍️</p>
+  <p class="empty-message">Your cart is empty 🛍️</p>
   }
 </div>

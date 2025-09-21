@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { CART_ITEMS_URL } from '../../constants/url.constants';
+import { forkJoin, Observable, tap, throwError } from 'rxjs';
+import { CART_ITEMS_URL, CART_URL } from '../../constants/url.constants';
 import { Cart } from '../../models/cart.model';
 import { CartItem } from '../../models/cart-item.model';
 import { StorageService } from '../storage-service/storage-service';
@@ -21,11 +21,12 @@ export class CartService {
   public cartItems = signal<CartItem[]>([]);
   public totalPrice = signal<number>(0);
 
-  constructor(){
+  constructor() {
     effect(() => {
       const currentQuantityItems = this.quantityItems();
       const user = this.storageService.getData(STORAGE_KEYS.USER);
-      if(user){
+
+      if (user) {
         this.storageService.saveData(STORAGE_KEYS.USER, { ...user, quantityItems: currentQuantityItems });
       }
     })
@@ -36,30 +37,45 @@ export class CartService {
     return this.http.get<Cart[]>(`${CART_ITEMS_URL}`, { params });
   }
 
-  public deleteCartItem(selectedItemId: string): Observable<CartItem> {
-    return this.http.delete<CartItem>(`${CART_ITEMS_URL}/${selectedItemId}`);
+  public deleteCartItems(selectedItemIdList: string[]): Observable<CartItem[]> {
+    if (!selectedItemIdList || selectedItemIdList.length === 0) throw new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE);
+
+    const selectedItemIdReq = selectedItemIdList.map(item => {
+      return this.http.delete<CartItem>(`${CART_ITEMS_URL}/${item}`);
+    })
+
+    return forkJoin(selectedItemIdReq)
+      .pipe(
+        tap(() => {
+          this.cartItems.update(items => items.filter(item => !selectedItemIdList.includes(item.id!)));
+          this.setTotalPrice();
+
+          this.storageService.saveData<CartItem[]>(STORAGE_KEYS.CART_ITEMS, this.cartItems());
+          this.quantityItems.update(val => val - selectedItemIdList.length);
+        })
+      )
   }
 
-  public handleCartItemToUpdate(product : Product, quantityChange: number): Observable<CartItem> {
+  public handleCartItemToUpdate(product: Product, quantityChange: number): Observable<CartItem> {
     const user = this.storageService.getData(STORAGE_KEYS.USER) as User;
-    if(!user) throw new Error(ERROR_MESSAGES.NOT_FOUND_ACCOUNT);
-    if(!user.cartId) throw new Error(ERROR_MESSAGES.NOT_FOUND_CART);
+    if (!user) return throwError(() => new Error(ERROR_MESSAGES.LOGIN_REQUIRED));
+    if (!user.cartId) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_CART));
 
     const cartItem = this.findCartItem(user, product);
-    if(!cartItem){
-      const data : CartItem = {
+    if (!cartItem) {
+      const data: CartItem = {
         cartId: user.cartId,
         product: product,
         quantity: 1
       }
-      return this.http.post<CartItem>(`${CART_ITEMS_URL}`, data );
+      return this.http.post<CartItem>(`${CART_ITEMS_URL}`, data);
     }
-    
-    if(quantityChange > 0){
+
+    if (quantityChange > 0) {
       return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: quantityChange });
     }
 
-    return of();
+    return throwError(() => new Error(ERROR_MESSAGES.UPDATE_CART_FAILED));
   }
 
   private findCartItem(user: User, product: Product): CartItem | undefined {
@@ -78,25 +94,43 @@ export class CartService {
     const params = new HttpParams().set('cartId', cartId);
     this.http.get<CartItem[]>(`${CART_ITEMS_URL}`, { params }).subscribe({
       next: (cartItems) => {
-        if(cartItems){
+        if (cartItems) {
           this.cartItems.set([...cartItems]);
           this.refreshCart();
         }
-      },
-      error: (error) => {
-        console.error(error.message);
       }
     });
   }
 
-  public setTotalPrice(){
+  public setTotalPrice() {
     const totalPrice = this.cartItems().reduce((total, item) => total + (item.product?.price || 0) * (item.quantity || 0), 0);
     this.totalPrice.set(totalPrice);
   }
 
-  public refreshCart(){
-    this.quantityItems.set(this.cartItems().length); 
+  public refreshCart() {
+    this.quantityItems.set(this.cartItems().length);
     this.setTotalPrice();
     this.storageService.saveData<CartItem[]>(STORAGE_KEYS.CART_ITEMS, this.cartItems());
+  }
+
+  public generateCart(user: User): Observable<Cart> {
+    if (!user) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+
+    const cart: Cart = { userId: user.id, totalPrice: 0 };
+    return this.http.post<Cart>(CART_URL, cart);
+  }
+
+  public setCartId() {
+    let user = this.storageService.getData<User>(STORAGE_KEYS.USER);
+    if (!user) return;
+    const params = new HttpParams().set('userId', user.id!);
+    this.http.get<Cart[]>(CART_URL, { params }).subscribe({
+      next: ((carts: Cart[]) => {
+        if (carts.length === 0) return;
+
+        user = { ...user!, cartId: carts[0].id };
+        this.storageService.saveData<User>(STORAGE_KEYS.USER, user);
+      })
+    })
   }
 }

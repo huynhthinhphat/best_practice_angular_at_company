@@ -1,0 +1,107 @@
+.order-detail-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.order-detail-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+.order-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px 24px;
+    margin-bottom: 32px;
+}
+
+.order-info p {
+    margin: 0;
+    font-size: 18px;
+}
+
+.order-info strong {
+    color: #333;
+}
+
+.order-info span[appOrderStatusIcon] {
+    margin-left: 6px;
+    font-size: 18px;
+}
+
+.order-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.order-detail-table th,
+.order-detail-table td {
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.order-detail-table th {
+    background-color: #f7f7f7;
+    font-weight: 600;
+}
+
+.order-detail-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-detail-table tbody tr:hover {
+    background-color: whitesmoke;
+    transition: 0.2s;
+}
+
+.order-detail-table td {
+    color: #444;
+}
+
+.order-detail-table td:first-child {
+    font-weight: 500;
+}
+
+.order-detail-actions {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+    gap: 10px;
+}
+
+.order-detail-actions button {
+    cursor: pointer;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 7px;
+    color: whitesmoke;
+    text-transform: capitalize;
+    transition: .15s;
+}
+
+.order-detail-actions button:hover {
+    filter: brightness(0.9);
+}
+
+.button-cancel {
+    background-color: #f44336;
+}
+
+.button-receive {
+    background-color: #4caf50;
+}
+
+.button-return {
+    background-color: #1e5be0;
+}
+
+.button-delivered {
+    background-color: #9c27b0;
+}

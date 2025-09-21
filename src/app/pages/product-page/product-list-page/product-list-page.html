@@ -1,23 +1,30 @@
-<div class="product-container">
-  <h1>Our Products</h1>
-  <div class="product-grid">
-    @for (product of products(); track product.id) {
+<div>
+  @if(!currentUser() || currentUser()?.role === 'User'){
+  <div class="product-container">
+    <h1>Our Products</h1>
+    <div class="product-grid">
+      @for (product of products(); track product.id) {
       <div class="product-card" (click)="onClickProduct(product.id!)">
-        <img
-          [ngSrc]="product.imageUrl ?? ''"
-          [alt]="product.name"
-          width="300"
-          height="200"
-          class="product-image"
-        />
+        <img [ngSrc]="product.imageUrl ?? ''" [alt]="product.name" width="300" height="200" class="product-image" />
         <div class="product-info">
           <h2>{{ product.name }}</h2>
           <p class="product-price">${{ product.price }}</p>
           <p class="product-description">{{ product.description }}</p>
         </div>
       </div>
-    }
+      }
+    </div>
   </div>
+  } @else {
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Products</h1>
+    <div class="btn-create">
+      <button [routerLink]="'/admin/products/create'" [state]="{'isAdmin': true}">Create</button>
+    </div>
+  </div>
+  <app-table [columns]="headers" [tableData]="products()" (actionClickEmit)="handleAction($event)"></app-table>
+  }
 
-  <app-app-pagination></app-app-pagination>
+  <app-pagination [pagination]="pagination()" [currentPage]="currentPage()"
+    [onPageChange]="handlePageChange"></app-pagination>
 </div>

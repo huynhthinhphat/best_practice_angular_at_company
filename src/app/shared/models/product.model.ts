@@ -8,4 +8,6 @@ export interface Product {
     categoryName?: string;
     stock?: number;
     quantityToBuy?: number;
+    cartItemId?: string;
+    isDeleted?: boolean;
 }

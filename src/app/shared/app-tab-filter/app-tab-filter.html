@@ -1,0 +1,8 @@
+<div class="filter-container">
+    @for(status of status(); track status){
+    <button [ngClass]="{'active' : selectedStatus() === (status === 'All' ? '' : status)}"
+        (click)="updateStatus(status === 'All' ? '' : status)">
+        {{ status === '' ? 'All' : status }}
+    </button>
+    }
+</div>

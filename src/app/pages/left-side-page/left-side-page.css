@@ -10,6 +10,7 @@
   border: 1px solid transparent;
   list-style-type: none;
   font-weight: bold;
+  text-transform: capitalize;
 
   &:hover {
     background-color: #e9ecef;
