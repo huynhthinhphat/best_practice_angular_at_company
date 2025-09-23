@@ -5,7 +5,6 @@
 
 app-left-side-page {
     width: 250px;
-    height: 600px;
     background: #f8f9fa;
     border-right: 1px solid #ddd;
 }
@@ -13,4 +12,11 @@ app-left-side-page {
 .content {
     flex: 1;
     padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .home-container {
+        display: block;
+        height: auto;
+    }
 }

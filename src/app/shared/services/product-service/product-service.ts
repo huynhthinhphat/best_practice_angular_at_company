@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Product } from '../../models/product.model';
 import { PRODUCT_URL } from '../../constants/url.constants';
 import { PaginationResponse } from '../../models/pagination-response.model';
@@ -14,7 +14,7 @@ export class ProductService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
-  private currentUser = this.authService.currentUserSignal;
+  private currentUser = this.authService.currentUser;
   public categoryId = signal<string>('');
   public products = signal<Product[]>([]);
   public productName = signal<string>('');
@@ -50,7 +50,7 @@ export class ProductService {
   }
 
   public deleteProductById(product: Product): Observable<Product> {
-    if (!product) throw new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE);
+    if (!product) return throwError(()=> new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE));
 
     product = { ...product, isDeleted: true };
 
@@ -59,7 +59,7 @@ export class ProductService {
 
   public saveProduct(product: Product, action: string): Observable<Product> {
     if (action === 'update') {
-      if (!product) throw new Error(ERROR_MESSAGES.NO_PRODUCT_TO_UPDATE);
+      if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_UPDATE));
 
       return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
     }

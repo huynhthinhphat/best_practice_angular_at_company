@@ -38,7 +38,7 @@ export class CartService {
   }
 
   public deleteCartItems(selectedItemIdList: string[]): Observable<CartItem[]> {
-    if (!selectedItemIdList || selectedItemIdList.length === 0) throw new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE);
+    if (!selectedItemIdList || selectedItemIdList.length === 0) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE));
 
     const selectedItemIdReq = selectedItemIdList.map(item => {
       return this.http.delete<CartItem>(`${CART_ITEMS_URL}/${item}`);
@@ -57,7 +57,7 @@ export class CartService {
   }
 
   public handleCartItemToUpdate(product: Product, quantityChange: number): Observable<CartItem> {
-    const user = this.storageService.getData(STORAGE_KEYS.USER) as User;
+    const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
     if (!user) return throwError(() => new Error(ERROR_MESSAGES.LOGIN_REQUIRED));
     if (!user.cartId) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_CART));
 
@@ -66,13 +66,13 @@ export class CartService {
       const data: CartItem = {
         cartId: user.cartId,
         product: product,
-        quantity: 1
+        quantity: quantityChange
       }
       return this.http.post<CartItem>(`${CART_ITEMS_URL}`, data);
     }
 
     if (quantityChange > 0) {
-      return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: quantityChange });
+      return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: (cartItem.quantity || 0) + quantityChange });
     }
 
     return throwError(() => new Error(ERROR_MESSAGES.UPDATE_CART_FAILED));
@@ -114,7 +114,7 @@ export class CartService {
   }
 
   public generateCart(user: User): Observable<Cart> {
-    if (!user) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+    if (!user) return throwError(() => { new Error(ERROR_MESSAGES.CREATE_CART_FAILED) });
 
     const cart: Cart = { userId: user.id, totalPrice: 0 };
     return this.http.post<Cart>(CART_URL, cart);

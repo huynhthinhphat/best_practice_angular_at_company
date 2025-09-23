@@ -39,7 +39,8 @@
     <div class="order-detail-actions">
         @if(order()?.status === status.PENDING){
         <button class="button-cancel" (click)="updateOrderStatus(status.CANCELLED)">
-            <span [appStatusIcon]="status.CANCELLED"></span>
+            <span [appStatusIcon]="status.CANCELLED">
+            </span>
             Cancel order
         </button>
 
@@ -68,6 +69,10 @@
             Refunded
         </button>
         }
+
+        <button class="button-back" (click)="goBack()">
+            Back
+        </button>
     </div>
 </div>
 }

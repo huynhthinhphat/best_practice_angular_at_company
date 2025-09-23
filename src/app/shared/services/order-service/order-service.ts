@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Order } from '../../models/order.model';
 import { Product } from '../../models/product.model';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { forkJoin, map, Observable, switchMap, throwError } from 'rxjs';
 import { ORDER_DETAIL_URL, ORDER_URL } from '../../constants/url.constants';
 import { OrderDetail } from '../../models/order-detail.model';
 import { StorageService } from '../storage-service/storage-service';
@@ -22,14 +22,14 @@ export class OrderService {
   public orders = signal<Order[]>([]);
 
   public createOrder(order: Order): Observable<Order> {
-    if (!order) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+    if (!order) return throwError(() => new Error(ERROR_MESSAGES.CREATE_CART_FAILED));
 
     return this.http.post<Order>(ORDER_URL, order).pipe(
       switchMap(order => {
-        if (!order) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+        if (!order) return throwError(() => new Error(ERROR_MESSAGES.CREATE_CART_FAILED));
 
         const products = this.storageService.getData<Product[]>(STORAGE_KEYS.CHECKOUT_PRODUCT_LIST);
-        if (!products || products.length === 0) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+        if (!products || products.length === 0) return throwError(() => new Error(ERROR_MESSAGES.CREATE_CART_FAILED));
 
         const orderDetailRequest = products.map(product => {
           const orderDetail: OrderDetail = {
@@ -77,7 +77,7 @@ export class OrderService {
   }
 
   public updateOrderStatus(order: Order, status: string): Observable<Order> {
-    if (!order || !status) throw new Error(ERROR_MESSAGES.UPDATE_ORDER_FAILED);
+    if (!order || !status) return throwError(() => new Error(ERROR_MESSAGES.UPDATE_ORDER_FAILED));
 
     const updatedOrder: Order = { ...order, status: status, updatedAt: new Date() };
     return this.http.patch<Order>(`${ORDER_URL}/${order.id}`, updatedOrder);

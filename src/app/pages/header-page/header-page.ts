@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { ProductService } from '../../shared/services/product-service/product-service';
@@ -17,14 +17,15 @@ export class HeaderPage {
   private router = inject(Router);
 
   public isVisible = false;
-  public currentUserSignal = this.authService.currentUserSignal;
+  public currentUser = this.authService.currentUser;
   public quantityItems = this.cartService.quantityItems;
   public products = this.productService.products;
   public productName = '';
+  public isShowMenu = signal<boolean>(false);
 
   constructor() {
     effect(() => {
-      this.isVisible = this.authService.currentUserSignal() ? true : false;
+      this.isVisible = this.authService.currentUser() ? true : false;
     })
   }
 
@@ -39,5 +40,9 @@ export class HeaderPage {
   public logout() {
     this.authService.logout();
     this.router.navigate(['/']);
+  }
+
+  public toggleMenu() {
+    this.isShowMenu.set(!this.isShowMenu());
   }
 }

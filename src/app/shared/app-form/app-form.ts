@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth-service/auth';
   selector: 'app-form',
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './app-form.html',
-  styleUrl: './app-form.css',
+  styleUrl: './app-form.scss',
   standalone: true
 })
 export class AppForm implements OnInit, AfterViewInit {
@@ -19,11 +19,8 @@ export class AppForm implements OnInit, AfterViewInit {
   private authService = inject(AuthService);
 
   public formTitle = input<string>('Title');
-  public fields = input<{ name: string, label: string, type: string, validator: any[] }[]>();
+  public fields = input<{ name: string, label: string, type: string, validator: Validators[] }[]>();
   public buttonLabel = input<string>('');
-  public formMessage = input<string>('');
-  public formLink = input<string>('');
-  public formLinkText = input<string>('');
   public formValidator = input<ValidatorFn>();
   public submitForm = output<User>();
   public form!: FormGroup;

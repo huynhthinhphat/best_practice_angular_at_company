@@ -23,6 +23,13 @@
       "username": "phat",
       "password": "123456",
       "role": "User"
+    },
+    {
+      "id": "e47a",
+      "fullName": "1111",
+      "username": "1111",
+      "password": "111111",
+      "role": "User"
     }
   ],
   "products": [
@@ -175,8 +182,8 @@
       "price": 39.99,
       "description": "Non-slip yoga mat",
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
-      "categoryId": "2",
-      "categoryName": "Clothing",
+      "categoryId": "c062",
+      "categoryName": "1231",
       "stock": 100,
       "isDeleted": false
     },
@@ -1053,7 +1060,7 @@
       "description": "fine bro :v",
       "categoryId": "1",
       "categoryName": "Electronics",
-      "stock": 1,
+      "stock": 9999,
       "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440118/wemnx9pxonsyqoqcnmfk.jpg"
     },
     {
@@ -1061,8 +1068,8 @@
       "name": "123",
       "price": 1,
       "description": "123",
-      "categoryId": "",
-      "categoryName": "",
+      "categoryId": "3",
+      "categoryName": "Sports",
       "stock": 1,
       "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440580/hgk3kq3ctuthtyubzugf.jpg"
     },
@@ -1141,9 +1148,109 @@
       "id": "7b30",
       "userId": "4b6d",
       "totalPrice": 0
+    },
+    {
+      "id": "efe1",
+      "userId": "e47a",
+      "totalPrice": 0
     }
   ],
-  "cartItems": [],
+  "cartItems": [
+    {
+      "id": "74c1",
+      "cartId": "1",
+      "product": {
+        "id": "14",
+        "name": "Yoga Mat",
+        "price": 39.99,
+        "description": "Non-slip yoga mat",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false
+      },
+      "quantity": 1
+    },
+    {
+      "id": "9c02",
+      "cartId": "1",
+      "product": {
+        "id": "4",
+        "name": "Smartphone1",
+        "price": 1111,
+        "description": "Latest model smartphone with 5G1",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 1001111,
+        "isDeleted": false
+      },
+      "quantity": 1
+    },
+    {
+      "id": "cac1",
+      "cartId": "1",
+      "product": {
+        "id": "5",
+        "name": "Tablet",
+        "price": 449.99,
+        "description": "10-inch tablet with retina display",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 111,
+        "isDeleted": false
+      },
+      "quantity": 1
+    },
+    {
+      "id": "9d22",
+      "cartId": "1",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false
+      },
+      "quantity": 20
+    },
+    {
+      "id": "05f7",
+      "cartId": "1",
+      "product": {
+        "id": "e809",
+        "name": "1111",
+        "price": 123123,
+        "description": "1",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 123,
+        "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440618/e9gf3r6xsqpaomhw7cmo.jpg"
+      },
+      "quantity": 16
+    },
+    {
+      "id": "f7d6",
+      "cartId": "1",
+      "product": {
+        "id": "03d4",
+        "name": "abcc",
+        "price": 1,
+        "description": "fine bro :v",
+        "categoryId": "1",
+        "categoryName": "Electronics",
+        "stock": 9999,
+        "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440118/wemnx9pxonsyqoqcnmfk.jpg"
+      },
+      "quantity": 1
+    }
+  ],
   "orders": [
     {
       "id": "850c",
@@ -1235,6 +1342,83 @@
       "totalPrice": 129.99,
       "status": "pending",
       "createdAt": "2025-09-21T18:11:52.614Z"
+    },
+    {
+      "id": "68c1",
+      "username": "1",
+      "phoneNumber": "0325478552",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 129.99,
+      "status": "pending",
+      "createdAt": "2025-09-22T04:18:01.972Z"
+    },
+    {
+      "id": "feb5",
+      "username": "1",
+      "phoneNumber": "0345245875",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 1111,
+      "status": "pending",
+      "createdAt": "2025-09-22T04:26:47.500Z"
+    },
+    {
+      "id": "3f20",
+      "username": "1",
+      "phoneNumber": "0325624451",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 449.99,
+      "status": "pending",
+      "createdAt": "2025-09-22T04:37:25.932Z"
+    },
+    {
+      "id": "49fd",
+      "username": "1",
+      "phoneNumber": "0325452254",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 129.99,
+      "status": "pending",
+      "createdAt": "2025-09-22T04:38:50.533Z"
+    },
+    {
+      "id": "318a",
+      "username": "1",
+      "phoneNumber": "0325478851",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 129.99,
+      "status": "pending",
+      "createdAt": "2025-09-22T04:39:22.109Z"
+    },
+    {
+      "id": "86a8",
+      "username": "1",
+      "phoneNumber": "0325478851",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 129.99,
+      "status": "pending",
+      "createdAt": "2025-09-22T04:40:24.925Z"
+    },
+    {
+      "id": "b17f",
+      "username": "1",
+      "phoneNumber": "0245278554",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 449.99,
+      "status": "pending",
+      "createdAt": "2025-09-22T06:51:11.373Z"
     }
   ],
   "orderDetails": [
@@ -1396,6 +1580,132 @@
       "orderId": "0bb2",
       "quantity": 1,
       "totalPrice": 129.99
+    },
+    {
+      "id": "d0f1",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "68c1",
+      "quantity": 1,
+      "totalPrice": 129.99
+    },
+    {
+      "id": "50be",
+      "product": {
+        "id": "4",
+        "name": "Smartphone1",
+        "price": 1111,
+        "description": "Latest model smartphone with 5G1",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 1001111,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "feb5",
+      "quantity": 1,
+      "totalPrice": 1111
+    },
+    {
+      "id": "e849",
+      "product": {
+        "id": "5",
+        "name": "Tablet",
+        "price": 449.99,
+        "description": "10-inch tablet with retina display",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 111,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "3f20",
+      "quantity": 1,
+      "totalPrice": 449.99
+    },
+    {
+      "id": "9db1",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "49fd",
+      "quantity": 1,
+      "totalPrice": 129.99
+    },
+    {
+      "id": "ee5c",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "318a",
+      "quantity": 1,
+      "totalPrice": 129.99
+    },
+    {
+      "id": "8042",
+      "product": {
+        "id": "7",
+        "name": "Winter Jacket",
+        "price": 129.99,
+        "description": "Warm winter jacket with hood",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "86a8",
+      "quantity": 1,
+      "totalPrice": 129.99
+    },
+    {
+      "id": "2ec7",
+      "product": {
+        "id": "5",
+        "name": "Tablet",
+        "price": 449.99,
+        "description": "10-inch tablet with retina display",
+        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 111,
+        "isDeleted": false,
+        "quantityToBuy": 1
+      },
+      "orderId": "b17f",
+      "quantity": 1,
+      "totalPrice": 449.99
     }
   ]
 }

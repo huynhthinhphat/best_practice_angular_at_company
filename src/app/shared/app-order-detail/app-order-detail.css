@@ -81,9 +81,12 @@
     border: none;
     padding: 7px 12px;
     border-radius: 7px;
-    color: whitesmoke;
     text-transform: capitalize;
     transition: .15s;
+}
+
+.order-detail-actions button:not(.button-back) {
+    color: whitesmoke;
 }
 
 .order-detail-actions button:hover {

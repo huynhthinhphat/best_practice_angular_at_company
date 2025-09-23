@@ -5,6 +5,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { OrderDetail } from '../models/order-detail.model';
 import { AuthService } from '../services/auth-service/auth';
 import { ORDER_STATUS } from '../constants/order-status.constants';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-order-detail',
@@ -14,14 +15,19 @@ import { ORDER_STATUS } from '../constants/order-status.constants';
 })
 export class AppOrderDetail {
   private authService = inject(AuthService);
+  private location = inject(Location);
 
-  public currentUser = this.authService.currentUserSignal;
+  public currentUser = this.authService.currentUser;
   public order = input<Order | null>(null);
   public orderDetail = input<OrderDetail[]>([]);
   public handleStatusOrder = output<string>();
-  public status = ORDER_STATUS;
+  public readonly status = ORDER_STATUS;
 
   public updateOrderStatus(status: string) {
     this.handleStatusOrder.emit(status);
+  }
+
+  public goBack() {
+    this.location.back();
   }
 }

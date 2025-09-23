@@ -10,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
 }
 
 .logo {
@@ -67,12 +68,6 @@ nav div button:hover{
     transition: .15s;
 }
 
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-  }
-}
-
 .search-box {
   width: 250px;
   padding: 10px 15px;
@@ -86,4 +81,63 @@ nav div button:hover{
 .search-box:focus {
   border-color: #3f51b5;
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+.nav-bars{
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .nav-bars{
+    display: block;
+    z-index: 99;
+    height: 100%;
+  }
+
+  .nav-bars div ul{
+    position: absolute;
+    right: 4%;
+    top: 7%;
+    margin: 0;
+    padding: 5px;
+    background-color: white;
+    list-style-type: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .nav-bars div ul li{
+    margin-bottom: 5px;
+    padding: 5px 10px;
+  }
+
+  .nav-bars>div>ul li a{
+    text-decoration: none;
+    color: black
+  }
+
+  .nav-bars>div:hover{
+    cursor: pointer;
+  }
+
+  .nav-bars>div>ul li:hover{
+    background-color: #c4c2c2;
+  }
+
+  .nav-bars>div>ul li:hover a{
+    color: whitesmoke;
+  }
+
+  .logo{
+    font-size: 18px;
+  }
+
+  .search-box{
+    width: 180px;
+    padding: 7px 12px;
+    font-size: 15px;
+  }
 }

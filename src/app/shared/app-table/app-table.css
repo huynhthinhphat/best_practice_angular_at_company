@@ -96,3 +96,14 @@ button i {
 button:hover i {
   color: #fff;
 }
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 600px;
+  border-collapse: collapse;
+  width: 100%;
+}

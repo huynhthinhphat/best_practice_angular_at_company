@@ -25,7 +25,7 @@ export class ProductListPage implements OnInit {
   private router = inject(Router);
   private toastrService = inject(ToastrService)
 
-  public currentUser = this.authService.currentUserSignal;
+  public currentUser = this.authService.currentUser;
   public pagination = this.productService.pagination;
   public products = this.productService.products;
   public currentPage = signal<number>(1);

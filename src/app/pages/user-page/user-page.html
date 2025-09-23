@@ -1,6 +1,6 @@
 @if(users().length > 0){
 <div class="user-container">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
         <h1>Users</h1>
     </div>
     <app-table [columns]="headers" [tableData]="users()"></app-table>

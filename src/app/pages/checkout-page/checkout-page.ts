@@ -5,7 +5,7 @@ import { STORAGE_KEYS } from '../../shared/constants/storage.constants';
 import { AppForm } from '../../shared/app-form/app-form';
 import { Validators } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
-import { PHONE_NUMBER_PATTERN } from '../../shared/constants/pattern.constant';
+import { NO_SPACES, PHONE_NUMBER_PATTERN, USERNAME_PATTERN } from '../../shared/constants/pattern.constant';
 import { Order } from '../../shared/models/order.model';
 import { OrderService } from '../../shared/services/order-service/order-service';
 import { ORDER_STATUS } from '../../shared/constants/order-status.constants';
@@ -30,9 +30,9 @@ export class CheckoutPage implements OnInit, OnDestroy {
   private router = inject(Router);
 
   public fields = [
-    { name: 'username', label: 'Username', type: 'text', validator: [] },
+    { name: 'username', label: 'Username', type: 'text', validator: [Validators.pattern(USERNAME_PATTERN)] },
     { name: 'phoneNumber', label: 'Phone', type: 'text', validator: [Validators.pattern(PHONE_NUMBER_PATTERN)] },
-    { name: 'address', label: 'Address', type: 'text', validator: [] },
+    { name: 'address', label: 'Address', type: 'text', validator: [Validators.pattern(NO_SPACES)] },
   ];
   public formTitle = "Information of order";
   public buttonLabel = "Pay";
@@ -89,7 +89,7 @@ export class CheckoutPage implements OnInit, OnDestroy {
           this.clearCartAfterCheckout();
         }
 
-        this.router.navigate(['/orders/detail', res.id], { replaceUrl: true });
+        this.router.navigate(['/orders/detail', res.id], { state: { orderSuccess : true }, replaceUrl: true });
         this.toastrService.success(SUCCESS_MESSAGES.ORDER);
       },
       error: (error) => {

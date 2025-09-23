@@ -5,11 +5,11 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../shared/models/user.model';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
-import { USERNAME_PATTERN } from '../../shared/constants/pattern.constant';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
+import { FULLNAME_PATTERN, NO_SPACES, USERNAME_PATTERN } from '../../shared/constants/pattern.constant';
+import { ERROR_MESSAGES, FORM, SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../shared/services/cart-service/cart-service';
-import { switchMap } from 'rxjs';
+import { switchMap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-register-page',
@@ -25,16 +25,13 @@ export class RegisterPage {
   private toastrService = inject(ToastrService);
 
   public fields = [
-    { name: 'fullName', label: 'Họ và tên', type: 'text', validator: [] },
-    { name: 'username', label: 'Tài khoản', type: 'text', validator: [Validators.pattern(USERNAME_PATTERN)] },
-    { name: 'password', label: 'Mật khẩu', type: 'password', validator: [Validators.minLength(6)] },
-    { name: 'confirmPassword', label: 'Xác nhận mật khẩu', type: 'password', validator: [] },
+    { name: 'fullName', label: 'Fullname', type: 'text', validator: [Validators.pattern(FULLNAME_PATTERN)] },
+    { name: 'username', label: 'Username', type: 'text', validator: [Validators.pattern(USERNAME_PATTERN)] },
+    { name: 'password', label: 'Password', type: 'password', validator: [Validators.pattern(NO_SPACES), Validators.minLength(6)] },
+    { name: 'confirmPassword', label: 'Confirm Password', type: 'password', validator: [] },
   ];
-  public formTitle = "Đăng ký";
-  public buttonLabel = "Đăng ký";
-  public formMessage = "Bạn đã có tài khoản?";
-  public formLink = "/login";
-  public formLinkText = "Đăng nhập";
+  public formTitle = FORM.REGISTER;
+  public buttonLabel = FORM.REGISTER;
   public formValidator = PasswordMatchValidator;
   public errorMessage = signal<string>('');
 
@@ -44,7 +41,7 @@ export class RegisterPage {
     this.authService.addAccount(user)
       .pipe(
         switchMap((data: User) => {
-          if (!data) throw new Error(ERROR_MESSAGES.CREATE_CART_FAILED);
+          if (!data) return throwError(() => new Error(ERROR_MESSAGES.CREATE_CART_FAILED));
 
           const user: User = data;
           return this.cartService.generateCart(user);

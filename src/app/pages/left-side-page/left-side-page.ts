@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CategoryService } from '../../shared/services/category-service/category-service';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../shared/services/product-service/product-service';
@@ -17,7 +17,7 @@ export class LeftSidePage implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  public currentUser = this.authService.currentUserSignal;
+  public currentUser = this.authService.currentUser;
   public categories = this.categoryService.categories;
   public selectedCategoryId = signal<string>('');
   public routers: string[] = [];
@@ -33,8 +33,6 @@ export class LeftSidePage implements OnInit, OnDestroy {
   }
 
   public onCategoryClick(categoryId: string) {
-    if (!categoryId) return;
-
     if (!this.currentUser() || this.currentUser()?.role === 'User') {
       this.productService.categoryId.set(categoryId);
     }

@@ -1,0 +1,80 @@
+$background-image-url: '/assets/images/background.jpg';
+$background_logo-image-url: '/assets/images/background_logo.jpg';
+
+.auth-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+
+    .auth-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        filter: brightness(0.6);
+        background: url($background-image-url) center/cover no-repeat;
+        z-index: 1;
+    }
+
+    .auth-forms {
+        position: absolute;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .section {
+            display: flex;
+            width: 70%;
+            height: 80%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+            .section-title {
+                background: url($background-image-url) center/cover no-repeat;
+                width: 50%;
+                padding: 20px 40px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 15px;
+
+                    p {
+                        font-size: 17px;
+                        color: white;
+                    }
+
+                    button {
+                        cursor: pointer;
+                        border: none;
+                        font-size: 17px;
+                        padding: .5rem 3rem;
+                        border-radius: 25px;
+                        border: 2px solid white;
+                        color: white;
+                        background-color: transparent;
+                        transition: .15s ease;
+                    }
+
+                    button:hover {
+                        color: black;
+                        background-color: white;
+                    }
+                }
+            }
+
+            .form {
+                width: 50%;
+                padding: 20px;
+                background-color: white;
+            }
+        }
+    }
+}

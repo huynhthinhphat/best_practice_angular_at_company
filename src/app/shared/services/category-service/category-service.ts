@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 import { CATEGORY_URL } from '../../constants/url.constants';
 import { PaginationResponse } from '../../models/pagination-response.model';
@@ -16,7 +16,7 @@ export class CategoryService {
 
   public categories = signal<Category[]>([]);
   public pagination = signal<PaginationResponse<Category> | null>(null);
-  private currentUse = this.authService.currentUserSignal;
+  private currentUse = this.authService.currentUser;
 
   constructor() {
     effect(() => {
@@ -47,14 +47,14 @@ export class CategoryService {
   }
 
   public handleSoftDeletion(category: Category): Observable<Category> {
-    if (!category) throw new Error(ERROR_MESSAGES.NO_CATEGORY_TO_DELETE);
+    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NO_CATEGORY_TO_DELETE));
 
     category = { ...category, isDeleted: true };
     return this.http.put<Category>(`${CATEGORY_URL}/${category.id}`, category);
   }
 
   public saveCategory(category: Category, action: string): Observable<Category> {
-    if (!category) throw new Error(ERROR_MESSAGES.NO_CATEGORY_TO_UPDATE);
+    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NO_CATEGORY_TO_UPDATE));
 
     if (action === 'update') {
       return this.http.put<Category>(`${CATEGORY_URL}/${category.id}`, category)

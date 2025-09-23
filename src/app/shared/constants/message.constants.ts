@@ -1,5 +1,6 @@
 export const ERROR_MESSAGES = {
   INVALID_USERNAME: 'Username must not contain special characters',
+  INVALID_FULLNAME: 'Fullname must not contain numbers or special characters',
   INVALID_PHONE_NUMBER: 'Invalid phone number',
   PASSWORD_MINLENGTH: 'Password must be at least 6 characters',
   PASSWORD_MISMATCH: 'Password and confirm password do not match',
@@ -23,7 +24,7 @@ export const ERROR_MESSAGES = {
   INVALID_STOCK: 'Invalid product stock',
   INVALID_PRICE: 'Invalid product price',
   INVALID_CATEGORY: 'Category name must not be empty',
-  SESSION_EXPIRED: 'Session expired. Please log in again.',
+  SESSION_EXPIRED: 'Session expired. Please log in again',
   NO_PERMISSION: 'You do not have permission to perform this action',
   NOT_FOUND: 'Resource not found',
   SERVER_ERROR: 'Server error. Please try again later.',
@@ -59,3 +60,16 @@ export const BUTTON_TITLE = {
   RETURN: 'Return',
   RECEIVE: 'Mark as received',
 };
+
+export const MESSAGES = {
+  CONFIRM_EXIT: 'Are you sure you want to leave this page?'
+};
+
+export const FORM = {
+  REGISTER: 'Register',
+  LOGIN: 'Login',
+  REGISTER_LINK: '/register',
+  LOGIN_LINK: '/login',
+  LOGIN_MESSAGE: 'Already have account?',
+  REGISTER_MESSAGE: "Don't have account yet?",
+}

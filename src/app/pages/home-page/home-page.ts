@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductListPage } from "../product-page/product-list-page/product-list-page";
 import { LeftSidePage } from '../left-side-page/left-side-page';
-import { HeaderPage } from '../header-page/header-page';
 
 @Component({
   selector: 'app-home-page',

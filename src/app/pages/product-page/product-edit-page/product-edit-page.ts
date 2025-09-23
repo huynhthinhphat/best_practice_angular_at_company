@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../shared/services/product-service/product-service';
 import { Product } from '../../../shared/models/product.model';
 import { ActivatedRoute } from '@angular/router';
@@ -19,7 +19,7 @@ import { switchMap, throwError } from 'rxjs';
   styleUrl: './product-edit-page.css',
   standalone: true
 })
-export class ProductEditPage implements OnInit {
+export class ProductEditPage implements OnInit, OnDestroy {
   private productService = inject(ProductService);
   private route = inject(ActivatedRoute);
   private toastrService = inject(ToastrService);
@@ -149,5 +149,9 @@ export class ProductEditPage implements OnInit {
 
   public goBack() {
     this.location.back();
+  }
+
+  public ngOnDestroy() {
+    URL.revokeObjectURL(this.previewImage());
   }
 }

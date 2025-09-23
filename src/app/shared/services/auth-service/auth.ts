@@ -16,7 +16,7 @@ export class AuthService {
   private cartService = inject(CartService);
   private storageService = inject(StorageService);
 
-  public currentUserSignal = signal<User | null>(null);
+  public currentUser = signal<User | null>(null);
   public errorSignal = signal<string>('');
 
   constructor() {
@@ -60,14 +60,14 @@ export class AuthService {
   }
 
   public logout() {
-    if (this.currentUserSignal()) {
-      this.currentUserSignal.set(null);
+    if (this.currentUser()) {
+      this.currentUser.set(null);
       localStorage.clear();
     }
   }
 
   private trackUserSession() {
-    const user = this.currentUserSignal();
+    const user = this.currentUser();
 
     if (user) {
       this.storageService.saveData<User>(STORAGE_KEYS.USER, { ...user, password: '' });
@@ -79,7 +79,7 @@ export class AuthService {
       const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
       if (!user) return;
 
-      this.currentUserSignal.set(user);
+      this.currentUser.set(user);
     }
   }
 

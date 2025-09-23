@@ -9,10 +9,10 @@
         <label for="select-all">Tất cả</label>
       </div>
       <div>
-        <button class="btn-remove" [appDisableButton]="selectedCartItems()" (click)="handleDeleteCartItem()">🗑️ Remove
-          selected items</button>
-        <button class="btn-buy" [appDisableButton]="selectedCartItems()" (click)="navigateToCheckout(null)">🛒 Buy
-          selected items</button>
+        <button class="btn-remove" [attr.disabled]="''" (click)="handleDeleteCartItem()">🗑️
+          Remove</button>
+        <button class="btn-buy" [appDisableButton]="selectedCartItems()" (click)="navigateToCheckout(null)">🛒
+          Buy</button>
       </div>
     </div>
     }

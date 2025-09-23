@@ -22,7 +22,7 @@ export class OrderListPage {
   private orderService = inject(OrderService);
   private authService = inject(AuthService);
 
-  private currentUser = this.authService.currentUserSignal;
+  private currentUser = this.authService.currentUser;
   public pagination = this.orderService.pagination;
   public currentPage = signal<number>(1);
   public orders = this.orderService.orders;
