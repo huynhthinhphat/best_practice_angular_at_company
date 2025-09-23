@@ -15,8 +15,8 @@
     <nav class="nav-menu">
       @if(!isVisible && currentUser() == null){
       <div class="auth-buttons">
-        <a routerLink="/login" class="btn btn-login">Login</a>
-        <a routerLink="/register" class="btn btn-register">Register</a>
+        <a routerLink="/auth" class="btn btn-login">Login</a>
+        <a routerLink="/auth" class="btn btn-register">Register</a>
       </div>
       } @else {
       <div>

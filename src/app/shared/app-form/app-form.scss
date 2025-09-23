@@ -1,74 +1,107 @@
+@import 'breakpoints';
+@import 'variables';
+
 form {
+  padding: 25px 30px;
+
   h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--text-color);
   }
 
-  div:last-child {
+  div:not(.form-input) {
     text-align: center;
+    margin-top: 5px;
+    color: var(--text-color);
+  }
+
+  div:last-child:not(.form-input div) {
     margin-top: 15px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #1A73E8;
+    border-color: var(--button-border-color);
+    transition: 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #1669C1;
+    }
+
+    @include respond-to(mobile) {
+      padding: 8px;
+      font-size: 15px;
+    }
+  }
+
+  a {
+    cursor: pointer;
+    margin-top: .5rem;
+    border-radius: 7px;
+    font-size: 15px;
+    text-decoration: underline;
+    color: #1A73E8;
   }
 }
 
 .form-input {
-  position: relative;
   display: flex;
   flex-direction: column;
   margin: 25px 0;
 
-  label {
-    cursor: pointer;
-    color: #555;
-    position: absolute;
-    height: 100%;
-    padding-left: 5%;
+  div {
+    position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .25s ease;
+    width: 100%;
+
+    label {
+      position: absolute;
+      right: 15px;
+      height: 100%;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #555;
+      font-size: 18px;
+    }
+
+    input {
+      width: 100%;
+      outline: none;
+      padding: 10px 0px 10px 4%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--text-color);
+      background-color: var(--input-bg);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
   }
 
-  input {
-    cursor: pointer;
-    outline: none;
-    padding: 10px 0px 10px 4%;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+  i {
+    color: var(--icon-color)
+  }
+
+  small {
     font-size: 14px;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    color: var(--error-text-color);
 
-    &:focus {
-      border-color: #3f51b5;
-      box-shadow: 0 0 5px rgba(63, 81, 181, 0.4);
+    @include respond-to(tablet) {
+      font-size: 14px;
     }
 
-    &:focus+label {
-      top: -30px;
-      left: -5px;
+    @include respond-to(mobile) {
+      font-size: 13px;
     }
   }
-}
-
-form button {
-  width: 100%;
-  padding: 12px;
-  background-color: #1A73E8;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-
-  &:hover {
-    background-color: #1669C1;
-  }
-}
-
-small {
-  color: red;
-  text-align: center;
-  font-size: 17px;
 }

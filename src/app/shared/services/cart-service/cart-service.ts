@@ -123,6 +123,7 @@ export class CartService {
   public setCartId() {
     let user = this.storageService.getData<User>(STORAGE_KEYS.USER);
     if (!user) return;
+    
     const params = new HttpParams().set('userId', user.id!);
     this.http.get<Cart[]>(CART_URL, { params }).subscribe({
       next: ((carts: Cart[]) => {

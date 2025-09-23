@@ -2,6 +2,7 @@ export const ERROR_MESSAGES = {
   INVALID_USERNAME: 'Username must not contain special characters',
   INVALID_FULLNAME: 'Fullname must not contain numbers or special characters',
   INVALID_PHONE_NUMBER: 'Invalid phone number',
+  INVALID_PASSWORD: 'Password must not contain space',
   PASSWORD_MINLENGTH: 'Password must be at least 6 characters',
   PASSWORD_MISMATCH: 'Password and confirm password do not match',
   EXIST_USERNAME: 'Username already exists',
@@ -10,6 +11,7 @@ export const ERROR_MESSAGES = {
   LOGIN_REQUIRED: 'Please log in to continue',
   NOT_FOUND_CART: 'Cart not found',
   CREATE_CART_FAILED: 'Failed to create cart',
+  CREATE_USER_FAILED: 'Failed to create account',
   NOT_FOUND_ORDER: 'Order not found',
   UPDATE_ORDER_FAILED: 'Failed to update order',
   UPDATE_CART_FAILED: 'Failed to update cart',
@@ -68,8 +70,6 @@ export const MESSAGES = {
 export const FORM = {
   REGISTER: 'Register',
   LOGIN: 'Login',
-  REGISTER_LINK: '/register',
-  LOGIN_LINK: '/login',
   LOGIN_MESSAGE: 'Already have account?',
   REGISTER_MESSAGE: "Don't have account yet?",
 }

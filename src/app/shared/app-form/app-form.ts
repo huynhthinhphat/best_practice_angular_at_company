@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output, OnInit, inject, viewChildren, ElementRef, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ERROR_MESSAGES } from '../constants/message.constants';
 import { User } from '../models/user.model';
-import { AuthService } from '../services/auth-service/auth';
+import { PasswordMatchValidator } from '../../core/validators/password-match.validator';
+import { ThemeService } from '../services/theme-service/theme-service';
 
 @Component({
   selector: 'app-form',
@@ -14,18 +15,34 @@ import { AuthService } from '../services/auth-service/auth';
   standalone: true
 })
 export class AppForm implements OnInit, AfterViewInit {
+  private themeService = inject(ThemeService);
+
   private inputs = viewChildren<ElementRef>('formInput');
   private formBuilder = inject(FormBuilder);
-  private authService = inject(AuthService);
 
   public formTitle = input<string>('Title');
-  public fields = input<{ name: string, label: string, type: string, validator: Validators[] }[]>();
+  public formFields = input<{
+    name: string,
+    label: string,
+    type: string,
+    icon?: string,
+    validator: Validators[],
+    errors?: {
+      type: string,
+      message: string
+    }[]
+  }[]>();
   public buttonLabel = input<string>('');
-  public formValidator = input<ValidatorFn>();
+  public formLinkMessage = input<string>('');
+  public formLinkTitle = input<string>('');
+  public isLogin = input<boolean>(false);
+
   public submitForm = output<User>();
+  public emitState = output<boolean>();
+
   public form!: FormGroup;
-  public errorMessage = ERROR_MESSAGES;
-  public errorSignal = this.authService.errorSignal;
+
+  public readonly errorMessage = ERROR_MESSAGES;
 
   public ngOnInit() {
     this.initForm();
@@ -37,7 +54,7 @@ export class AppForm implements OnInit, AfterViewInit {
   }
 
   private initForm() {
-    const fields = this.fields();
+    const fields = this.formFields();
     if (!fields) return;
 
     const controls = fields.reduce((acc, field) => {
@@ -45,12 +62,33 @@ export class AppForm implements OnInit, AfterViewInit {
       return acc;
     }, {} as any)
 
-    this.form = this.formBuilder.group(controls, { validators: this.formValidator() });
+    this.form = this.formBuilder.group(
+      controls,
+      { validators: PasswordMatchValidator });
   }
 
   public onSubmit() {
     if (this.form.valid) {
       this.submitForm.emit(this.form.value);
     }
+  }
+
+  public redirectPage() {
+    this.emitState.emit(this.isLogin());
+  }
+
+  public getError(fieldName: string) {
+    if (!this.formFields()) return;
+
+    const error = this.form.get(fieldName)?.errors;
+    if (!error) return null;
+        
+    const field = this.formFields()!.find(f => f.name === fieldName);
+    if (!field) return null;
+    return field.errors?.find(err => error[err.type])?.message;
+  }
+
+  public toggleTheme(){
+    this.themeService.toggleTheme();
   }
 }

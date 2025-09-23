@@ -16,20 +16,6 @@
       "password": "1",
       "role": "Admin",
       "token": "admin_token_c105"
-    },
-    {
-      "id": "4b6d",
-      "fullName": "phatne",
-      "username": "phat",
-      "password": "123456",
-      "role": "User"
-    },
-    {
-      "id": "e47a",
-      "fullName": "1111",
-      "username": "1111",
-      "password": "111111",
-      "role": "User"
     }
   ],
   "products": [
@@ -1152,6 +1138,31 @@
     {
       "id": "efe1",
       "userId": "e47a",
+      "totalPrice": 0
+    },
+    {
+      "id": "77c6",
+      "userId": "5a51",
+      "totalPrice": 0
+    },
+    {
+      "id": "4ee9",
+      "userId": "db67",
+      "totalPrice": 0
+    },
+    {
+      "id": "32aa",
+      "userId": "0807",
+      "totalPrice": 0
+    },
+    {
+      "id": "b995",
+      "userId": "c81e",
+      "totalPrice": 0
+    },
+    {
+      "id": "ec45",
+      "userId": "34bb",
       "totalPrice": 0
     }
   ],

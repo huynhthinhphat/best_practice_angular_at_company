@@ -17,7 +17,6 @@ export class AuthService {
   private storageService = inject(StorageService);
 
   public currentUser = signal<User | null>(null);
-  public errorSignal = signal<string>('');
 
   constructor() {
     effect(() => {
@@ -26,12 +25,13 @@ export class AuthService {
   }
 
   public addAccount(user: User): Observable<User> {
-    return this.getUserByUsernameAndPassword(user.username, user.password).pipe(
-      switchMap(data => {
-        if (data.length === 0) {
-          return this.http.post<User>(USER_URL, { id: user.id, fullName: user.fullName, username: user.username, password: user.password, role: 'User' }).pipe(
-            tap(() => this.errorSignal.set(''))
-          );
+    const params = new HttpParams().set('username', user.username);
+    return this.http.get<User[]>(USER_URL, { params } )
+    .pipe(
+      switchMap((users : User[]) => {
+        if (users.length === 0) {
+          const newUser = { id: user.id, fullName: user.fullName, username: user.username, password: user.password, role: 'User' };
+          return this.http.post<User>(USER_URL, newUser);
         }
         return throwError(() => new Error(ERROR_MESSAGES.EXIST_USERNAME));
       })
@@ -39,14 +39,15 @@ export class AuthService {
   }
 
   public getAccount(user: User): Observable<User> {
-    return this.getUserByUsernameAndPassword(user.username, user.password).pipe(
-      switchMap(data => {
-        if (data.length === 0) {
+    const params = new HttpParams().set('username', user.username).set('password', user.password);
+    return this.http.get<User[]>(`${USER_URL}`, { params })
+    .pipe(
+      switchMap((users: User[]) => {
+        if (users.length === 0) {
           return throwError(() => new Error(ERROR_MESSAGES.LOGIN_FAILED));
         }
-        return data;
-      }),
-      tap(() => this.errorSignal.set(''))
+        return users;
+      })
     )
   }
 
@@ -54,16 +55,11 @@ export class AuthService {
     return this.http.get<User>(`${USER_URL}/${userId}`);
   }
 
-  private getUserByUsernameAndPassword(username: string, password: string): Observable<User[]> {
-    let params = new HttpParams().set('username', username).set('password', password)
-    return this.http.get<User[]>(`${USER_URL}`, { params });
-  }
-
   public logout() {
-    if (this.currentUser()) {
-      this.currentUser.set(null);
-      localStorage.clear();
-    }
+    if(!this.currentUser()) return;
+
+    this.currentUser.set(null);
+    localStorage.clear();
   }
 
   private trackUserSession() {

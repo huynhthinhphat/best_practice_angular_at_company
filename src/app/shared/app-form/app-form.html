@@ -1,44 +1,40 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <h2>{{ formTitle() }}</h2>
-    @if(form.get('fullName')?.errors?.['pattern']){
-    <div>
-        <small>{{ errorMessage.INVALID_FULLNAME }}</small>
-    </div>
-    }
-    @if(form.get('username')?.errors?.['pattern']){
-    <div>
-        <small>{{ errorMessage.INVALID_USERNAME }}</small>
-    </div>
-    }
-    @if(form.get('phoneNumber')?.errors?.['pattern']){
-    <div>
-        <small>{{ errorMessage.INVALID_PHONE_NUMBER }}</small>
-    </div>
-    }
-    @if(form.get('password')?.errors?.['minlength'] && form.get('password')?.touched){
-    <div>
-        <small>{{ errorMessage.PASSWORD_MINLENGTH }}</small>
-    </div>
-    }
-    @if(form.errors?.['passwordMismatch'] && !form.get('password')?.errors?.['minlength']){
-    <div>
-        <small>{{ errorMessage.PASSWORD_MISMATCH }}</small>
-    </div>
-    }
-    @if(errorSignal(); as errorSignal){
-    <div>
-        <small>{{ errorSignal }}</small>
-    </div>
-    }
-    @for(field of fields(); track field.name) {
+
+    @for(field of formFields(); track field.name) {
+
     <div class="form-input">
-        <input [type]="field.type" [id]="field.name" [formControlName]="field.name" #formInput>
-        <label [for]="field.name">{{ field.label }}</label>
+        @let firstError = getError(field.name);
+        @if(firstError){
+        <small>(*) {{ firstError }}</small>
+        }@else if(field.name === 'confirmPassword' && form.errors?.['passwordMismatch']){
+        <small>(*) {{ errorMessage.PASSWORD_MISMATCH }}</small>
+        }
+        <div>
+            <input [type]="field.type" [id]="field.name" [formControlName]="field.name" [placeholder]="field.label"
+                #formInput>
+            <label [for]="field.name">
+                <i [class]="field.icon"></i>
+            </label>
+        </div>
     </div>
     }
+
     @if(buttonLabel(); as buttonLabel){
     <button type="submit" [ngClass]="{'no-active' : form.invalid}">
         {{ buttonLabel }}
     </button>
     }
+
+    @if(formLinkMessage(); as formLinkText){
+    <div>
+        <p><i>{{ formLinkText }}</i></p>
+        <a (click)="redirectPage()">
+            <i>
+                {{ formLinkTitle() }}
+            </i>
+        </a>
+    </div>
+    }
+    <!-- <button type="button" (click)="toggleTheme()">Theme</button> -->
 </form>

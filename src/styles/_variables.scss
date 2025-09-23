@@ -1,0 +1,43 @@
+$light-bg: #ffffff;
+$light-text-color: black;
+$light-error-text-color: #ff002f;
+$light-input-bg: white;
+$light-icon-text: black;
+$light-button-border-color: #1A73E8;
+$light-logo: '/assets/images/logo-light-mode.png';
+$light-background-image-url: '/assets/images/background-light-mode.jpg';
+$light-box-shadow-color: rgba(0, 0, 0, 0.2);
+
+$dark-bg: #1A1A1A;
+$dark-text-color: #F5F5F5;
+$dark-error-text-color: #fc3333;
+$dark-input-bg: #343434;
+$dark-icon-text: #F5F5F5;
+$dark-button-border-color: white;
+$dark-logo: '/assets/images/logo-dark-mode.png';
+$dark-background-image-url: '/assets/images/background-dark-mode.png';
+$dark-box-shadow-color: rgba(191, 191, 191, 0.2);
+
+@mixin lighten() {
+  --form-bg: #{$light-bg};
+  --text-color: #{$light-text-color};
+  --error-text-color: #{$light-error-text-color};
+  --input-bg: #{$light-input-bg};
+  --icon-color: #{$light-icon-text};
+  --button-border-color: #{$light-button-border-color};
+  --logo-url: url($light-logo);
+  --bg-image-url: url(#{$light-background-image-url});
+  --box-shadow-color: #{$light-box-shadow-color};
+}
+
+@mixin darken() {
+  --form-bg: #{$dark-bg};
+  --text-color: #{$dark-text-color};
+  --error-text-color: #{$dark-error-text-color};
+  --input-bg: #{$dark-input-bg};
+  --icon-color: #{$dark-icon-text};
+  --button-border-color: #{$dark-button-border-color};
+  --logo-url: url($dark-logo);
+  --bg-image-url: url(#{$dark-background-image-url});
+  --box-shadow-color: #{$dark-box-shadow-color};
+}

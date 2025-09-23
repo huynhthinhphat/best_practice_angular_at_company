@@ -1,0 +1,22 @@
+@import 'ngx-toastr/toastr';
+@import 'breakpoints';
+@import 'variables';
+
+body {
+  @include lighten();
+}
+
+body.dark-mode {
+  @include darken();
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.no-active {
+  pointer-events: none;
+  filter: brightness(0.65);
+}

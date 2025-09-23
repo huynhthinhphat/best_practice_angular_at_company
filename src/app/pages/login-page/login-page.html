@@ -1,2 +1,4 @@
-<app-form [formTitle]="formTitle" [fields]="fields" [buttonLabel]="buttonLabel"
-    (submitForm)="handleLogin($event)"></app-form>
+<app-form [formTitle]="formTitle" [formFields]="fields" [buttonLabel]="buttonLabel" [formLinkMessage]="formLinkMessage"
+    [formLinkTitle]="formLinkTitle" [isLogin]="true" (submitForm)="handleLogin($event)"
+    (emitState)="notifyParent($event)">
+</app-form>

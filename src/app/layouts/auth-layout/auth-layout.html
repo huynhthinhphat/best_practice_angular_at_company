@@ -4,22 +4,16 @@
     <div class="auth-forms">
         <div class="section">
             <div class="section-title">
-                <img src="/assets/images/logo.png" alt="Logo" width="100" height="100">
-                <div>
-                    <p>{{ isVisible() ? 'Already have account?' : "Don't have account yet?" }}</p>
-                    <button (click)="handleView()">
-                        {{ isVisible() ? 'Login' : 'Register' }}
-                    </button>
-                </div>
+                <div class="logo"></div>
             </div>
 
             @if(!isVisible()){
             <ng-container>
-                <app-login-page class="form"></app-login-page>
+                <app-login-page class="form" (emitState)="setVisible($event)"></app-login-page>
             </ng-container>
             }@else {
             <ng-container>
-                <app-register-page class="form"></app-register-page>
+                <app-register-page class="form" (emitState)="setVisible($event)"></app-register-page>
             </ng-container>
             }
         </div>

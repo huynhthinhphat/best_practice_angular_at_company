@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { AppForm } from '../../shared/app-form/app-form';
-import { Validators } from '@angular/forms';
 import { User } from '../../shared/models/user.model';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
@@ -19,29 +18,43 @@ export class LoginPage {
   private cartService = inject(CartService);
   private toastrService = inject(ToastrService);
   private router = inject(Router);
+  
+  public emitState = output<boolean>();
 
   public fields = [
-    { name: 'username', label: 'Username', type: 'text', validator: [] },
-    { name: 'password', label: 'Password', type: 'password', validator: [] },
+    {
+      name: 'username',
+      label: 'Username',
+      icon: 'fa-solid fa-user',
+      type: 'text',
+      validator: []
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      icon: 'fa-solid fa-lock',
+      type: 'password',
+      validator: []
+    },
   ];
   public formTitle = FORM.LOGIN;
   public buttonLabel = FORM.LOGIN;
-  public Validators = Validators;
+  public formLinkMessage = FORM.REGISTER_MESSAGE;
+  public formLinkTitle = FORM.REGISTER;
 
   public handleLogin(user: User) {
     if (!user) return;
 
     this.authService.getAccount(user)
       .subscribe({
-        next: (data) => {
-          if (!data) return;
+        next: (user: User) => {
+          if (!user) return;
 
-          let user: User = data;
           this.authService.currentUser.set(user);
-          this.cartService.setCartId();
 
           if (user.role === 'User') {
             this.router.navigate(['/']);
+            this.cartService.setCartId();
           } else {
             this.router.navigate(['/admin/users'], { state: { isAdmin: true } });
           }
@@ -49,8 +62,12 @@ export class LoginPage {
           this.toastrService.success(SUCCESS_MESSAGES.LOGIN);
         },
         error: (error) => {
-          this.authService.errorSignal.set(error.message);
+          this.toastrService.error(error.message);
         }
       })
+  }
+
+  public notifyParent(isShow: boolean) {
+    this.emitState.emit(isShow);
   }
 }
