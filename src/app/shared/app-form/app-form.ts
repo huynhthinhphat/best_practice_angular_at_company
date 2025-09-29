@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ERROR_MESSAGES } from '../constants/message.constants';
 import { User } from '../models/user.model';
 import { PasswordMatchValidator } from '../../core/validators/password-match.validator';
-import { ThemeService } from '../services/theme-service/theme-service';
+import { FormFields } from '../models/form-field.model';
 
 @Component({
   selector: 'app-form',
@@ -15,27 +15,15 @@ import { ThemeService } from '../services/theme-service/theme-service';
   standalone: true
 })
 export class AppForm implements OnInit, AfterViewInit {
-  private themeService = inject(ThemeService);
-
   private inputs = viewChildren<ElementRef>('formInput');
   private formBuilder = inject(FormBuilder);
 
   public formTitle = input<string>('Title');
-  public formFields = input<{
-    name: string,
-    label: string,
-    type: string,
-    icon?: string,
-    validator: Validators[],
-    errors?: {
-      type: string,
-      message: string
-    }[]
-  }[]>();
+  public formFields = input<FormFields[]>([]);
   public buttonLabel = input<string>('');
   public formLinkMessage = input<string>('');
   public formLinkTitle = input<string>('');
-  public isLogin = input<boolean>(false);
+  public formUrl = input<string>('');
 
   public submitForm = output<User>();
   public emitState = output<boolean>();
@@ -73,10 +61,6 @@ export class AppForm implements OnInit, AfterViewInit {
     }
   }
 
-  public redirectPage() {
-    this.emitState.emit(this.isLogin());
-  }
-
   public getError(fieldName: string) {
     if (!this.formFields()) return;
 
@@ -88,7 +72,8 @@ export class AppForm implements OnInit, AfterViewInit {
     return field.errors?.find(err => error[err.type])?.message;
   }
 
-  public toggleTheme(){
-    this.themeService.toggleTheme();
+  public showPassword(field: FormFields) {
+    console.log(typeof(field))
+    field.type = field.type === 'password' ? 'text' : 'password';
   }
 }

@@ -26,7 +26,7 @@
 
   @if(cartItems().length > 0){
   <cdk-virtual-scroll-viewport itemSize="100" class="cart-container-viewport">
-    <div class="cart-item" *cdkVirtualFor="let item of cartItems(); trackBy: trackById">
+    <div class="cart-item" *cdkVirtualFor="let item of cartItems(); let index = index; trackBy: trackById">
       <div class="cart-item-details">
         <input type="checkbox" (change)="selectedItems(item)" [checked]="checkSelected(item)" />
         <div class="cart-item-image" (click)="onClickProduct(item.product?.id!)">
@@ -43,8 +43,8 @@
       </div>
       <div class="cart-item-actions">
         <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) - 1)">-</button>
-        <input type="number" [(ngModel)]="item.quantity" [min]="1" [max]="item.product?.stock ?? 1"
-          (blur)="handleCartItemToCart(item.product!, item.quantity!)" />
+        <input type="text" [(ngModel)]="item.quantity" [min]="1" [max]="item.product?.stock ?? 1"
+          (blur)="handleCartItemToCart(item.product!, item.quantity!, index)" />
         <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) + 1)">+</button>
       </div>
       <div class="cart-item-button">

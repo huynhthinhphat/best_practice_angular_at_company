@@ -1,18 +1,18 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { CartService } from '../../../shared/services/cart-service/cart-service';
-import { CurrencyPipe } from '@angular/common';
-import { Cart } from '../../../shared/models/cart.model';
-import { StorageService } from '../../../shared/services/storage-service/storage-service';
-import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
-import { CartItem } from '../../../shared/models/cart-item.model';
-import { ToastrService } from 'ngx-toastr';
-import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
-import { Product } from '../../../shared/models/product.model';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CurrencyPipe } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2'
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
+import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
 import { DisableButton } from '../../../shared/directives/disable-button/disable-button';
+import { CartItem } from '../../../shared/models/cart-item.model';
+import { Cart } from '../../../shared/models/cart.model';
+import { Product } from '../../../shared/models/product.model';
+import { CartService } from '../../../shared/services/cart-service/cart-service';
+import { StorageService } from '../../../shared/services/storage-service/storage-service';
 
 @Component({
   selector: 'app-cart-list-page',
@@ -76,7 +76,12 @@ export class CartListPage implements OnInit {
     });
   }
 
-  public handleCartItemToCart(product: Product, quantityChange: number) {
+  public handleCartItemToCart(product: Product, quantityChange: number, index : number = -1) {
+    if (isNaN(Number(quantityChange)) && index !== -1) {
+      this.cartItems()[index].quantity = 1;
+      return;
+    }
+
     const newQuantity = Math.max(1, Math.min(quantityChange, product.stock!));
 
     this.cartService.handleCartItemToUpdate(product, newQuantity).subscribe({

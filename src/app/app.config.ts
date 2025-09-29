@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor])
+      // withInterceptors([authInterceptor])
     ),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),

@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../shared/services/cart-service/cart-service';
 import { switchMap, throwError } from 'rxjs';
 import { Cart } from '../../shared/models/cart.model';
+import { LOGIN_URL } from '../../shared/constants/url.constants';
+import { FormFields } from '../../shared/models/form-field.model';
 
 @Component({
   selector: 'app-register-page',
@@ -22,12 +24,12 @@ export class RegisterPage {
   private cartService = inject(CartService);
   private toastrService = inject(ToastrService);
 
-  public fields = [
+  public fields : FormFields[] = [
     {
       name: 'fullName',
       label: 'Fullname',
       type: 'text',
-      icon: 'fa-solid fa-signature',
+      icon: 'fa-solid fa-user',
       validator: [Validators.pattern(FULLNAME_PATTERN)],
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_FULLNAME }
@@ -66,6 +68,7 @@ export class RegisterPage {
   public buttonLabel = FORM.REGISTER;
   public formLinkMessage = FORM.LOGIN_MESSAGE;
   public formLinkTitle = FORM.LOGIN;
+  public formUrl = LOGIN_URL;
   public errorMessage = signal<string>('');
   public emitState = output<boolean>();
 

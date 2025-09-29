@@ -72,7 +72,7 @@ export class CartService {
     }
 
     if (quantityChange > 0) {
-      return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: (cartItem.quantity || 0) + quantityChange });
+      return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: quantityChange });
     }
 
     return throwError(() => new Error(ERROR_MESSAGES.UPDATE_CART_FAILED));

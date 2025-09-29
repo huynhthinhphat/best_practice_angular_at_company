@@ -6,7 +6,7 @@ import { HeaderPage } from '../../pages/header-page/header-page';
   selector: 'app-user-layout',
   imports: [RouterOutlet, HeaderPage],
   templateUrl: './user-layout.html',
-  styleUrl: './user-layout.css'
+  styleUrl: './user-layout.scss'
 })
 export class UserLayout {
 

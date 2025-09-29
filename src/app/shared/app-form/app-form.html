@@ -2,7 +2,6 @@
     <h2>{{ formTitle() }}</h2>
 
     @for(field of formFields(); track field.name) {
-
     <div class="form-input">
         @let firstError = getError(field.name);
         @if(firstError){
@@ -13,7 +12,7 @@
         <div>
             <input [type]="field.type" [id]="field.name" [formControlName]="field.name" [placeholder]="field.label"
                 #formInput>
-            <label [for]="field.name">
+            <label [for]="field.name" (click)="showPassword(field)">
                 <i [class]="field.icon"></i>
             </label>
         </div>
@@ -29,12 +28,9 @@
     @if(formLinkMessage(); as formLinkText){
     <div>
         <p><i>{{ formLinkText }}</i></p>
-        <a (click)="redirectPage()">
-            <i>
-                {{ formLinkTitle() }}
-            </i>
+        <a [routerLink]="[formUrl()]">
+            {{ formLinkTitle() }}
         </a>
     </div>
     }
-    <!-- <button type="button" (click)="toggleTheme()">Theme</button> -->
 </form>

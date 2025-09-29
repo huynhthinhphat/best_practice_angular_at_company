@@ -27,7 +27,11 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        component: AuthLayout
+        component: AuthLayout,
+        children: [
+            { path: 'login', component: LoginPage },
+            { path: 'register', component: RegisterPage}
+        ]
     },
     {
         path: 'not-found',

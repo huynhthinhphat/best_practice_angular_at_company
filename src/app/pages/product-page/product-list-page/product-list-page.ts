@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   selector: 'app-product-page',
   imports: [NgOptimizedImage, AppPagination, AppTable, RouterLink],
   templateUrl: './product-list-page.html',
-  styleUrl: './product-list-page.css',
+  styleUrl: './product-list-page.scss',
   standalone: true
 })
 export class ProductListPage implements OnInit {

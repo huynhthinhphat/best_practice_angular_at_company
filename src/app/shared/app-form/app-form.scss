@@ -1,19 +1,19 @@
-@import 'breakpoints';
-@import 'variables';
+@use 'breakpoints' as *;
+@use 'variables' as *;
+@use 'ngx-toastr/toastr' as *;
 
 form {
-  padding: 25px 30px;
+  padding: 25px;
+  text-align: center;
 
   h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--text-color);
+    color: var(--color-text-primary);
+    font-size: 33px;
   }
 
   div:not(.form-input) {
     text-align: center;
-    margin-top: 5px;
-    color: var(--text-color);
+    color: var(--color-text-primary);
   }
 
   div:last-child:not(.form-input div) {
@@ -21,6 +21,7 @@ form {
   }
 
   button {
+    cursor: pointer;
     width: 100%;
     padding: 12px;
     border: 2px solid;
@@ -28,13 +29,12 @@ form {
     color: white;
     font-size: 16px;
     font-weight: bold;
-    background-color: #1A73E8;
-    border-color: var(--button-border-color);
-    transition: 0.3s;
+    background-color: var(--bg-btn);
+    border-color: var(--color-border-primary);
+    transition: 0.15s;
 
     &:hover {
-      cursor: pointer;
-      background-color: #1669C1;
+      background-color: var(--bg-btn-hover);
     }
 
     @include respond-to(mobile) {
@@ -48,8 +48,8 @@ form {
     margin-top: .5rem;
     border-radius: 7px;
     font-size: 15px;
-    text-decoration: underline;
-    color: #1A73E8;
+    color: white;
+    font-weight: bold;
   }
 }
 
@@ -57,13 +57,14 @@ form {
   display: flex;
   flex-direction: column;
   margin: 25px 0;
+  text-align: left;
 
   div {
     position: relative;
     display: flex;
-    width: 100%;
 
     label {
+      cursor: pointer;
       position: absolute;
       right: 15px;
       height: 100%;
@@ -78,23 +79,23 @@ form {
     input {
       width: 100%;
       outline: none;
-      padding: 10px 0px 10px 4%;
+      padding: 10px 0px 10px 5%;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-      color: var(--text-color);
-      background-color: var(--input-bg);
+      border-radius: 50px;
+      font-size: 15px;
+      color: var(--color-text-primary);
+      background-color: var(--bg-input);
       transition: border-color 0.3s, box-shadow 0.3s;
     }
   }
 
   i {
-    color: var(--icon-color)
+    color: var(--color-icon)
   }
 
   small {
     font-size: 14px;
-    color: var(--error-text-color);
+    color: var(--color-error);
 
     @include respond-to(tablet) {
       font-size: 14px;

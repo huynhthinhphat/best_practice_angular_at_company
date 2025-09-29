@@ -3,7 +3,6 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 import { CATEGORY_URL } from '../../constants/url.constants';
-import { PaginationResponse } from '../../models/pagination-response.model';
 import { AuthService } from '../auth-service/auth';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
 
@@ -15,8 +14,7 @@ export class CategoryService {
   private authService = inject(AuthService);
 
   public categories = signal<Category[]>([]);
-  public pagination = signal<PaginationResponse<Category> | null>(null);
-  private currentUse = this.authService.currentUser;
+  private currentUser = this.authService.currentUser;
 
   constructor() {
     effect(() => {
@@ -25,15 +23,20 @@ export class CategoryService {
   }
 
   public getAllCategoriesByConditions(page: string = '1') {
-    const params = new HttpParams().set('_page', page).set('isDeleted', false);
-    this.http.get<PaginationResponse<Category>>(CATEGORY_URL, { params }).subscribe(res => {
+    const user = this.currentUser();
+    let isUser: boolean = false;
+    if (!user || user?.role === 'User') {
+      page = '';
+      isUser = true;
+    }
 
-      if (!this.currentUse() || this.currentUse()?.role === 'User') {
-        this.categories.set([{ id: '', name: 'All' }, ...res.data]);
+    const params = new HttpParams().set('_page', page).set('isDeleted', false);
+    this.http.get<Category[]>(CATEGORY_URL, { params }).subscribe(res => {
+      if (isUser) {
+        this.categories.set([{ id: '', name: 'All', icon: 'border-all' }, ...res]);
         return;
       }
-
-      this.categories.set([...res.data]);
+      this.categories.set([...res]);
     });
   }
 

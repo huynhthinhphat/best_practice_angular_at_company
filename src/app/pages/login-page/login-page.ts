@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { FORM, SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../shared/services/cart-service/cart-service';
+import { REGISTER_URL } from '../../shared/constants/url.constants';
+import { FormFields } from '../../shared/models/form-field.model';
 
 @Component({
   selector: 'app-login-page',
@@ -21,7 +23,7 @@ export class LoginPage {
   
   public emitState = output<boolean>();
 
-  public fields = [
+  public fields : FormFields[] = [
     {
       name: 'username',
       label: 'Username',
@@ -41,6 +43,7 @@ export class LoginPage {
   public buttonLabel = FORM.LOGIN;
   public formLinkMessage = FORM.REGISTER_MESSAGE;
   public formLinkTitle = FORM.REGISTER;
+  public formUrl = REGISTER_URL;
 
   public handleLogin(user: User) {
     if (!user) return;
@@ -53,10 +56,10 @@ export class LoginPage {
           this.authService.currentUser.set(user);
 
           if (user.role === 'User') {
-            this.router.navigate(['/']);
+            this.router.navigate(['/'], { replaceUrl: true });
             this.cartService.setCartId();
           } else {
-            this.router.navigate(['/admin/users'], { state: { isAdmin: true } });
+            this.router.navigate(['/admin/users'], { state: { isAdmin: true }, replaceUrl: true });
           }
 
           this.toastrService.success(SUCCESS_MESSAGES.LOGIN);

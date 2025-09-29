@@ -2,20 +2,8 @@
     <div class="auth-background"></div>
 
     <div class="auth-forms">
-        <div class="section">
-            <div class="section-title">
-                <div class="logo"></div>
-            </div>
-
-            @if(!isVisible()){
-            <ng-container>
-                <app-login-page class="form" (emitState)="setVisible($event)"></app-login-page>
-            </ng-container>
-            }@else {
-            <ng-container>
-                <app-register-page class="form" (emitState)="setVisible($event)"></app-register-page>
-            </ng-container>
-            }
+        <div>
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>

@@ -1,13 +1,24 @@
+$mobile-s: 360px;
 $mobile: 576px;
 $tablet: 768px;
+$laptop: 992px;
 $desktop: 1200px;
+$large: 1400px;
 
 @mixin respond-to($device) {
-  @if $device == mobile {
-    @media (max-width: $mobile) { @content; }
+  @if $device == mobile-s {
+    @media (max-width: #{$mobile-s}) { @content; }
+  } @else if $device == mobile {
+    @media (max-width: #{$mobile}) { @content; }
   } @else if $device == tablet {
-    @media (max-width: $tablet) { @content; }
+    @media (max-width: #{$tablet}) { @content; }
+  } @else if $device == laptop {
+    @media (max-width: #{$laptop}) { @content; }
   } @else if $device == desktop {
-    @media (max-width: $desktop) { @content; }
+    @media (max-width: #{$desktop}) { @content; }
+  } @else if $device == large {
+    @media (max-width: #{$large}) { @content; }
+  } @else if $device == extra {
+    @media (min-width: #{$large + 1px}) { @content; }
   }
 }

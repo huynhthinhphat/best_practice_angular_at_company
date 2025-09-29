@@ -3,12 +3,6 @@
     height: calc(100vh - 60px);
 }
 
-app-left-side-page {
-    width: 250px;
-    background: #f8f9fa;
-    border-right: 1px solid #ddd;
-}
-
 .content {
     flex: 1;
     padding: 0 20px;

@@ -6,3 +6,5 @@ export const CART_URL = `${API_BASE_URL}/carts`;
 export const CART_ITEMS_URL = `${API_BASE_URL}/cartItems`;
 export const ORDER_URL = `${API_BASE_URL}/orders`;
 export const ORDER_DETAIL_URL = `${API_BASE_URL}/orderDetails`;
+export const LOGIN_URL = '/auth/login';
+export const REGISTER_URL = '/auth/register';

@@ -1,43 +1,119 @@
-$light-bg: #ffffff;
-$light-text-color: black;
-$light-error-text-color: #ff002f;
-$light-input-bg: white;
-$light-icon-text: black;
-$light-button-border-color: #1A73E8;
-$light-logo: '/assets/images/logo-light-mode.png';
-$light-background-image-url: '/assets/images/background-light-mode.jpg';
-$light-box-shadow-color: rgba(0, 0, 0, 0.2);
+// Light Theme
+// Background
+$light-body-bg: #edf2f9;
+$light-body-color: #5e6e82;
+$light-gray-300: #d8e2ef;
+$light-gray-900: #344050;
+$light-quaternary-bg: #fff;
 
-$dark-bg: #1A1A1A;
-$dark-text-color: #F5F5F5;
-$dark-error-text-color: #fc3333;
-$dark-input-bg: #343434;
-$dark-icon-text: #F5F5F5;
-$dark-button-border-color: white;
+$light-bg-primary: #ffffff;
+$light-bg-secondary: #e9ecef;
+$light-bg-tertiary: #e3f2fd;
+$light-bg-input: #F5F5F5;
+$light-bg-btn: #1A73E8;
+$light-bg-btn-hover: #1669C1;
+$light-bg-img: '/assets/images/background-light-mode.jpg';
+$light-bg-dialog: #F5F5F5;
+
+// Text and Icons
+$light-color-text-primary: #121212;
+$light-color-text-secondary: #1976d2;
+$light-color-text-tertiary: #F5F5F5;
+$light-color-error: #ff002f;
+$light-color-icon-primary: #121212;
+$light-color-icon-secondary: #F5F5F5;
+
+// Borders and shadows
+$light-color-border-primary: #1A73E8;
+$light-color-border-secondary: #90caf9;
+$light-color-border-tertiary: #E5E5E5;
+$light-color-shadow: rgba(0, 0, 0, 0.2);
+
+// Logo
+$light-logo: '/assets/images/logo-light-mode.png';
+
+// Dark Theme
+$dark-body-bg: #0b1727;
+$dark-body-color: #9da9bb;
+$dark-gray-300: #344050;
+
+$dark-bg-primary: #121212;
+$dark-bg-secondary: #343434;
+$dark-bg-tertiary: #343434;
+$dark-bg-input: #343434;
+$dark-bg-img: '/assets/images/background-dark-mode.png';
+$dark-bg-btn: #1A1A1A;
+$dark-bg-btn-hover: #474646;
+$dark-bg-dialog: #343434;
+
+// Text and Icons
+$dark-color-text-primary: #F5F5F5;
+$dark-color-text-secondary: #F5F5F5;
+// $dark-color-text-tertiary: #F5F5F5;
+$dark-color-error: #fc3333;
+$dark-color-icon: #F5F5F5;
+
+// Logo
 $dark-logo: '/assets/images/logo-dark-mode.png';
-$dark-background-image-url: '/assets/images/background-dark-mode.png';
-$dark-box-shadow-color: rgba(191, 191, 191, 0.2);
+
+// Borders and shadows
+$dark-color-border-primary: #F5F5F5;
+$dark-color-border-secondary: #90caf9;
+$dark-color-border-tertiary: #474646;
+$dark-color-shadow: rgba(191, 191, 191, 0.2);
 
 @mixin lighten() {
-  --form-bg: #{$light-bg};
-  --text-color: #{$light-text-color};
-  --error-text-color: #{$light-error-text-color};
-  --input-bg: #{$light-input-bg};
-  --icon-color: #{$light-icon-text};
-  --button-border-color: #{$light-button-border-color};
-  --logo-url: url($light-logo);
-  --bg-image-url: url(#{$light-background-image-url});
-  --box-shadow-color: #{$light-box-shadow-color};
+  --body-color: #{$light-body-color};
+  --body-bg: #{$light-body-bg};
+  --gray-300: #{$light-gray-300};
+  --gray-900: #{$light-gray-900};
+  --quaternary-bg: #{$light-quaternary-bg};
+
+  --bg-primary: #{$light-bg-primary};
+  --bg-secondary: #{$light-bg-secondary};
+  --bg-tertiary: #{$light-bg-tertiary};
+  --bg-input: #{$light-bg-input};
+  --bg-image: url(#{$light-bg-img});
+  --bg-btn: #{$light-bg-btn};
+  --bg-btn-hover: #{$light-bg-btn-hover};
+  --bg-diglog-primary: #{$light-bg-dialog};
+
+  --color-text-primary: #{$light-color-text-primary};
+  --color-text-secondary: #{$light-color-text-secondary};
+  --color-text-tertiary: #{$light-color-text-tertiary};
+  --color-error: #{$light-color-error};
+  --color-icon-primary: #{$light-color-icon-primary};
+  --color-icon-secondary: #{$light-color-icon-secondary};
+  --color-border-primary: #{$light-color-border-primary};
+  --color-border-secondary: #{$light-color-border-secondary};
+  --color-border-tertiary: #{$light-color-border-tertiary};
+  --color-shadow: #{$light-color-shadow};
+
+  --logo: url($light-logo);
 }
 
 @mixin darken() {
-  --form-bg: #{$dark-bg};
-  --text-color: #{$dark-text-color};
-  --error-text-color: #{$dark-error-text-color};
-  --input-bg: #{$dark-input-bg};
-  --icon-color: #{$dark-icon-text};
-  --button-border-color: #{$dark-button-border-color};
-  --logo-url: url($dark-logo);
-  --bg-image-url: url(#{$dark-background-image-url});
-  --box-shadow-color: #{$dark-box-shadow-color};
+  --body-color: #{$dark-body-color};
+  --body-bg: #{$dark-body-bg};
+  --gray-300: #{$dark-gray-300};
+
+  --bg-primary: #{$dark-bg-primary};
+  --bg-secondary: #{$dark-bg-secondary};
+  --bg-tertiary: #{$dark-bg-tertiary};
+  --bg-input: #{$dark-bg-input};
+  --bg-image: url(#{$dark-bg-img});
+  --bg-btn: #{$dark-bg-btn};
+  --bg-btn-hover: #{$dark-bg-btn-hover};
+  --bg-diglog-primary: #{$dark-bg-dialog};
+
+  --color-text-primary: #{$dark-color-text-primary};
+  --color-text-secondary: #{$dark-color-text-secondary};
+  --color-error: #{$dark-color-error};
+  --color-icon: #{$dark-color-icon};
+  --color-border-primary: #{$dark-color-border-primary};
+  --color-border-secondary: #{$dark-color-border-secondary};
+  --color-border-tertiary: #{$dark-color-border-tertiary};
+  --color-shadow: #{$dark-color-shadow};
+
+  --logo: url($dark-logo);
 }

@@ -1,19 +1,9 @@
 .home-container {
     display: flex;
-    gap: 20px;
-    padding: 20px;
-    min-height: calc(100vh - 60px); 
-}
 
-app-left-side-page {
-    width: 250px;
-    flex-shrink: 0;
-    border-right: 1px solid #e5e5e5;
-}
-
-app-product-page {
-    flex: 1;
-    min-width: 0; 
+    app-product-page{
+        flex: 1;
+    }
 }
 
 @media (max-width: 768px) {

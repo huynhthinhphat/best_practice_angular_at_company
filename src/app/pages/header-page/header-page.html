@@ -1,63 +1,127 @@
-<header class="header">
-  <div class="header-container">
-    <a routerLink="/home" class="logo">Mini Shop</a>
+@let user = currentUser();
+@let isVisibleInput = isShowInputSearch();
 
-    @if(currentUser()?.role !== 'Admin'){
-    <input type="text" class="search-box" placeholder="Search..." list="products"
-      (input)="searchProduct($event.target.value)">
-    <datalist id="products">
-      @for(product of products(); track product.id){
-      <option [value]="product.name"></option>
-      }
-    </datalist>
-    }
+<header>
+  <div class="header-container">
+    <div>
+      <button class="btn-bars">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="logo" [routerLink]="['/']"></div>
+
+      <div class="search-box">
+        <button class="btn-search" [ngClass]="{'is-active' : isVisibleInput}" (click)="toggleInputSearch()">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <input type="text" id="search" class="search-input" placeholder="Search by product name..." list="products"
+          (input)="searchProduct($event.target.value)" [ngClass]="{'is-active' : isVisibleInput}">
+        <!-- <datalist id="products">
+                  @for(product of products(); track product.id){
+                  <option [value]="product.name"></option>
+                  }
+                </datalist> -->
+      </div>
+    </div>
 
     <nav class="nav-menu">
-      @if(!isVisible && currentUser() == null){
-      <div class="auth-buttons">
-        <a routerLink="/auth" class="btn btn-login">Login</a>
-        <a routerLink="/auth" class="btn btn-register">Register</a>
-      </div>
-      } @else {
       <div>
-        <p>Welcome, {{ currentUser()?.fullName }}</p>
-        @if(currentUser()?.role === 'User'){
-        <button [routerLink]="['/orders/user']" class="btn">📦 Orders</button>
-        <button [routerLink]="['/cart', currentUser()?.id]" class="btn">🛒 Cart ({{ quantityItems() }})</button>
-        }
-        <button (click)="logout()" class="btn btn-logout">🚪 Logout</button>
-      </div>
-      }
-    </nav>
-
-    <nav class="nav-bars">
-      <div (click)="toggleMenu()">
-        ☰ Menu
-        @if(isShowMenu()){
         <ul>
-          @if(!isVisible && currentUser() == null){
           <li>
-            <a routerLink="/login">Login</a>
+            @if(!user){
+            <a routerLink="/auth/login">
+              <i class="fa-regular fa-user"></i>
+              <span>
+                Login
+              </span>
+            </a>
+            }@else {
+            <i class="fa-solid fa-circle-user user" (click)="toggleMenu()"></i>
+            @if(isShowMenu()){
+            <ul class="menu">
+              <li (click)="redirectPage('cart')">
+                <button type="button">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  Cart ({{ quantityItems() }})
+                </button>
+              </li>
+              <li (click)="redirectPage('order')">
+                <button type="button">
+                  <i class="fa-solid fa-receipt"></i>
+                  Orders
+                </button>
+              </li>
+              <li (click)="redirectPage('logout')">
+                <button type="button">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  Logout
+                </button>
+              </li>
+            </ul>
+            }
+            }
           </li>
           <li>
-            <a routerLink="/register">Register</a>
+            <a routerLink="/auth/register">
+              <i class="fa-solid fa-user"></i>
+              <span>
+                Register
+              </span>
+            </a>
           </li>
-          }@else {
-          @if(currentUser()?.role === 'User'){
           <li>
-            <a [routerLink]="['/orders/user']">📦 Orders</a>
+            <a class="switch-theme" (click)="toggleTheme()">
+              <span>
+                @if(isDarkMode()){
+                <i class="fa-solid fa-sun"></i>Light
+                }@else {
+                <i class="fa-solid fa-moon"></i>Dark
+                }
+              </span>
+            </a>
           </li>
-          <li>
-            <a [routerLink]="['/cart', currentUser()?.id]">🛒 Cart ({{ quantityItems() }})</a>
-          </li>
-          }
-          <li>
-            <a (click)="logout()">🚪 Logout</a>
-          </li>
-          }
         </ul>
-        }
       </div>
     </nav>
   </div>
 </header>
+
+<!-- <ng-template>
+  <nav class="nav-bars">
+    <div (click)="toggleMenu()">
+      ☰ Menu
+      @if(isShowMenu()){
+      <ul>
+        @if(!isVisible && currentUser() == null){
+        <li>
+          <a routerLink="/login">Login</a>
+        </li>
+        <li>
+          <a routerLink="/register">Register</a>
+        </li>
+        }@else {
+        @if(currentUser()?.role === 'User'){
+        <li>
+          <a [routerLink]="['/orders/user']">📦 Orders</a>
+        </li>
+        <li>
+          <a [routerLink]="['/cart', currentUser()?.id]">🛒 Cart ({{ quantityItems() }})</a>
+        </li>
+        }
+        <li>
+          <a (click)="logout()">🚪 Logout</a>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+  </nav>
+</ng-template> -->
+
+<!-- <div>
+  <p>Welcome, {{ currentUser()?.fullName }}</p>
+  @if(currentUser()?.role === 'User'){
+  <button [routerLink]="['/orders/user']" class="btn">📦 Orders</button>
+  <button [routerLink]="['/cart', currentUser()?.id]" class="btn">🛒 Cart ({{ quantityItems() }})</button>
+  }
+  <button (click)="logout()" class="btn btn-logout">🚪 Logout</button>
+</div> -->

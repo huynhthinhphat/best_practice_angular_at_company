@@ -38,13 +38,20 @@ export class CheckoutPage implements OnInit, OnDestroy {
   public buttonLabel = "Pay";
   public Validators = Validators;
   public products = signal<Product[]>([]);
+  public totalAmount = signal<number>(0);
 
   public ngOnInit() {
     this.products.set(this.storageService.getData<Product[]>(STORAGE_KEYS.CHECKOUT_PRODUCT_LIST) ?? []);
+    this.calculateTotalAmount();
   }
 
-  get totalAmount() {
-    return this.products().reduce((total, product) => total + (product.price ?? 0) * (product.quantityToBuy ?? 0), 0);
+  private calculateTotalAmount() {
+    let totalAmount = 0;
+    for (let product of this.products()){
+      totalAmount += (product.price ?? 0) * (product.quantityToBuy ?? 0);
+    }
+
+    this.totalAmount.set(totalAmount);
   }
 
   public handlePayment(order: Order) {
@@ -71,7 +78,7 @@ export class CheckoutPage implements OnInit, OnDestroy {
         ...order,
         userId: user?.id,
         quantity: this.products().length,
-        totalPrice: this.totalAmount,
+        totalPrice: this.totalAmount(),
         status: ORDER_STATUS.PENDING,
         createdAt: new Date(),
       };

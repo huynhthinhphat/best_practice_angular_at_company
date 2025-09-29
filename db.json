@@ -1074,54 +1074,20 @@
     {
       "id": "1",
       "name": "Electronics",
-      "isDeleted": false
+      "isDeleted": false,
+      "icon": "bolt"
     },
     {
       "id": "2",
       "name": "Clothing",
-      "isDeleted": false
+      "isDeleted": false,
+      "icon": "shirt"
     },
     {
       "id": "3",
       "name": "Sports",
-      "isDeleted": false
-    },
-    {
-      "id": "69e6",
-      "name": "ok1",
-      "isDeleted": true
-    },
-    {
-      "id": "eb10",
-      "name": "123",
-      "isDeleted": true
-    },
-    {
-      "id": "6108",
-      "name": "11",
-      "isDeleted": true
-    },
-    {
-      "id": "c062",
-      "name": "1231"
-    },
-    {
-      "id": "646c",
-      "name": "1231231"
-    },
-    {
-      "id": "2f9d",
-      "name": "Clothing",
-      "isDeleted": true
-    },
-    {
-      "id": "7928",
-      "name": "Clothing",
-      "isDeleted": true
-    },
-    {
-      "id": "bd12",
-      "name": "12311111"
+      "isDeleted": false,
+      "icon": "volleyball"
     }
   ],
   "carts": [
@@ -1167,22 +1133,6 @@
     }
   ],
   "cartItems": [
-    {
-      "id": "74c1",
-      "cartId": "1",
-      "product": {
-        "id": "14",
-        "name": "Yoga Mat",
-        "price": 39.99,
-        "description": "Non-slip yoga mat",
-        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
-        "categoryId": "2",
-        "categoryName": "Clothing",
-        "stock": 100,
-        "isDeleted": false
-      },
-      "quantity": 1
-    },
     {
       "id": "9c02",
       "cartId": "1",
@@ -1430,6 +1380,17 @@
       "totalPrice": 449.99,
       "status": "pending",
       "createdAt": "2025-09-22T06:51:11.373Z"
+    },
+    {
+      "id": "4618",
+      "username": "1",
+      "phoneNumber": "03254798556",
+      "address": "1",
+      "userId": "ede7",
+      "quantity": 1,
+      "totalPrice": 39.99,
+      "status": "pending",
+      "createdAt": "2025-09-26T09:16:57.415Z"
     }
   ],
   "orderDetails": [
@@ -1717,6 +1678,25 @@
       "orderId": "b17f",
       "quantity": 1,
       "totalPrice": 449.99
+    },
+    {
+      "id": "28a2",
+      "product": {
+        "id": "14",
+        "name": "Yoga Mat",
+        "price": 39.99,
+        "description": "Non-slip yoga mat",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
+        "categoryId": "2",
+        "categoryName": "Clothing",
+        "stock": 100,
+        "isDeleted": false,
+        "quantityToBuy": 1,
+        "cartItemId": "74c1"
+      },
+      "orderId": "4618",
+      "quantity": 1,
+      "totalPrice": 39.99
     }
   ]
 }

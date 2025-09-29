@@ -1,0 +1,10 @@
+@use 'variables' as *;
+@use 'breakpoints' as *;
+
+div {
+    padding: 0px 15rem;
+
+    @include respond-to(extra) {
+        padding: 0px 15rem;
+    }
+}

@@ -30,12 +30,11 @@ export class ProductService {
 
   public getAllProductsByConditions(page: string = '1', isDeleted: boolean = false) {
     const params = new HttpParams().set('categoryId', this.categoryId()).set('name', this.productName()).set('isDeleted', isDeleted).set('_page', page);
-    this.http.get<PaginationResponse<Product>>(PRODUCT_URL, { params }).subscribe({
-      next: (res: PaginationResponse<Product>) => {
+    this.http.get<Product[]>(PRODUCT_URL, { params }).subscribe({
+      next: (res: Product[]) => {
         if (!res) return;
 
-        this.pagination.set(res);
-        this.products.set(res.data);
+        this.products.set(res);
       }
     });
   }

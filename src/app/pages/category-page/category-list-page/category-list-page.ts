@@ -21,7 +21,6 @@ export class CategoryListPage implements OnInit {
   private router = inject(Router);
   private toastrService = inject(ToastrService);
 
-  public pagination = this.categoryService.pagination;
   public categories = this.categoryService.categories;
   public currentPage = signal<number>(1);
   public headers: ColumnDef<Category>[] = [

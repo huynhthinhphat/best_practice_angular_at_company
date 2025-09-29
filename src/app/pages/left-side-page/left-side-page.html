@@ -1,13 +1,35 @@
-@if(currentUser()?.role === 'User' || !currentUser()){
-<ul *ngFor="let category of categories()" class="category-item" (click)="onCategoryClick(category.id!)"
-    [ngClass]="{'active': selectedCategoryId() === category.id}">
-    <li>{{ category.name }}</li>
-</ul>
-}
+@let categoryId = selectedCategoryId();
+@let user = currentUser();
+@let expanding = isExpanding();
+@let width = currentWidth();
 
-@if(currentUser()?.role === 'Admin'){
-<ul *ngFor="let router of routers" class="category-item" [ngClass]="{'active': selectedCategoryId() === router}"
-    [routerLink]="['/admin/' + router]" [state]="{ isAdmin: true }" (click)="onCategoryClick(router)">
-    <li>{{ router }}</li>
-</ul>
-}
+<div class="category-container" [style.width.px]="width" appResizable [minWidth]="minWidth" [maxWidth]="1000"
+    [directions]="['right']" #categoryTab>
+    <div>
+        <button type="button" (click)="toggleTab()">
+            <i class="fa-solid" [ngClass]="{'fa-chevron-left' : expanding, 'fa-chevron-right': !expanding }"></i>
+        </button>
+    </div>
+    <div>
+        @if(user?.role === 'User' || !user){
+        <ul>
+            @for(category of categories(); track category.id){
+            <li [ngClass]="{ 'active': categoryId === category.id}" (click)="onCategoryClick(category.id!)"
+                [title]="category.name">
+                <i class='fa-solid fa-{{category.icon}}'></i>
+                {{ category.name }}
+            </li>
+            }
+        </ul>
+        } @else {
+        <ul>
+            @for(router of routers; track router){
+            <li [ngClass]="{'active': categoryId === router}" [routerLink]="['/admin/' + router]"
+                [state]="{ isAdmin: true }" (click)="onCategoryClick(router)">
+                {{ router }}
+            </li>
+            }
+        </ul>
+        }
+    </div>
+</div>
