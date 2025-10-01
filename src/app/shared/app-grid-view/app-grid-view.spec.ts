@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppTable } from './app-table';
+import { AppGridView } from './app-grid-view';
 
-describe('AppTable', () => {
-    let component: AppTable;
-    let fixture: ComponentFixture<AppTable>;
+describe('AppGridView', () => {
+    let component: AppGridView<any>;
+    let fixture: ComponentFixture<AppGridView<any>>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [AppTable]
+            imports: [AppGridView]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(AppTable);
+        fixture = TestBed.createComponent(AppGridView);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -1,0 +1,37 @@
+<div class="table-responsive">
+  <table>
+    <thead>
+      <tr>
+        @for(col of columns(); track col){
+        <th scope="col">
+          {{col.headerText}}
+        </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @if(tableData().length > 0){
+      @for(data of tableData(); track data){
+      <tr>
+        @for(col of columns(); let index = $index; track col){
+        @if(col.field){
+        @let value = getFieldAsString(data, col.field, col.pipe);
+        <td [title]="value">
+          <span [appStatusIcon]="value"></span>
+          {{ value }}
+        </td>
+        }
+        }
+      </tr>
+      }
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- @for(action of col.actions; track action){
+          <button type="button" [title]="action.tooltip" [disabled]="action.disabled?.(data)" [class]="action.class"
+            (click)="actionClick(action, data)">
+            <i [class]="action.icon"></i>{{action.label}}
+          </button>
+          } -->

@@ -1,13 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserService } from '../../shared/services/user-service/user-service';
-import { AppTable } from '../../shared/app-table/app-table';
+import { AppGridView } from '../../shared/app-grid-view/app-grid-view';
 import { ColumnDef } from '../../shared/models/column-def.model';
 import { User } from '../../shared/models/user.model';
 import { AppPagination } from '../../shared/app-pagination/app-pagination';
 
 @Component({
   selector: 'app-user-page',
-  imports: [AppTable, AppPagination],
+  imports: [AppGridView, AppPagination],
   templateUrl: './user-page.html',
   styleUrl: './user-page.css'
 })

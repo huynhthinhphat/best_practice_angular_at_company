@@ -1,7 +1,7 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrderService } from '../../../shared/services/order-service/order-service';
-import { AppTable } from '../../../shared/app-table/app-table';
+import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
 import { CommonModule } from '@angular/common';
 import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 import { ColumnDef } from '../../../shared/models/column-def.model';
@@ -12,7 +12,7 @@ import { AuthService } from '../../../shared/services/auth-service/auth';
 
 @Component({
   selector: 'app-order-list-page',
-  imports: [AppTable, CommonModule, AppPagination, AppTabFilter],
+  imports: [ CommonModule, AppPagination, AppTabFilter, AppGridView],
   templateUrl: './order-list-page.html',
   styleUrl: './order-list-page.css',
   standalone: true
@@ -34,7 +34,7 @@ export class OrderListPage {
     { field: 'address', headerText: 'Address' },
     { field: 'quantity', headerText: 'Quantity' },
     { field: 'totalPrice', headerText: 'Total Price' },
-    { field: 'status', headerText: 'Status' },
+    { field: 'status', headerText: 'Status', pipe: 'uppercase' },
     { field: 'createdAt', headerText: 'Created At' },
     { field: 'updatedAt', headerText: 'Updated At' },
     {

@@ -6,7 +6,7 @@
     }
 
     @if(headers.length > 0 && orders().length > 0){
-    <app-table [columns]="headers" [tableData]="orders()" (actionClickEmit)="handleAction($event)"></app-table>
+    <app-grid-view [columns]="headers" [tableData]="orders()" (actionClickEmit)="handleAction($event)"></app-grid-view>
     }
 
     <app-pagination [pagination]="pagination()" [currentPage]="currentPage()"

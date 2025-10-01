@@ -3,10 +3,10 @@
 @let expanding = isExpanding();
 @let width = currentWidth();
 
-<div class="category-container" [style.width.px]="width" appResizable [minWidth]="minWidth" [maxWidth]="1000"
+<div class="category-container" [style.width.px]="width" appResizable [minWidth]="minWidth" [maxWidth]="maxWidth"
     [directions]="['right']" #categoryTab>
     <div>
-        <button type="button" (click)="toggleTab()">
+        <button type="button" (click)="toggleTab()" [title]="titleBtn">
             <i class="fa-solid" [ngClass]="{'fa-chevron-left' : expanding, 'fa-chevron-right': !expanding }"></i>
         </button>
     </div>

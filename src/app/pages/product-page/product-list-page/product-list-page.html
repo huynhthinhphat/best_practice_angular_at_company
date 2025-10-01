@@ -1,10 +1,44 @@
-@let user = currentUser();
+@let cardView = isCardView();
+
+<div class="product-container">
+  <div class="product-header">
+    <h1>Products</h1>
+    <div>
+      <button type="button" (click)="toggleView()" [class.active]="cardView" [title]="titleCardBtn">
+        <svg class="icon icon-card" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="2.5" y="4" width="19" height="14" rx="1.5" stroke="currentColor" fill="none" stroke-width="1.4" />
+          <rect x="4" y="6" width="6" height="6" rx="0.8" fill="currentColor" opacity="0.12" />
+          <rect x="11" y="6.6" width="8" height="1.6" rx="0.8" fill="currentColor" />
+          <rect x="11" y="9.8" width="6" height="1.4" rx="0.7" fill="currentColor" opacity="0.6" />
+        </svg>
+      </button>
+      <button type="button" (click)="toggleView()" [class.active]="!cardView" [title]="titleGridBtn">
+        <svg class="icon icon-grid" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3" y="3" width="8" height="8" rx="1.2" stroke="currentColor" fill="none" stroke-width="1.4" />
+          <rect x="13" y="3" width="8" height="8" rx="1.2" stroke="currentColor" fill="none" stroke-width="1.4" />
+          <rect x="3" y="13" width="8" height="8" rx="1.2" stroke="currentColor" fill="none" stroke-width="1.4" />
+          <rect x="13" y="13" width="8" height="8" rx="1.2" stroke="currentColor" fill="none" stroke-width="1.4" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="product-list">
+    @if(cardView){
+    <app-card-view [data]="products()"></app-card-view>
+    } @else {
+    <app-grid-view [columns]="headers" [tableData]="products()"
+      (actionClickEmit)="handleAction($event)"></app-grid-view>
+    }
+  </div>
+</div>
+
+<!-- @let user = currentUser();
 
 <div class="product-container">
   @if(!user || user?.role === 'User'){
   <div>
     <h1>Our Products</h1>
-    <!-- <div class="product-grid">
+    <div class="product-grid">
       @for (product of products(); track product.id) {
       <div class="product-card" (click)="onClickProduct(product.id!)">
         <img [ngSrc]="product.imageUrl ?? ''" [alt]="product.name" width="300" height="200" class="product-image"
@@ -16,7 +50,7 @@
         </div>
       </div>
       }
-    </div> -->
+    </div>
   </div>
   } @else {
   <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -25,9 +59,9 @@
       <button [routerLink]="'/admin/products/create'" [state]="{'isAdmin': true}">Create</button>
     </div>
   </div>
-  <!-- <app-table [columns]="headers" [tableData]="products()" (actionClickEmit)="handleAction($event)"></app-table> -->
+  <app-grid-view [columns]="headers" [tableData]="products()" (actionClickEmit)="handleAction($event)"></app-grid-view>
   }
 
-  <!-- <app-pagination [pagination]="pagination()" [currentPage]="currentPage()" [onPageChange]="handlePageChange">
-  </app-pagination> -->
-</div>
+<app-pagination [pagination]="pagination()" [currentPage]="currentPage()" [onPageChange]="handlePageChange">
+  </app-pagination>
+</div> -->

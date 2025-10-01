@@ -1,12 +1,11 @@
-@let user = currentUser();
 @let isVisibleInput = isShowInputSearch();
+@let loginIn = isLoginIn();
+@let darkMode = isDarkMode();
+@let showMenu = isShowMenu();
 
 <header>
   <div class="header-container">
     <div>
-      <button class="btn-bars">
-        <i class="fa-solid fa-bars"></i>
-      </button>
       <div class="logo" [routerLink]="['/']"></div>
 
       <div class="search-box">
@@ -23,64 +22,106 @@
       </div>
     </div>
 
-    <nav class="nav-menu">
-      <div>
-        <ul>
-          <li>
-            @if(!user){
-            <a routerLink="/auth/login">
-              <i class="fa-regular fa-user"></i>
-              <span>
-                Login
-              </span>
-            </a>
-            }@else {
-            <i class="fa-solid fa-circle-user user" (click)="toggleMenu()"></i>
-            @if(isShowMenu()){
+    <nav class="nav-menu" [class.is-login]="loginIn">
+      <ul>
+        <li>
+          <a class="switch-theme" (click)="toggleTheme()" [title]="titleMode">
+            <i class="fa-solid " [ngClass]="{'fa-sun': !darkMode, 'fa-moon': darkMode}"></i>
+          </a>
+        </li>
+        <!-- <li>
+          @if(!loginIn){
+          <a routerLink="/auth/login">
+            <i class="fa-regular fa-user"></i>
+            <span>
+              Login
+            </span>
+          </a>
+          }@else {
+          <i class="fa-solid fa-circle-user user" (click)="toggleMenu()"></i>
+          @if(isShowMenu()){
+          <ul class="menu">
+            <li (click)="redirectPage('cart')">
+              <button type="button">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Cart ({{ quantityItems() }})
+              </button>
+            </li>
+            <li (click)="redirectPage('order')">
+              <button type="button">
+                <i class="fa-solid fa-receipt"></i>
+                Orders
+              </button>
+            </li>
+            <li (click)="redirectPage('logout')">
+              <button type="button">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+              </button>
+            </li>
+          </ul>
+          }
+          }
+        </li> -->
+        @if(!loginIn){
+        <li>
+          <a routerLink="/auth/login">
+            <i class="fa-regular fa-user"></i>
+            <span>
+              Login
+            </span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/auth/register">
+            <i class="fa-solid fa-user"></i>
+            <span>
+              Register
+            </span>
+          </a>
+        </li>
+        }@else {
+        <li>
+          <div class="rounded-circle" (click)="toggleMenu()" #menuWrapper>
+            <span>
+              {{ firstCharacter() }}
+            </span>
+
+            @if(showMenu){
             <ul class="menu">
-              <li (click)="redirectPage('cart')">
-                <button type="button">
+              <li>
+                <a href="">
+                  Profile
+                  <i class="fa-solid fa-user"></i>
+                </a>
+              </li>
+              <li class="cart-item">
+                <a [routerLink]="['/cart', currentUser()?.id]" [title]="titleCart">
+                  Cart
                   <i class="fa-solid fa-cart-shopping"></i>
-                  Cart ({{ quantityItems() }})
-                </button>
+                  <span class="notification-indicator-number">
+                    {{ quantityItems() }}
+                  </span>
+                </a>
               </li>
-              <li (click)="redirectPage('order')">
-                <button type="button">
-                  <i class="fa-solid fa-receipt"></i>
+              <li>
+                <a routerLink="/orders/user" [title]="titleOrder">
                   Orders
-                </button>
+                  <i class="fa-solid fa-receipt"></i>
+                </a>
               </li>
-              <li (click)="redirectPage('logout')">
-                <button type="button">
-                  <i class="fa-solid fa-right-from-bracket"></i>
+              <li>
+                <a (click)="logout()">
                   Logout
-                </button>
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
               </li>
             </ul>
             }
-            }
-          </li>
-          <li>
-            <a routerLink="/auth/register">
-              <i class="fa-solid fa-user"></i>
-              <span>
-                Register
-              </span>
-            </a>
-          </li>
-          <li>
-            <a class="switch-theme" (click)="toggleTheme()">
-              <span>
-                @if(isDarkMode()){
-                <i class="fa-solid fa-sun"></i>Light
-                }@else {
-                <i class="fa-solid fa-moon"></i>Dark
-                }
-              </span>
-            </a>
-          </li>
-        </ul>
-      </div>
+          </div>
+        </li>
+        }
+      </ul>
     </nav>
   </div>
 </header>

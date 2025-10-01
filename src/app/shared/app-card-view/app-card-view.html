@@ -1,0 +1,16 @@
+<div class="card-container" [style.--width.px]="width">
+    @for (data of data(); track data) {
+    <div class="card" (mouseenter)="showDialog(data)">
+        <img [ngSrc]="data.imageUrl ?? ''" [alt]="data.name" width="300" height="200" class="product-image" priority />
+        <div class="product-info">
+            <div class="info-header">
+                <h2 [title]="data.name">{{ data.name }}</h2>
+                <p class="product-price" [title]="data.price">${{ data.price }}</p>
+            </div>
+            <p [title]="data.description" class="product-description">{{ data.description }}</p>
+        </div>
+
+        <app-dialog [data]="selectedData()"></app-dialog>
+    </div>
+    }
+</div>

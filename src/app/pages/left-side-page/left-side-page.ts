@@ -22,12 +22,15 @@ export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
 
   public isExpanding = computed(() => this.currentWidth() > this.minWidth);
   public minWidth: number = 70;
+  public maxWidth: number = 500;
   public currentWidth = signal<number>(202);
 
   public currentUser = this.authService.currentUser;
   public categories = this.categoryService.categories;
   public selectedCategoryId = signal<string>('');
   public routers: string[] = [];
+
+  public titleBtn = 'Toggle Navigation';
 
   ngOnInit() {
     if (this.currentUser()?.role === 'Admin') {
@@ -61,7 +64,7 @@ export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public toggleTab() {
-    const newWidth = this.isExpanding() ? this.minWidth : 250;
+    const newWidth = this.isExpanding() ? this.minWidth : 202;
     this.currentWidth.set(newWidth);
   }
 

@@ -5,7 +5,8 @@
             <button [routerLink]="'/admin/categories/create'" [state]="{'isAdmin': true}">Create</button>
         </div>
     </div>
-    <app-table [columns]="headers" [tableData]="categories()" (actionClickEmit)="handleAction($event)"></app-table>
+    <app-grid-view [columns]="headers" [tableData]="categories()"
+        (actionClickEmit)="handleAction($event)"></app-grid-view>
 
     <!-- <app-pagination [pagination]="pagination()" [currentPage]="currentPage()"
         [onPageChange]="handlePageChange"></app-pagination> -->

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AppTable } from '../../../shared/app-table/app-table';
+import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
 import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 import { Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../shared/services/category-service/category-service';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category-list-page',
-  imports: [AppTable, AppPagination, RouterLink],
+  imports: [ AppPagination, RouterLink, AppGridView],
   templateUrl: './category-list-page.html',
   styleUrl: './category-list-page.css'
 })

@@ -35,7 +35,7 @@ export class StatusIcon {
           icon = '❌';
           break;
         default:
-          icon = 'ℹ️';
+          icon = '';
           break;
       }
 

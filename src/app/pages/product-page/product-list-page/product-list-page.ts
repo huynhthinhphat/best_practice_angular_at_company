@@ -4,17 +4,19 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 import { AuthService } from '../../../shared/services/auth-service/auth';
-import { AppTable } from '../../../shared/app-table/app-table';
+import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
 import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Product } from '../../../shared/models/product.model';
 import { Actions } from '../../../shared/models/actions.model';
 import { ToastrService } from 'ngx-toastr';
 import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import Swal from 'sweetalert2';
+import { AppCardView } from '../../../shared/app-card-view/app-card-view';
+import { CardDef } from '../../../shared/models/card-def.model';
 
 @Component({
   selector: 'app-product-page',
-  imports: [NgOptimizedImage, AppPagination, AppTable, RouterLink],
+  imports: [NgOptimizedImage, AppPagination, AppGridView, RouterLink, AppCardView],
   templateUrl: './product-list-page.html',
   styleUrl: './product-list-page.scss',
   standalone: true
@@ -26,36 +28,50 @@ export class ProductListPage implements OnInit {
   private toastrService = inject(ToastrService)
 
   public currentUser = this.authService.currentUser;
-  public pagination = this.productService.pagination;
   public products = this.productService.products;
   public currentPage = signal<number>(1);
   public headers: ColumnDef<Product>[] = [
     { field: 'id', headerText: 'Sku' },
     { field: 'name', headerText: 'Product Name' },
+    { field: 'description', headerText: 'Description' },
     { field: 'stock', headerText: 'Stock' },
-    { field: 'price', headerText: 'Price' },
+    { field: 'price', headerText: 'Price', pipe: 'currency' },
     { field: 'categoryName', headerText: 'Category Name' },
-    {
-      headerText: 'Action', columnType: "action", actions: [
-        {
-          label: 'Edit',
-          class: 'edit',
-          icon: 'pi pi-pencil',
-          tooltip: 'Edit product'
-        },
-        {
-          label: 'Delete',
-          class: 'delete',
-          icon: 'pi pi-trash',
-          tooltip: 'Delete product'
-        }
-      ]
-    }
+    // {
+    //   columnType: "action", actions: [
+    //     {
+    //       label: 'Edit',
+    //       class: 'edit',
+    //       icon: 'pi pi-pencil',
+    //       tooltip: 'Edit product'
+    //     },
+    //     {
+    //       label: 'Delete',
+    //       class: 'delete',
+    //       icon: 'pi pi-trash',
+    //       tooltip: 'Delete product'
+    //     }
+    //   ]
+    // }
   ];
-  public priceFilter: string[] = [''];
+
+  public isCardView = signal<boolean>(true);
+
+  public titleGridBtn = "Grid View";
+  public titleCardBtn = "Card View";
 
   public ngOnInit() {
     this.productService.getAllProductsByConditions();
+
+    const user = this.currentUser();
+    if (!user || user.role === 'User') {
+      this.isCardView.set(true);
+      
+      const products : CardDef<Product>[] = this.products().map(product => ({ data: product }));
+      console.log('Products as CardDef:', products);
+    } else {
+      this.isCardView.set(false);
+    }
   }
 
   public onClickProduct(productId: string) {
@@ -66,7 +82,7 @@ export class ProductListPage implements OnInit {
 
   public handlePageChange = (page: number) => {
     this.currentPage.set(page);
-    this.productService.getAllProductsByConditions(page.toString());
+    this.productService.getAllProductsByConditions();
   }
 
   public handleAction(event: { action: Actions<Product>, rowData: Product }) {
@@ -101,5 +117,9 @@ export class ProductListPage implements OnInit {
         complete: (() => this.productService.getAllProductsByConditions())
       })
     });
+  }
+
+  public toggleView() {
+    this.isCardView.update(value => !value);
   }
 }
