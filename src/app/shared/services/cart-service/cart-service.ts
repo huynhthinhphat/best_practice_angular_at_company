@@ -71,11 +71,8 @@ export class CartService {
       return this.http.post<CartItem>(`${CART_ITEMS_URL}`, data);
     }
 
-    if (quantityChange > 0) {
-      return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: quantityChange });
-    }
-
-    return throwError(() => new Error(ERROR_MESSAGES.UPDATE_CART_FAILED));
+    let newQuantity = Number(quantityChange) + Number((cartItem.quantity || 0));
+    return this.http.put<CartItem>(`${CART_ITEMS_URL}/${cartItem.id}`, { ...cartItem, quantity: newQuantity });
   }
 
   private findCartItem(user: User, product: Product): CartItem | undefined {

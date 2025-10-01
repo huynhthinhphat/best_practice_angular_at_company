@@ -1,3 +1,7 @@
+.admin-layout{
+    padding: 0 15rem;
+}
+
 .home-container {
     display: flex;
     height: calc(100vh - 60px);

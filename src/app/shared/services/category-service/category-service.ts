@@ -30,8 +30,10 @@ export class CategoryService {
       isUser = true;
     }
 
-    const params = new HttpParams().set('_page', page).set('isDeleted', false);
+    const params = new HttpParams().set('isDeleted', false);
     this.http.get<Category[]>(CATEGORY_URL, { params }).subscribe(res => {
+      if (!res) return;
+
       if (isUser) {
         this.categories.set([{ id: '', name: 'All', icon: 'border-all' }, ...res]);
         return;

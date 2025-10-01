@@ -76,15 +76,32 @@ export class CartListPage implements OnInit {
     });
   }
 
-  public handleCartItemToCart(product: Product, quantityChange: number, index : number = -1) {
-    if (isNaN(Number(quantityChange)) && index !== -1) {
-      this.cartItems()[index].quantity = 1;
-      return;
+  public handleCartItemToCart(product: Product, action: string = '', quantityChange: number = 0, index: number = -1) {
+    let quantity: number = 0;
+
+    let currentQuantity = this.cartItems()[index].quantity || 1;
+    if (action === 'increase') {
+      if (currentQuantity + 1 > product.stock!) return;
+      quantity = 1;
+    } else if (action === 'decrease') {
+      if (currentQuantity - 1 < 1) return;
+      quantity = -1;
+    } else {
+      if (index !== -1) {
+        let quantity = Number(quantityChange);
+        if (isNaN(quantity)) {
+          this.cartItems()[index].quantity = 1;
+        } else {
+          if (quantity < 1) {
+            this.cartItems()[index].quantity = 1;
+          } else if (quantity > product.stock!) {
+            this.cartItems()[index].quantity = product.stock!;
+          }
+        }
+      }
     }
 
-    const newQuantity = Math.max(1, Math.min(quantityChange, product.stock!));
-
-    this.cartService.handleCartItemToUpdate(product, newQuantity).subscribe({
+    this.cartService.handleCartItemToUpdate(product, quantity).subscribe({
       next: (cart) => {
         if (!cart) return;
         this.cartService.getCartByCartId();

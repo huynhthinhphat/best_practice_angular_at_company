@@ -1,20 +1,20 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, output, QueryList, signal, viewChildren } from '@angular/core';
 import { Product } from '../models/product.model';
-import { NgOptimizedImage } from '@angular/common';
-import { AppDialog } from '../app-dialog/app-dialog';
+import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-card-view',
-  imports: [NgOptimizedImage, AppDialog],
+  imports: [NgOptimizedImage, CurrencyPipe, RouterLink],
   templateUrl: './app-card-view.html',
   styleUrl: './app-card-view.scss'
 })
 export class AppCardView {
   public data = input<Product[]>([]);
   public width = 200;
-  public selectedData = signal<Product | null>(null);
+  public emit = output<{ data: Product, action: string }>();
 
-  public showDialog(data: Product) {
-    this.selectedData.set(data);
+  public handleEmit(action: string, index: number) {
+    this.emit.emit({ data: this.data()[index], action });
   }
 }

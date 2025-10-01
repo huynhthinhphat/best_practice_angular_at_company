@@ -1,17 +1,8 @@
 @let visible = isVisible();
-<div class="dialog-overlay" *ngIf="visible">
+@if(visible){
+<div class="dialog-overlay" (click)="$event.stopPropagation()">
     <div class="dialog-box" (click)="$event.stopPropagation()">
-
-        <h2>{{ data?.name }}</h2>
-        <!-- <img *ngIf="data?.imageUrl" [src]="data.imageUrl" [alt]="data.name" />
-        <p>{{ data!.description }}</p>
-        <p *ngIf="data?.price">Price: ${{ data.price }}</p>-->
-
-        <!-- nếu muốn hiển thị các field khác dynamic -->
-        <!-- <div *ngIf="data">
-            <p *ngFor="let key of objectKeys(data)">
-                {{ key }}: {{ data[key] }}
-            </p>
-        </div> -->
+        <ng-container *ngTemplateOutlet="content()"></ng-container>
     </div>
 </div>
+}

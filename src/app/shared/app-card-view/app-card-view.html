@@ -1,16 +1,23 @@
 <div class="card-container" [style.--width.px]="width">
-    @for (data of data(); track data) {
-    <div class="card" (mouseenter)="showDialog(data)">
+    @for (data of data(); let index = $index; track data) {
+    <div class="card">
         <img [ngSrc]="data.imageUrl ?? ''" [alt]="data.name" width="300" height="200" class="product-image" priority />
         <div class="product-info">
             <div class="info-header">
-                <h2 [title]="data.name">{{ data.name }}</h2>
-                <p class="product-price" [title]="data.price">${{ data.price }}</p>
+                <a [routerLink]="['/products/detail', data.id]" [title]="data.name">{{ data.name }}</a>
+                <p class="product-category" [title]="data.categoryName">{{ data.categoryName }}</p>
             </div>
-            <p [title]="data.description" class="product-description">{{ data.description }}</p>
+            <p class="product-price" [title]="data.price">{{ data.price | currency:'VND':'symbol':'1.0-0' }}</p>
+            <p class="product-stock" [title]="data.stock"><span>Stock: </span>{{ data.stock }}</p>
+            <p [title]="data.description" class="product-description"><span>Description: </span>{{ data.description }}</p>
         </div>
-
-        <app-dialog [data]="selectedData()"></app-dialog>
+        <div class="action-buttons">
+            <button><i class="fa-solid fa-chevron-up"></i></button>
+            <div class="button-group">
+                <button type="button" (click)="handleEmit('add', index)"><i class="fa-solid fa-heart"></i>Add to cart</button>
+                <button type="button" (click)="handleEmit('buy', index)"><i class="fa-solid fa-credit-card"></i>Buy Now</button>
+            </div>
+        </div>
     </div>
     }
 </div>

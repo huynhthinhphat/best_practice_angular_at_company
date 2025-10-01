@@ -42,10 +42,10 @@
         </div>
       </div>
       <div class="cart-item-actions">
-        <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) - 1)">-</button>
+        <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, 'decrease', 1, index)">-</button>
         <input type="text" [(ngModel)]="item.quantity" [min]="1" [max]="item.product?.stock ?? 1"
-          (blur)="handleCartItemToCart(item.product!, item.quantity!, index)" />
-        <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, (item.quantity ?? 1) + 1)">+</button>
+          (blur)="handleCartItemToCart(item.product!, '', (item.quantity || 1), index)" />
+        <button class="btn-quantity" (click)="handleCartItemToCart(item.product!, 'increase', 1, index)">+</button>
       </div>
       <div class="cart-item-button">
         <button class="btn-remove" (click)="handleDeleteCartItem([item.id!])">🗑️ Remove</button>

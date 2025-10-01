@@ -1,6 +1,6 @@
 .table-responsive {
-  max-height: 645px;       
-  overflow-y: auto;       
+  max-height: 645px;
+  overflow-y: auto;
   border: 1px solid #ddd;
   border-radius: 6px;
 
@@ -9,26 +9,98 @@
     border-collapse: collapse;
   }
 
-  th, td{
+  th,
+  td {
     padding: 8px 12px;
     border-bottom: 1px solid #eee;
     text-align: left;
-    white-space: nowrap;    
-    overflow: hidden;        
-    text-overflow: ellipsis;
-    max-width: 100px; 
+
+    .text-truncate {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   thead th {
-    position: sticky;  
-    top: 0;               
+    position: sticky;
+    top: 0;
     background-color: var(--bg-200-rgba);
     color: var(--text-900-rgba);
-    z-index: 2;       
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   }
 
-  tbody tr:hover {
-    background-color: #f9f9f9;
+  tbody td {
+    color: var(--gray-900);
+    position: relative;
+
+    a {
+      color: var(--gray-900);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .action-cell {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      .action-btn {
+        cursor: pointer;
+        color: var(--gray-900);
+        border: none;
+        width: 20px;
+        height: 20px;
+        padding: 10px;
+        font-size: 17px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid transparent;
+        background-color: transparent;
+        border-radius: 7px;
+
+        &:hover {
+          border-color: var(--dropdown-border-color);
+        }
+      }
+    }
+  }
+}
+
+.action-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 6px;
+  width: 5rem;
+
+  button {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .3rem .5rem;
+    background-color: transparent;
+    border: none;
+    color: var(--gray-900);
+
+    &:last-child {
+      color: rgba(230, 55, 87, 1);
+    }
+
+    &:hover {
+      background-color: var(--dropdown-link-hover-bg);
+    }
   }
 }

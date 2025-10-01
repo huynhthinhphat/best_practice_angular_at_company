@@ -9,6 +9,7 @@ export const ERROR_MESSAGES = {
   LOGIN_FAILED: 'Incorrect username or password',
   NOT_FOUND_ACCOUNT: 'Account not found',
   LOGIN_REQUIRED: 'Please log in to continue',
+  PERMISSION_DENIED: 'You do not have permission to perform this action',
   NOT_FOUND_CART: 'Cart not found',
   CREATE_CART_FAILED: 'Failed to create cart',
   CREATE_USER_FAILED: 'Failed to create account',

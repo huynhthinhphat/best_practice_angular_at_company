@@ -24,9 +24,10 @@
         } @else {
         <ul>
             @for(router of routers; track router){
-            <li [ngClass]="{'active': categoryId === router}" [routerLink]="['/admin/' + router]"
-                [state]="{ isAdmin: true }" (click)="onCategoryClick(router)">
-                {{ router }}
+            <li [ngClass]="{'active': categoryId === router.route}" [routerLink]="['/admin/' + router.route]"
+                [state]="{ isAdmin: true }" (click)="onCategoryClick(router.route)">
+                <i class='fa-solid {{router.icon}}'></i>
+                {{ router.route }}
             </li>
             }
         </ul>

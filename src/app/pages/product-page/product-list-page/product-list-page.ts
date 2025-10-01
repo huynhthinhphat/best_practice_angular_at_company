@@ -9,10 +9,14 @@ import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Product } from '../../../shared/models/product.model';
 import { Actions } from '../../../shared/models/actions.model';
 import { ToastrService } from 'ngx-toastr';
-import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import Swal from 'sweetalert2';
 import { AppCardView } from '../../../shared/app-card-view/app-card-view';
 import { CardDef } from '../../../shared/models/card-def.model';
+import { CartService } from '../../../shared/services/cart-service/cart-service';
+import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
+import { StorageService } from '../../../shared/services/storage-service/storage-service';
+import { User } from '../../../shared/models/user.model';
 
 @Component({
   selector: 'app-product-page',
@@ -23,9 +27,11 @@ import { CardDef } from '../../../shared/models/card-def.model';
 })
 export class ProductListPage implements OnInit {
   private productService = inject(ProductService);
+  private cartService = inject(CartService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private toastrService = inject(ToastrService)
+  private storageService = inject(StorageService);
 
   public currentUser = this.authService.currentUser;
   public products = this.productService.products;
@@ -68,7 +74,6 @@ export class ProductListPage implements OnInit {
       this.isCardView.set(true);
       
       const products : CardDef<Product>[] = this.products().map(product => ({ data: product }));
-      console.log('Products as CardDef:', products);
     } else {
       this.isCardView.set(false);
     }
@@ -119,7 +124,56 @@ export class ProductListPage implements OnInit {
     });
   }
 
-  public toggleView() {
-    this.isCardView.update(value => !value);
+  public toggleView(isCardView: boolean) {
+    this.isCardView.set(isCardView);
+  }
+
+  public handleEmit(item: { data: Product; action: string }) {
+    if (!item || !item.data) return;
+
+    const user = this.currentUser();
+    if (!user) {
+      this.toastrService.error(ERROR_MESSAGES.LOGIN_REQUIRED);
+      return;
+    }
+
+    if (user.role === 'Admin') {
+      this.toastrService.error(ERROR_MESSAGES.PERMISSION_DENIED);
+      return;
+    }
+    
+    if (item.action === 'add') {
+      this.addToCart(item.data);
+    }else if(item.action === 'buy'){
+      this.navigateToCheckout(item.data);
+    }
+  }
+
+  private addToCart(product : Product) {
+    this.cartService.handleCartItemToUpdate(product, 1).subscribe({
+      next: (res) => { 
+        if (!res) return;
+
+        this.toastrService.success(SUCCESS_MESSAGES.ADD_TO_CART);
+      },
+      complete: () => { 
+        this.cartService.getCartByCartId();
+      }
+    });
+  }
+
+  private navigateToCheckout(product: Product) { 
+    const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
+    if (!user) {
+      this.toastrService.error(ERROR_MESSAGES.LOGIN_REQUIRED);
+      return;
+    }
+
+    if (!product) return;
+
+    product = { ...product, quantityToBuy: 1 };
+    this.storageService.saveData<Product[]>(STORAGE_KEYS.CHECKOUT_PRODUCT_LIST, [product]);
+
+    this.router.navigate(['/checkout'], { state: { fromProductDetailPage: true } });
   }
 }

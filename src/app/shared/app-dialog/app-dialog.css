@@ -2,38 +2,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 350px;
+    height: 350px;
+    background-color: red;
     z-index: 1000;
-}
-
-.dialog-box {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    width: 300px;
-    max-width: 90%;
-    position: relative;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.close-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.dialog-box img {
-    width: 100%;
-    height: auto;
-    margin: 10px 0;
-    object-fit: cover;
 }

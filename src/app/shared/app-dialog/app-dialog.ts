@@ -1,24 +1,14 @@
-import { Component, effect, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, input, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-dialog',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './app-dialog.html',
-  styleUrl: './app-dialog.css'
+  styleUrl: './app-dialog.css',
+  standalone: true
 })
 export class AppDialog {
-  public data = input<any>(null);
+  public content = input<TemplateRef<any> | null>(null);
   public isVisible = input<boolean>(false);
-  private currentData: any = null;
-
-  constructor() {
-    effect(() => {
-      if (this.data() && this.data() !== this.currentData) {
-        console.log('Dialog data changed:', this.data());
-        this.currentData = this.data();
-        return;
-      }
-
-    })
-  }
 }

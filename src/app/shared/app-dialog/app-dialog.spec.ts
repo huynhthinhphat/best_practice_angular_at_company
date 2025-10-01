@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppDialog } from './app-dialog';
 
 describe('AppDialog', () => {
-  let component: AppDialog<any>;
-  let fixture: ComponentFixture<AppDialog<any>>;
+  let component: AppDialog;
+  let fixture: ComponentFixture<AppDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

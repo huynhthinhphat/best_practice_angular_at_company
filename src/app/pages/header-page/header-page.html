@@ -29,40 +29,6 @@
             <i class="fa-solid " [ngClass]="{'fa-sun': !darkMode, 'fa-moon': darkMode}"></i>
           </a>
         </li>
-        <!-- <li>
-          @if(!loginIn){
-          <a routerLink="/auth/login">
-            <i class="fa-regular fa-user"></i>
-            <span>
-              Login
-            </span>
-          </a>
-          }@else {
-          <i class="fa-solid fa-circle-user user" (click)="toggleMenu()"></i>
-          @if(isShowMenu()){
-          <ul class="menu">
-            <li (click)="redirectPage('cart')">
-              <button type="button">
-                <i class="fa-solid fa-cart-shopping"></i>
-                Cart ({{ quantityItems() }})
-              </button>
-            </li>
-            <li (click)="redirectPage('order')">
-              <button type="button">
-                <i class="fa-solid fa-receipt"></i>
-                Orders
-              </button>
-            </li>
-            <li (click)="redirectPage('logout')">
-              <button type="button">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-              </button>
-            </li>
-          </ul>
-          }
-          }
-        </li> -->
         @if(!loginIn){
         <li>
           <a routerLink="/auth/login">
@@ -81,12 +47,11 @@
           </a>
         </li>
         }@else {
-        <li>
+        <li class="user-info">
           <div class="rounded-circle" (click)="toggleMenu()" #menuWrapper>
             <span>
               {{ firstCharacter() }}
             </span>
-
             @if(showMenu){
             <ul class="menu">
               <li>

@@ -28,7 +28,7 @@
       "categoryId": "1",
       "categoryName": "Electronics",
       "stock": 100,
-      "isDeleted": true
+      "isDeleted": false
     },
     {
       "id": "2",
@@ -1134,7 +1134,7 @@
   ],
   "cartItems": [
     {
-      "id": "9c02",
+      "id": "c1de",
       "cartId": "1",
       "product": {
         "id": "4",
@@ -1146,68 +1146,6 @@
         "categoryName": "Clothing",
         "stock": 1001111,
         "isDeleted": false
-      },
-      "quantity": 1
-    },
-    {
-      "id": "cac1",
-      "cartId": "1",
-      "product": {
-        "id": "5",
-        "name": "Tablet",
-        "price": 449.99,
-        "description": "10-inch tablet with retina display",
-        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-        "categoryId": "2",
-        "categoryName": "Clothing",
-        "stock": 111,
-        "isDeleted": false
-      },
-      "quantity": 1
-    },
-    {
-      "id": "9d22",
-      "cartId": "1",
-      "product": {
-        "id": "7",
-        "name": "Winter Jacket",
-        "price": 129.99,
-        "description": "Warm winter jacket with hood",
-        "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-        "categoryId": "2",
-        "categoryName": "Clothing",
-        "stock": 100,
-        "isDeleted": false
-      },
-      "quantity": 20
-    },
-    {
-      "id": "05f7",
-      "cartId": "1",
-      "product": {
-        "id": "e809",
-        "name": "1111",
-        "price": 123123,
-        "description": "1",
-        "categoryId": "2",
-        "categoryName": "Clothing",
-        "stock": 123,
-        "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440618/e9gf3r6xsqpaomhw7cmo.jpg"
-      },
-      "quantity": 16
-    },
-    {
-      "id": "f7d6",
-      "cartId": "1",
-      "product": {
-        "id": "03d4",
-        "name": "abcc",
-        "price": 1,
-        "description": "fine bro :v",
-        "categoryId": "1",
-        "categoryName": "Electronics",
-        "stock": 9999,
-        "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1758440118/wemnx9pxonsyqoqcnmfk.jpg"
       },
       "quantity": 1
     }
