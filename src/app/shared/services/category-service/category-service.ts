@@ -22,11 +22,10 @@ export class CategoryService {
     })
   }
 
-  public getAllCategoriesByConditions(page: string = '1') {
+  public getAllCategoriesByConditions() {
     const user = this.currentUser();
     let isUser: boolean = false;
     if (!user || user?.role === 'User') {
-      page = '';
       isUser = true;
     }
 

@@ -19,7 +19,6 @@ export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
   private productService = inject(ProductService);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
 
   public isExpanding = computed(() => this.currentWidth() > this.minWidth);
   public minWidth: number = 70;

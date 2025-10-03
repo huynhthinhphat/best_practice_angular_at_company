@@ -1,33 +1,92 @@
+@let loading = isLoading();
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h2>{{ formTitle() }}</h2>
+    @if(formTitle(); as title){
+    <h2>{{ title }}</h2>
+    }
 
     @for(field of formFields(); track field.name) {
     <div class="form-input">
         @let firstError = getError(field.name);
+        
         @if(firstError){
-        <small>(*) {{ firstError }}</small>
-        }@else if(field.name === 'confirmPassword' && form.errors?.['passwordMismatch']){
-        <small>(*) {{ errorMessage.PASSWORD_MISMATCH }}</small>
+            <small>(*) {{ firstError }}</small>
         }
+        @else if(field.name === 'confirmPassword' && form.errors?.['passwordMismatch']){
+            <small>(*) {{ errorMessage.PASSWORD_MISMATCH }}</small>
+        }
+        
+        @if(showLabel() && field.name !== 'id'){
+        <label class="form-label" [for]="field.name">
+            {{field.label}}
+        </label>
+        }
+
         <div>
-            <input [type]="field.type" [id]="field.name" [formControlName]="field.name" [placeholder]="field.label"
-                #formInput>
+            @if(field.type === 'textarea'){
+                <textarea [id]="field.name" [formControlName]="field.name" [placeholder]="field.label"></textarea>
+            }
+            @else if(field.type === 'select'){
+                <select [id]="field.name" [formControlName]="field.name">
+                    @for(category of field.categories; track category.id) {
+                    <option [value]="category.id">{{ category.name }}</option>
+                    }
+                </select>
+            }
+            @else if(field.type === 'image'){
+                <div class="image-upload">
+                    <input id="imageFile" type="file" accept="image/*" (change)="onFileSelected($event)"
+                        style="display: none;" #fileInput />
+
+                    @let imageUrl = field.defaultValue;
+                    @let preview = previewImage();
+
+                    @if((!imageUrl || imageUrl === '') && preview === ''){
+                    <div class="camera-box" (click)="fileInput.click()">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    }
+
+                    @if(loading){
+                    <div class="image-preview" style="position: relative; display: inline-block;">
+                        <img [src]="preview" alt="Preview Image" width="200" height="150" />
+                        <div class="spinner-overlay">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    }
+
+                    @if(!loading && imageUrl){
+                    <div class="image-preview">
+                        <img [src]="field.defaultValue" alt="Preview Image" width="200" height="150" />
+                        <div class="product-edit-btn" (click)="fileInput.click()">
+                            <button type="button"><i class="pi pi-pencil"></i></button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            }
+            @else if(field.name !== 'id'){
+                <input [type]="field.type" [id]="field.name" [formControlName]="field.name" [placeholder]="field.label" #formInput>
+            }
+
+            @if(field.type !== 'image' && field.name !== 'id'){
             <label [for]="field.name" (click)="showPassword(field)">
                 <i [class]="field.icon"></i>
             </label>
+            }
         </div>
     </div>
     }
 
-    @if(buttonLabel(); as buttonLabel){
-    <button type="submit" [ngClass]="{'no-active' : form.invalid}">
+    <button type="submit" class="btn-submit" [ngClass]="{'no-active' : form.invalid || loading}">
         {{ buttonLabel }}
     </button>
     }
 
-    @if(formLinkMessage(); as formLinkText){
+    @if(formLinkMessage(); as formLinkMessage){
     <div>
-        <p><i>{{ formLinkText }}</i></p>
+        <p><i>{{ formLinkMessage }}</i></p>
         <a [routerLink]="[formUrl()]">
             {{ formLinkTitle() }}
         </a>

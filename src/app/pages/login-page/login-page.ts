@@ -69,8 +69,4 @@ export class LoginPage {
         }
       })
   }
-
-  public notifyParent(isShow: boolean) {
-    this.emitState.emit(isShow);
-  }
 }

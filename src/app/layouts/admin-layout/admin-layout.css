@@ -4,12 +4,11 @@
 
 .home-container {
     display: flex;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 70px);
 }
 
 .content {
     flex: 1;
-    padding: 0 20px;
 }
 
 @media (max-width: 768px) {

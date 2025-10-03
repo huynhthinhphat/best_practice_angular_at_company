@@ -15,48 +15,28 @@
       <button type="button" (click)="toggleView(false)" [class.active]="!cardView" [title]="titleGridBtn">
         <i class="fa-solid fa-table-list"></i>
       </button>
+      @if(currentUser()?.role === 'Admin'){
+      <button type="button" [title]="titleCreateBtn" (click)="handleActions({ action: 'create' })">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      }
     </div>
   </div>
   <div class="product-list">
     @if(cardView){
     <app-card-view [data]="products()" (emit)="handleEmit($event)"></app-card-view>
     } @else {
-    <app-grid-view [columns]="headers" [tableData]="products()"
-      (actionClickEmit)="handleAction($event)"></app-grid-view>
+    <app-grid-view [columns]="headers" [tableData]="products()" (actionEmit)="handleActions($event)"></app-grid-view>
     }
   </div>
 </div>
 
-<!-- @let user = currentUser();
+@let show = showDialog();
+@if(show){
+<app-dialog (showDialog)="showDialog.set($event)">
+  <span dialogTitle>Edit Product</span>
 
-<div class="product-container">
-  @if(!user || user?.role === 'User'){
-  <div>
-    <h1>Our Products</h1>
-    <div class="product-grid">
-      @for (product of products(); track product.id) {
-      <div class="product-card" (click)="onClickProduct(product.id!)">
-        <img [ngSrc]="product.imageUrl ?? ''" [alt]="product.name" width="300" height="200" class="product-image"
-          priority />
-        <div class="product-info">
-          <h2>{{ product.name }}</h2>
-          <p class="product-price">${{ product.price }}</p>
-          <p class="product-description">{{ product.description }}</p>
-        </div>
-      </div>
-      }
-    </div>
-  </div>
-  } @else {
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>Products</h1>
-    <div class="btn-create">
-      <button [routerLink]="'/admin/products/create'" [state]="{'isAdmin': true}">Create</button>
-    </div>
-  </div>
-  <app-grid-view [columns]="headers" [tableData]="products()" (actionClickEmit)="handleAction($event)"></app-grid-view>
-  }
-
-<app-pagination [pagination]="pagination()" [currentPage]="currentPage()" [onPageChange]="handlePageChange">
-  </app-pagination>
-</div> -->
+  <app-form dialogContent [formFields]="fields" [buttonLabel]="buttonLabel" [showLabel]="true" [isReset]="show"
+    (submitForm)="saveProduct($event)"></app-form>
+</app-dialog>
+}

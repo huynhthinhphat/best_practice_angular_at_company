@@ -1,18 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
-import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 import { Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../shared/services/category-service/category-service';
 import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Category } from '../../../shared/models/category.model';
-import { Actions } from '../../../shared/models/actions.model';
-import Swal from 'sweetalert2';
 import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category-list-page',
-  imports: [ AppPagination, RouterLink, AppGridView],
+  imports: [ RouterLink ],
   templateUrl: './category-list-page.html',
   styleUrl: './category-list-page.css'
 })
@@ -24,40 +21,24 @@ export class CategoryListPage implements OnInit {
   public categories = this.categoryService.categories;
   public currentPage = signal<number>(1);
   public headers: ColumnDef<Category>[] = [
-    { field: 'name', headerText: 'Category Name' },
-    {
-      headerText: 'Action', columnType: "action", actions: [
-        {
-          label: 'Edit',
-          class: 'edit',
-          icon: 'pi pi-pencil',
-          tooltip: 'Edit product'
-        },
-        {
-          label: 'Delete',
-          class: 'delete',
-          icon: 'pi pi-trash',
-          tooltip: 'Delete product'
-        }
-      ]
-    }
+    { field: 'name', headerText: 'Category Name' }
   ]
 
   public ngOnInit() {
     this.categoryService.getAllCategoriesByConditions();
   }
 
-  public handleAction(event: { action: Actions<Category>, rowData: Category }) {
-    if (event.action.label === 'Edit') {
+  public handleAction(event: { action: string, rowData: Category }) {
+    if (event.action === 'Edit') {
       this.router.navigate([`/admin/categories/edit/${event.rowData.id}`], { state: { isAdmin: true } });
-    } else if (event.action.label === 'Delete') {
+    } else if (event.action === 'Delete') {
       this.handleSoftDeletion(event.rowData);
     }
   }
 
   public handlePageChange = (page: number) => {
     this.currentPage.set(page);
-    this.categoryService.getAllCategoriesByConditions(page.toString());
+    // this.categoryService.getAllCategoriesByConditions(page.toString());
   }
 
   private handleSoftDeletion(product: Category) {

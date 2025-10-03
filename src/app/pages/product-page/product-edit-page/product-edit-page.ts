@@ -124,27 +124,27 @@ export class ProductEditPage implements OnInit, OnDestroy {
       categoryName: this.categoryName,
     }
 
-    this.productService.getProductByNameAndCategory(this.productName, this.categoryName).pipe(
-      switchMap((res: Product[]) => {
-        if ((this.product()?.name !== this.productName || this.product()?.categoryName !== this.categoryName) && res.length > 0)
-          return throwError(() => new Error(ERROR_MESSAGES.EXISTDE_PRODUCT));
-        return this.productService.saveProduct(product, action)
-      })
-    ).subscribe({
-      next: ((res: Product) => {
-        if (!res) return;
+    // this.productService.getProductByNameAndCategory(this.productName, this.categoryName).pipe(
+    //   switchMap((res: Product[]) => {
+    //     if ((this.product()?.name !== this.productName || this.product()?.categoryName !== this.categoryName) && res.length > 0)
+    //       return throwError(() => new Error(ERROR_MESSAGES.EXISTDE_PRODUCT));
+    //     return this.productService.saveProduct(product, action)
+    //   })
+    // ).subscribe({
+    //   next: ((res: Product) => {
+    //     if (!res) return;
 
-        if (action === 'update') {
-          this.toastrService.success(SUCCESS_MESSAGES.UPDATE_PRODUCT);
-        } else {
-          this.toastrService.success(SUCCESS_MESSAGES.CREATE_PRODUCT);
-        }
-        this.location.back();
-      }),
-      error: ((error) => {
-        this.toastrService.error(error.message);
-      })
-    })
+    //     if (action === 'update') {
+    //       this.toastrService.success(SUCCESS_MESSAGES.UPDATE_PRODUCT);
+    //     } else {
+    //       this.toastrService.success(SUCCESS_MESSAGES.CREATE_PRODUCT);
+    //     }
+    //     this.location.back();
+    //   }),
+    //   error: ((error) => {
+    //     this.toastrService.error(error.message);
+    //   })
+    // })
   }
 
   public goBack() {

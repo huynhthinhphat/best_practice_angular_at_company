@@ -1,39 +1,34 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, output, signal } from '@angular/core';
 import { StatusIcon } from '../directives/status-icon/status-icon';
 import { CurrencyPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { ColumnDef } from '../models/column-def.model';
-import { Actions } from '../models/actions.model';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth-service/auth';
-import { AppDialog } from '../app-dialog/app-dialog';
 import { ActionMenuDirective } from '../directives/action-menu-directive/action-menu-directive';
-import { AppForm } from '../app-form/app-form';
 
 @Component({
   selector: 'app-grid-view',
-  imports: [StatusIcon, RouterLink, AppDialog, ActionMenuDirective, AppForm],
+  imports: [StatusIcon, RouterLink, ActionMenuDirective],
   templateUrl: './app-grid-view.html',
   styleUrl: './app-grid-view.scss',
   standalone: true,
   providers: [CurrencyPipe, DatePipe, UpperCasePipe]
 })
-export class AppGridView<T> {
+export class AppGridView<T> implements OnDestroy {
   private authService = inject(AuthService);
-
-  public currentUser = this.authService.currentUser;
-
-  public columns = input<ColumnDef<T>[]>([]);
-  public tableData = input<T[]>([]);
-  public actionClickEmit = output<{ action: Actions<T>, rowData: T }>();
-
   private currencyPipe = inject(CurrencyPipe);
   private datePipe = inject(DatePipe);
 
+  public columns = input<ColumnDef<T>[]>([]);
+  public tableData = input<T[]>([]);
+  public actionEmit = output<{ action: string, rowData: T }>();
+
+  public currentUser = this.authService.currentUser;
   public tooltipToogleBtn = 'Toggle Actions';
   public tooltipEditBtn = 'Edit item';
   public tooltipDeleteBtn = 'Delete item';
 
-  public isDialogVisible = signal<boolean>(false);
+  public item = signal<T | null>(null);
 
   public getFieldAsString(row: T, field: keyof T, pipeName: string = ''): string {
     let value = row[field];
@@ -41,7 +36,7 @@ export class AppGridView<T> {
 
     switch (pipeName) {
       case 'currency':
-        return this.currencyPipe.transform(Number(value), 'VND', 'symbol', '1.0-0') || '';
+        return this.currencyPipe.transform(Number(value), 'VND', 'symbol', '1.0-0') || '0';
       case 'date':
         return this.datePipe.transform(value as string, 'hh:MM dd/MM/yyyy') || '';
       case 'uppercase':
@@ -56,11 +51,16 @@ export class AppGridView<T> {
     return row.id ?? '';
   }
 
-  public actionClick(action: Actions<T>, rowData: T) {
-    this.actionClickEmit.emit({ action, rowData });
+  public setData(item: T) {
+    this.item.set(item);
   }
 
-  public showDialog() {
-    this.isDialogVisible.set(true);
+  public handleActions(action: string) {
+    if (!this.item()) return;
+    this.actionEmit.emit({ action: action, rowData: this.item()! });
+  }
+
+  ngOnDestroy() {
+    this.item.set(null);
   }
 }

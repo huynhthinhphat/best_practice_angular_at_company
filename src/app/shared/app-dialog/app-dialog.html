@@ -1,8 +1,15 @@
-@let visible = isVisible();
-@if(visible){
-<div class="dialog-overlay" (click)="$event.stopPropagation()">
-    <div class="dialog-box" (click)="$event.stopPropagation()">
-        <ng-container *ngTemplateOutlet="content()"></ng-container>
+<div class="dialog-overlay" (click)="$event.stopPropagation()" (click)="closeDialog()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+        <div class="dialog-header">
+            <h2>
+                <ng-content select="[dialogTitle]"></ng-content>
+            </h2>
+            <button class="close-button" (click)="closeDialog()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="dialog-body">
+            <ng-content select="[dialogContent]"></ng-content>
+        </div>
     </div>
 </div>
-}

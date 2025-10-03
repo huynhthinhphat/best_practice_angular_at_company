@@ -88,6 +88,6 @@ export class HeaderPage {
 
   public logout() {
     this.authService.logout();
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/home']);
   }
 }

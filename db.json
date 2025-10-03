@@ -16,6 +16,20 @@
       "password": "1",
       "role": "Admin",
       "token": "admin_token_c105"
+    },
+    {
+      "id": "4fe1",
+      "fullName": "a",
+      "username": "a",
+      "password": "111111",
+      "role": "User"
+    },
+    {
+      "id": "21a0",
+      "fullName": "aaa",
+      "username": "a1",
+      "password": "111111",
+      "role": "User"
     }
   ],
   "products": [
@@ -28,7 +42,7 @@
       "categoryId": "1",
       "categoryName": "Electronics",
       "stock": 100,
-      "isDeleted": false
+      "isDeleted": true
     },
     {
       "id": "2",
@@ -55,24 +69,22 @@
     {
       "id": "4",
       "name": "Smartphone1",
-      "price": 1111,
       "description": "Latest model smartphone with 5G1",
-      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "2",
-      "categoryName": "Clothing",
       "stock": 1001111,
-      "isDeleted": false
+      "price": 1111,
+      "categoryId": "2",
+      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+      "categoryName": "Clothing"
     },
     {
       "id": "5",
       "name": "Tablet",
-      "price": 449.99,
       "description": "10-inch tablet with retina display",
-      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "2",
-      "categoryName": "Clothing",
       "stock": 111,
-      "isDeleted": false
+      "price": 449.99,
+      "categoryId": "2",
+      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+      "categoryName": "Clothing"
     },
     {
       "id": "6",
@@ -88,13 +100,12 @@
     {
       "id": "7",
       "name": "Winter Jacket",
-      "price": 129.99,
       "description": "Warm winter jacket with hood",
-      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "2",
-      "categoryName": "Clothing",
       "stock": 100,
-      "isDeleted": false
+      "price": 129.99,
+      "categoryId": "2",
+      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+      "categoryName": "Clothing"
     },
     {
       "id": "8",
@@ -105,7 +116,7 @@
       "categoryId": "1",
       "categoryName": "Electronics",
       "stock": 100,
-      "isDeleted": false
+      "isDeleted": true
     },
     {
       "id": "9",
@@ -120,25 +131,23 @@
     },
     {
       "id": "10",
-      "name": "Casual Shorts",
-      "price": 34.99,
-      "description": "Comfortable casual shorts",
-      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "646c",
-      "categoryName": "1231231",
-      "stock": 100,
-      "isDeleted": false
+      "name": "Casual Shorts1",
+      "description": "Comfortable casual shorts1",
+      "stock": "999",
+      "price": "99",
+      "categoryId": "3",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759431969/zsgvj6jdth3mdadpczhr.jpg",
+      "categoryName": "Sports"
     },
     {
       "id": "11",
       "name": "Basketball",
-      "price": 29.99,
       "description": "Official size basketball",
-      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "3",
-      "categoryName": "Sports",
       "stock": 100,
-      "isDeleted": false
+      "price": 29.99,
+      "categoryId": "3",
+      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
+      "categoryName": "Sports"
     },
     {
       "id": "12",
@@ -165,35 +174,32 @@
     {
       "id": "14",
       "name": "Yoga Mat",
-      "price": 39.99,
       "description": "Non-slip yoga mat",
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVwWWUpR2JYq-EQnbNMR3GVH4un9JJk03nWQ&s",
-      "categoryId": "c062",
-      "categoryName": "1231",
       "stock": 100,
-      "isDeleted": false
+      "price": 39.99,
+      "categoryId": "3",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759424791/deea1omznhnfd7rtuw0v.jpg",
+      "categoryName": "Sports"
     },
     {
       "id": "15",
       "name": "Dumbbell Set",
-      "price": 149.99,
       "description": "Adjustable dumbbell set",
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
-      "categoryId": "3",
-      "categoryName": "Sports",
       "stock": 100,
-      "isDeleted": false
+      "price": 149.99,
+      "categoryId": "3",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
+      "categoryName": "Sports"
     },
     {
       "id": "16",
       "name": "Smart Speaker",
-      "price": 199.99,
       "description": "Voice-controlled smart speaker",
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWtYD3a0I4_eRs7rgN7ET-jiwqUTyPwwAflg&s",
-      "categoryId": "1",
-      "categoryName": "Electronics",
       "stock": 100,
-      "isDeleted": false
+      "price": 199.99,
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759424778/witifztvenpgxahvucvr.jpg",
+      "categoryName": "Electronics"
     },
     {
       "id": "17",
@@ -325,7 +331,7 @@
       "categoryId": "3",
       "categoryName": "Sports",
       "stock": 100,
-      "isDeleted": false
+      "isDeleted": true
     },
     {
       "id": "29",
@@ -1129,6 +1135,16 @@
     {
       "id": "ec45",
       "userId": "34bb",
+      "totalPrice": 0
+    },
+    {
+      "id": "4da6",
+      "userId": "4fe1",
+      "totalPrice": 0
+    },
+    {
+      "id": "cb68",
+      "userId": "21a0",
       "totalPrice": 0
     }
   ],

@@ -42,9 +42,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
         router.navigate(['/not-found']);
       } else if (error.status >= 500) {
         toastrService.error(ERROR_MESSAGES.SERVER_ERROR);
-      } else {
-        toastrService.error(error.message);
-      }
+      } 
 
       return throwError(() => error);
     })

@@ -13,7 +13,6 @@ export class ActionMenuDirective {
   private menu: HTMLElement | null = null;
   private embeddedViewRef: EmbeddedViewRef<any> | null = null;
   private clickOutsideListener: (() => void) | null = null;
-  constructor() { }
 
   @HostListener('click')
   toggleActions() {
@@ -24,22 +23,12 @@ export class ActionMenuDirective {
 
     this.menu = this.renderer.createElement('div');
 
-    this.renderer.setStyle(this.menu, 'position', 'absolute');
-    this.renderer.setStyle(this.menu, 'background', 'var(--dialog-color)');
-    this.renderer.setStyle(this.menu, 'border', '1px solid var(--dropdown-border-color)');
-    this.renderer.setStyle(this.menu, 'padding', '6px');
-    this.renderer.setStyle(this.menu, 'border-radius', '6px');
-    this.renderer.setStyle(this.menu, 'box-shadow', 'var(--dialog-box-shadow)');
-    this.renderer.setStyle(this.menu, 'z-index', '1000');
-
-    const rect = this.elementRef.nativeElement.getBoundingClientRect();
-    this.renderer.setStyle(this.menu, 'top', rect.bottom + 'px');
-    this.renderer.setStyle(this.menu, 'left', rect.left + 'px');
+    this.renderer.addClass(this.menu, 'action-menu');
 
     this.embeddedViewRef = this.viewContainerRef.createEmbeddedView(this.content()!);
     this.embeddedViewRef.rootNodes.forEach(node => { this.renderer.appendChild(this.menu!, node); });
 
-    this.renderer.appendChild(document.body, this.menu);
+    this.renderer.appendChild(this.elementRef.nativeElement, this.menu);
 
     this.clickOutsideListener = this.renderer.listen('document', 'click', (event: MouseEvent) => {
       const target = event.target as Node;

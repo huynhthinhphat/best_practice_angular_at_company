@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 import { Product } from '../../models/product.model';
 import { PRODUCT_URL } from '../../constants/url.constants';
 import { PaginationResponse } from '../../models/pagination-response.model';
@@ -49,20 +49,27 @@ export class ProductService {
   }
 
   public deleteProductById(product: Product): Observable<Product> {
-    if (!product) return throwError(()=> new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE));
+    if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE));
 
     product = { ...product, isDeleted: true };
 
     return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
   }
 
-  public saveProduct(product: Product, action: string): Observable<Product> {
-    if (action === 'update') {
-      if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_UPDATE));
+  public saveProduct(oldProduct: Product, product: Product): Observable<Product> {
+    if (!product || !oldProduct) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_UPDATE));
 
-      return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
-    }
+    return this.getProductByNameAndCategory(product.name!, product.categoryName!).pipe(
+      switchMap((res: Product[]) => {
+        if ((oldProduct?.name !== product.name || oldProduct?.categoryName !== product.categoryName) && res.length > 0) {
+          return throwError(() => new Error(ERROR_MESSAGES.EXISTED_PRODUCT));
+        }
 
-    return this.http.post<Product>(`${PRODUCT_URL}`, product);
+        if(product.id){
+          return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
+        }
+        return this.http.post<Product>(`${PRODUCT_URL}`, product);
+      })
+    )
   }
 }

@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, OnInit, inject, viewChildren, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, input, output, OnInit, inject, viewChildren, ElementRef, AfterViewInit, signal, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ERROR_MESSAGES } from '../constants/message.constants';
 import { User } from '../models/user.model';
 import { PasswordMatchValidator } from '../../core/validators/password-match.validator';
 import { FormFields } from '../models/form-field.model';
+import { ImageService } from '../services/image-service/image-service';
+import { Cloudinary } from '../models/cloudinary.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-form',
@@ -14,29 +17,33 @@ import { FormFields } from '../models/form-field.model';
   styleUrl: './app-form.scss',
   standalone: true
 })
-export class AppForm implements OnInit, AfterViewInit {
+export class AppForm<T> implements OnInit, AfterViewInit {
+  private imageService = inject(ImageService);
+  private toastrService = inject(ToastrService);
+
   private inputs = viewChildren<ElementRef>('formInput');
   private formBuilder = inject(FormBuilder);
 
-  public formTitle = input<string>('Title');
+  public formTitle = input<string>('');
   public formFields = input<FormFields[]>([]);
   public buttonLabel = input<string>('');
   public formLinkMessage = input<string>('');
   public formLinkTitle = input<string>('');
   public formUrl = input<string>('');
-
-  public submitForm = output<User>();
-  public emitState = output<boolean>();
+  public showLabel = input<boolean>(false);
+  public isReset = input<boolean>(false);
+  public submitForm = output<T>();
 
   public form!: FormGroup;
-
+  public previewImage = this.imageService.previewUrl;
+  public isLoading = signal<boolean>(false);
   public readonly errorMessage = ERROR_MESSAGES;
 
-  public ngOnInit() {
+  ngOnInit() {
     this.initForm();
   }
 
-  public ngAfterViewInit() {
+  ngAfterViewInit() {
     const first = this.inputs()[0];
     if (first) first.nativeElement.focus();
   }
@@ -46,18 +53,29 @@ export class AppForm implements OnInit, AfterViewInit {
     if (!fields) return;
 
     const controls = fields.reduce((acc, field) => {
-      acc[field.name] = ['', [...field.validator, Validators.required]];
+      let defaultValue: string | number | boolean | undefined = '';
+
+      if (field.type === 'select' && field.categories) {
+        if (field.defaultValue !== '') {
+          defaultValue = field.defaultValue;
+        } else {
+          defaultValue = field.categories[0].id;
+        }
+      } else {
+        defaultValue = field.defaultValue;
+      }
+
+      acc[field.name] = [defaultValue ?? '', [...field.validator, Validators.required]];
       return acc;
     }, {} as any)
 
-    this.form = this.formBuilder.group(
-      controls,
-      { validators: PasswordMatchValidator });
+    this.form = this.formBuilder.group(controls, { validators: PasswordMatchValidator });
   }
 
   public onSubmit() {
     if (this.form.valid) {
       this.submitForm.emit(this.form.value);
+      this.form.reset();
     }
   }
 
@@ -66,14 +84,36 @@ export class AppForm implements OnInit, AfterViewInit {
 
     const error = this.form.get(fieldName)?.errors;
     if (!error) return null;
-        
+
     const field = this.formFields()!.find(f => f.name === fieldName);
     if (!field) return null;
     return field.errors?.find(err => error[err.type])?.message;
   }
 
   public showPassword(field: FormFields) {
-    console.log(typeof(field))
+    if (field.name !== 'password' && field.name !== 'confirmPassword') return;
     field.type = field.type === 'password' ? 'text' : 'password';
+  }
+
+  public onFileSelected(event: Event) {
+    this.isLoading.set(true);
+
+    this.imageService.handleImageEvent(event).subscribe({
+      next: ((res: Cloudinary) => {
+        if (!res) return;
+
+        const imageUrl = res.secure_url;
+        if (!imageUrl) return;
+
+        this.formFields().find(field => field.type === 'image')!.defaultValue = imageUrl;
+        this.form.get('imageUrl')?.setValue(imageUrl);
+        this.imageService.previewUrl.set('');
+        this.isLoading.set(false);
+      }),
+      error: () => {
+        this.isLoading.set(false);
+        this.toastrService.error(ERROR_MESSAGES.UPLOAD_FILE_FAILED);
+      }
+    })
   }
 }

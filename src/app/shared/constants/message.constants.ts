@@ -32,7 +32,7 @@ export const ERROR_MESSAGES = {
   NOT_FOUND: 'Resource not found',
   SERVER_ERROR: 'Server error. Please try again later.',
   EXISTED_CATEGORY: 'Category already exists',
-  EXISTDE_PRODUCT: 'Product already exists'
+  EXISTED_PRODUCT: 'Product already exists'
 };
 
 export const SUCCESS_MESSAGES = {
@@ -42,14 +42,13 @@ export const SUCCESS_MESSAGES = {
   ADD_TO_CART: 'Added to cart successfully',
   ORDER: 'Order placed successfully',
   UPDATE_ORDER: 'Order updated successfully',
-  UPDATE_PRODUCT: 'Product updated successfully',
-  CREATE_PRODUCT: 'Product created successfully',
+  SAVED_PRODUCT: 'Product saved successfully',
   CREATE_CATEGORY: 'Category created successfully',
   UPDATE_CATEGORY: 'Category updated successfully'
 };
 
 export const SWAL_MESSAGES = {
-  CONFIRM_DELETE_TITLE: 'Are you sure you want to delete?',
+  CONFIRM_DELETE_TITLE: 'Do you want to delete the product?',
   CONFIRM_ORDER_TITLE: 'Confirm order?',
   CONFIRM_UPDATE_ORDER_TITLE: 'Confirm order update?',
   CONFIRM_DELETE_TEXT: 'This action cannot be undone!',
@@ -73,4 +72,5 @@ export const FORM = {
   LOGIN: 'Login',
   LOGIN_MESSAGE: 'Already have account?',
   REGISTER_MESSAGE: "Don't have account yet?",
+  SAVE: 'Save',
 }

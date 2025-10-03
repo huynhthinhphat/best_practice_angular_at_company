@@ -11,6 +11,7 @@ import { switchMap, throwError } from 'rxjs';
 import { Cart } from '../../shared/models/cart.model';
 import { LOGIN_URL } from '../../shared/constants/url.constants';
 import { FormFields } from '../../shared/models/form-field.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -23,6 +24,7 @@ export class RegisterPage {
   private authService = inject(AuthService);
   private cartService = inject(CartService);
   private toastrService = inject(ToastrService);
+  private router = inject(Router);
 
   public fields : FormFields[] = [
     {
@@ -70,7 +72,6 @@ export class RegisterPage {
   public formLinkTitle = FORM.LOGIN;
   public formUrl = LOGIN_URL;
   public errorMessage = signal<string>('');
-  public emitState = output<boolean>();
 
   public handleRegister(user: User) {
     if (!user) return;
@@ -87,15 +88,11 @@ export class RegisterPage {
           if (!cart) return;
 
           this.toastrService.success(SUCCESS_MESSAGES.REGISTER);
-          this.notifyParent(false);
+          this.router.navigate(['/auth/login']);
         },
         error: (error) => {
           this.toastrService.error(error.message);
         }
       })
-  }
-    
-  public notifyParent(isShow: boolean) {
-    this.emitState.emit(isShow);
   }
 }

@@ -2,9 +2,12 @@
   <table>
     <thead>
       <tr>
+        <th></th>
         @for(col of columns(); track col){
         <th scope="col">
-          {{col.headerText}}
+          @if(col.field !== 'id'){
+            {{col.headerText}}
+          }
         </th>
         }
       </tr>
@@ -13,33 +16,36 @@
       @if(tableData().length > 0){
       @for(data of tableData(); track data){
       <tr>
-        @for(col of columns(); let index = $index; track col){
+        <td>
+          <div>
+            @let user = currentUser();
+            @if(user && user.role === 'Admin'){
+            <div class="action-cell">
+              <button class="action-btn" type="button" [title]="tooltipToogleBtn" appActionMenuDirective
+                [content]="dialogTemplate" (click)="setData(data)">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+            </div>
+            }
+          </div>
+        </td>
+        @for(col of columns(); track col){
         @let value = getFieldAsString(data, col.field!, col.pipe);
         @let id = getId(data!);
+
         <td [title]="value">
           <div>
-            <span [appStatusIcon]="value"></span>
-            @if(col.field === 'name'){
-            <a [routerLink]="['/products/detail', id]" [title]="value">
-              <span>
-                {{ value }}
-              </span>
-            </a>
-            }@else if(col.field === 'id') {
-            <span>{{ value }}</span>
-            <div>
-              @let user = currentUser();
-              @if(user && user.role === 'Admin'){
-              <div class="action-cell">
-                <button class="action-btn" type="button" [title]="tooltipToogleBtn" appActionMenuDirective
-                  [content]="popupTemplate">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </button>
-              </div>
+            @if(col.field !== 'id'){
+              <span [appStatusIcon]="value"></span>
+              @if(col.field === 'name'){
+              <a [routerLink]="['/products/detail', id]" [title]="value">
+                <span>
+                  {{ value }}
+                </span>
+              </a>
+              } @else {
+              <span class="text-truncate">{{ value }}</span>
               }
-            </div>
-            } @else {
-            <span class="text-truncate">{{ value }}</span>
             }
           </div>
         </td>
@@ -51,104 +57,15 @@
   </table>
 </div>
 
-<app-dialog [isVisible]="isDialogVisible()" [content]="dialogContent"></app-dialog>
-
-<ng-template #popupTemplate>
+<ng-template #dialogTemplate>
   <div class="action-dropdown">
-    <button [title]="tooltipEditBtn" (click)="showDialog()">Edit<i class="fa-solid fa-pencil"></i></button>
-    <button [title]="tooltipDeleteBtn">Delete<i class="fa-solid fa-trash"></i></button>
-  </div>
-</ng-template>
-
-<ng-template #dialogContent>
-  <div class="edit-container">
-    <!-- @if(product()?.id){
-    <h1>Edit Product</h1>
-    } @else{
-    <h1>Create New Product</h1>
-    } -->
-  
-    <div class="edit-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="name">Product Name</label>
-          <!-- <input id="name" type="text" [(ngModel)]="productName" /> -->
-        </div>
-  
-        <div class="form-group">
-          <label for="price">Price (₫)</label>
-          <!-- <input id="price" type="number" [(ngModel)]="price" min="1" /> -->
-        </div>
-      </div>
-  
-      <div class="form-row">
-        <div class="form-group">
-          <label for="category">Category</label>
-          <!-- <select id="category" (change)="handleSelectedCategory($event)">
-            @for(category of categories(); track category.id){
-            @if(category.name !== 'All'){
-            <option [value]="category.id" [selected]="category.name === product()?.categoryName">
-              {{category.name}}</option>
-            }
-            }
-          </select> -->
-        </div>
-  
-        <div class="form-group">
-          <label for="stock">Stock</label>
-          <!-- <input id="stock" type="number" [(ngModel)]="stock" /> -->
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="imageFile">Product Image</label>
-        <!-- <input id="imageFile" type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none;"
-          #fileInput /> -->
-  
-        <!-- @if(product()?.imageUrl === '' && previewImage() === ''){
-        <div class="camera-box" (click)="fileInput.click()">📷</div>
-        } -->
-  
-        <!-- @if(previewImage()){
-        <div class="image-preview" style="position: relative; display: inline-block;">
-          <img [src]="previewImage()" alt="Preview Image" width="200" height="150" />
-          <div class="spinner-overlay">
-            <div class="spinner"></div>
-          </div>
-        </div>
-        } -->
-  
-        <!-- @if(product()?.imageUrl && previewImage() === ''){
-        <div class="image-preview">
-          <img [src]="product()?.imageUrl" [alt]="product()?.name" width="200" height="150">
-          <div class="product-edit-btn" (click)="fileInput.click()">
-            <button><i class="pi pi-pencil"></i></button>
-          </div>
-        </div>
-        } -->
-      </div>
-  
-      <div class="form-group">
-        <label for="description">Description</label>
-        <!-- <textarea id="description" [(ngModel)]="description" rows="3"></textarea> -->
-      </div>
-  
-      <!-- <div class="form-actions">
-        @if(product()?.id){
-        <button type="button" [ngClass]="{'no-active' : previewImage() !== ''}" class="btn btn-save"
-          (click)="saveProduct('update')">
-          <i class="pi pi-check"></i> Save
-        </button>
-        } @else{
-        <button type="button" [ngClass]="{'no-active' : previewImage() !== ''}" class="btn btn-save"
-          (click)="saveProduct('create')">
-          <i class="pi pi-check"></i> Create
-        </button>
-        }
-        <button type="button" class="btn btn-cancel" (click)="goBack()">
-          <i class="pi pi-times"></i> Cancel
-        </button>
-      </div> -->
-    </div>
+    <button [title]="tooltipEditBtn" (click)="handleActions('edit')">
+      Edit
+      <i class="fa-solid fa-pencil"></i>
+    </button>
+    <button [title]="tooltipDeleteBtn" (click)="handleActions('delete')">
+      Delete
+      <i class="fa-solid fa-trash"></i>
+    </button>
   </div>
 </ng-template>
