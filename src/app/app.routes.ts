@@ -85,21 +85,12 @@ export const routes: Routes = [
             },
             {
                 path: 'products',
-                canActivate: [checkoutActivateGuard],
+                // canActivate: [checkoutActivateGuard],
                 children: [
                     {
                         path: '',
                         component: ProductListPage
-                    },
-                    {
-                        path: 'create',
-                        loadComponent: () => import('./pages/product-page/product-edit-page/product-edit-page').then(m => m.ProductEditPage)
-                    },
-                    {
-                        path: 'edit/:id',
-                        loadComponent: () => import('./pages/product-page/product-edit-page/product-edit-page').then(m => m.ProductEditPage),
-                        resolve: { product: productResolver }
-                    },
+                    }
                 ]
             },
             {
@@ -132,5 +123,5 @@ export const routes: Routes = [
             },
         ]
     },
-    { path: '**', redirectTo: 'not-found' }
+    // { path: '**', redirectTo: 'not-found' }
 ];

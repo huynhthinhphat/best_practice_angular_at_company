@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, computed, ElementRef, inject, OnDestroy, OnInit, output, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { CategoryService } from '../../shared/services/category-service/category-service';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../shared/services/product-service/product-service';
 import { AuthService } from '../../shared/services/auth-service/auth';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ResizableDirective } from '../../shared/directives/resizable-directive/resizable-directive';
 
 @Component({

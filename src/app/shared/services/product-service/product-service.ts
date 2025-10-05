@@ -56,19 +56,26 @@ export class ProductService {
     return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
   }
 
-  public saveProduct(oldProduct: Product, product: Product): Observable<Product> {
-    if (!product || !oldProduct) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_UPDATE));
+  public saveProduct(oldProduct: Product | null, product: Product): Observable<Product> {
+    if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_SAVE));
 
     return this.getProductByNameAndCategory(product.name!, product.categoryName!).pipe(
       switchMap((res: Product[]) => {
-        if ((oldProduct?.name !== product.name || oldProduct?.categoryName !== product.categoryName) && res.length > 0) {
+        const isExisted = res.length > 0;
+        const isUpdate = !!product.id;
+        const hasNameOrCategoryChanged = oldProduct && (oldProduct.name !== product.name || oldProduct.categoryName !== product.categoryName);
+
+        if ((isUpdate && hasNameOrCategoryChanged && isExisted) || (!isUpdate && isExisted)) {
           return throwError(() => new Error(ERROR_MESSAGES.EXISTED_PRODUCT));
         }
 
-        if(product.id){
+        if(isUpdate){
           return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
         }
-        return this.http.post<Product>(`${PRODUCT_URL}`, product);
+
+        const newProduct = { ...product };
+        delete newProduct.id;
+        return this.http.post<Product>(`${PRODUCT_URL}`, newProduct);       
       })
     )
   }

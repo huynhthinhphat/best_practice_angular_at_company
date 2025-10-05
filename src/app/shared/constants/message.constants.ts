@@ -17,7 +17,7 @@ export const ERROR_MESSAGES = {
   UPDATE_ORDER_FAILED: 'Failed to update order',
   UPDATE_CART_FAILED: 'Failed to update cart',
   NO_PRODUCT_TO_DELETE: 'Product to delete not found',
-  NO_PRODUCT_TO_UPDATE: 'Product to update not found',
+  NO_PRODUCT_TO_SAVE: 'Product to save not found',
   NO_CATEGORY_TO_DELETE: 'Category to delete not found',
   NO_CATEGORY_TO_UPDATE: 'Category to update not found',
   UPLOAD_FILE_FAILED: 'File upload failed',

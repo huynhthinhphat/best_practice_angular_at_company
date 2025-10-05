@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 })
 export class AppCardView {
   public data = input<Product[]>([]);
+  public maxHeight = input<number>(0);
   public width = 200;
   public emit = output<{ data: Product, action: string }>();
 

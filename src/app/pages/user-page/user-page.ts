@@ -3,11 +3,10 @@ import { UserService } from '../../shared/services/user-service/user-service';
 import { AppGridView } from '../../shared/app-grid-view/app-grid-view';
 import { ColumnDef } from '../../shared/models/column-def.model';
 import { User } from '../../shared/models/user.model';
-import { AppPagination } from '../../shared/app-pagination/app-pagination';
 
 @Component({
   selector: 'app-user-page',
-  imports: [AppGridView, AppPagination],
+  imports: [AppGridView],
   templateUrl: './user-page.html',
   styleUrl: './user-page.css'
 })

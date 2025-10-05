@@ -2,7 +2,6 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrderService } from '../../../shared/services/order-service/order-service';
 import { CommonModule } from '@angular/common';
-import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Order } from '../../../shared/models/order.model';
 import { AppTabFilter } from '../../../shared/app-tab-filter/app-tab-filter';
@@ -10,7 +9,7 @@ import { AuthService } from '../../../shared/services/auth-service/auth';
 
 @Component({
   selector: 'app-order-list-page',
-  imports: [ CommonModule, AppPagination, AppTabFilter ],
+  imports: [ CommonModule, AppTabFilter ],
   templateUrl: './order-list-page.html',
   styleUrl: './order-list-page.css',
   standalone: true

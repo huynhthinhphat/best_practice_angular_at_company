@@ -1,49 +1,43 @@
-import { Component, effect, input, OnChanges } from '@angular/core';
-import { PaginationResponse } from '../models/pagination-response.model';
+import { Component, ElementRef, HostListener, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-pagination',
   imports: [CommonModule],
   templateUrl: './app-pagination.html',
-  styleUrl: './app-pagination.css'
+  styleUrl: './app-pagination.scss'
 })
-export class AppPagination<T> implements OnChanges{
-  public pagination = input<PaginationResponse<T> | null>(null);
-  public currentPage = input<number>(1);
-  public onPageChange = input<(page: number) => void>();
+export class AppPagination {
+  private elementRef = inject(ElementRef);
 
-  public start : number = 0;
-  public end : number = 0;
+  public startIndex = input<number>(0);
+  public endIndex = input<number>(20);
+  public totalItem = input<number>(1);
+  public quantityItem = input<number>(1);
 
-  ngOnChanges() {
-    if(this.pagination()){
-      this.calculateRange(this.pagination()!);
+  public direction = output<-1 | 1>();
+  public quantityItemEmit = output<number>();
+
+  public options: number[] = [10, 20, 50, 70, 100];
+  public isShowMenu = signal<boolean>(false);
+
+  public handleNavigation(direction: -1 | 1) {
+    this.direction.emit(direction);
+  }
+
+  public handleQuantityItem(index: number) {
+    this.quantityItemEmit.emit(this.options[index]);
+    this.toggleMenu();
+  }
+
+  public toggleMenu() {
+    this.isShowMenu.update(val => !val);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.querySelector('.select-container').contains(event.target)) {
+      this.isShowMenu.set(false);
     }
-  }
-
-  public goToPage(page: number) {
-    this.onPageChange()?.(page);
-  }
-
-  public range(startPage: number, endPage: number): number[]{
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-  }
-
-  private calculateRange(pagination: PaginationResponse<T>) {
-    if (pagination.prev === null) {
-      this.start = 1;
-      this.end = pagination.pages! <= 2 ? 2 : 3;
-      return;
-    } 
-    
-    if (pagination.next === null) {
-      this.start = pagination.pages! <= 2 ? pagination.prev! : pagination.last! - 2;
-      this.end = pagination.last!;
-      return;
-    } 
-    
-    this.start = pagination.prev!;
-    this.end = pagination.next!;
   }
 }

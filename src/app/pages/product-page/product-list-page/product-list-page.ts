@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../shared/services/product-service/product-service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth-service/auth';
@@ -6,7 +6,6 @@ import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
 import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Product } from '../../../shared/models/product.model';
 import { ToastrService } from 'ngx-toastr';
-import { ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import { AppCardView } from '../../../shared/app-card-view/app-card-view';
 import { CartService } from '../../../shared/services/cart-service/cart-service';
 import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
@@ -16,13 +15,14 @@ import { AppDialog } from '../../../shared/app-dialog/app-dialog';
 import { AppForm } from '../../../shared/app-form/app-form';
 import { FormFields } from '../../../shared/models/form-field.model';
 import { CategoryService } from '../../../shared/services/category-service/category-service';
+import { ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import Swal from 'sweetalert2';
-import e from 'express';
-import { switchMap, throwError } from 'rxjs';
+import { Validators } from '@angular/forms';
+import { AppPagination } from '../../../shared/app-pagination/app-pagination';
 
 @Component({
   selector: 'app-product-page',
-  imports: [AppGridView, AppCardView, AppDialog, AppForm],
+  imports: [AppGridView, AppCardView, AppDialog, AppForm, AppPagination],
   templateUrl: './product-list-page.html',
   styleUrl: './product-list-page.scss',
   standalone: true
@@ -37,32 +37,98 @@ export class ProductListPage implements OnInit {
   private storageService = inject(StorageService);
 
   public currentUser = this.authService.currentUser;
-  public products = this.productService.products;
+  public allProducts = this.productService.products;
   public headers: ColumnDef<Product>[] = [
-    { field: 'id', headerText: 'Sku' },
-    { field: 'name', headerText: 'Product Name' },
-    { field: 'description', headerText: 'Description' },
-    { field: 'stock', headerText: 'Stock' },
-    { field: 'price', headerText: 'Price', pipe: 'currency' },
-    { field: 'categoryName', headerText: 'Category Name' },
+    {
+      headerText: 'Toggle Columns'
+    },
+    {
+      field: 'name',
+      headerText: 'Product Name'
+    },
+    {
+      field: 'description',
+      headerText: 'Description'
+    },
+    {
+      field: 'stock',
+      headerText: 'Stock'
+    },
+    {
+      field: 'price',
+      headerText: 'Price',
+      pipe: 'currency'
+    },
+    {
+      field: 'categoryName',
+      headerText: 'Category Name'
+    }
   ];
   public isCardView = signal<boolean>(true);
   public titleGridBtn = "Grid View";
   public titleCardBtn = "Card View";
   public titleCreateBtn = "Create a product";
   public fields: FormFields[] = [
-    { name: 'id', label: 'id', type: 'text', validator: [], defaultValue: '' },
-    { name: 'name', label: 'Name', type: 'text', validator: [], defaultValue: '' },
-    { name: 'description', label: 'Description', type: 'textarea', validator: [], defaultValue: '' },
-    { name: 'stock', label: 'Stock', type: 'text', validator: [], defaultValue: 0 },
-    { name: 'price', label: 'Price', type: 'text', validator: [], defaultValue: 0 },
-    { name: 'categoryId', label: 'Category', type: 'select', validator: [], categories: [], defaultValue: '' },
-    { name: 'imageUrl', label: 'Image', type: 'image', validator: [], defaultValue: '' }
+    {
+      name: 'id',
+      label: 'id',
+      type: 'text',
+      validator: [],
+      defaultValue: ''
+    },
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      validator: [Validators.required],
+      defaultValue: ''
+    },
+    {
+      name: 'description',
+      label: 'Description',
+      type: 'textarea',
+      validator: [Validators.required],
+      defaultValue: ''
+    },
+    {
+      name: 'stock',
+      label: 'Stock',
+      type: 'text',
+      validator: [Validators.required],
+      defaultValue: 0
+    },
+    {
+      name: 'price',
+      label: 'Price',
+      type: 'text',
+      validator: [Validators.required],
+      defaultValue: 0
+    },
+    {
+      name: 'categoryId',
+      label: 'Category',
+      type: 'select',
+      validator: [Validators.required],
+      categories: [],
+      defaultValue: ''
+    },
+    {
+      name: 'imageUrl',
+      label: 'Image',
+      type: 'image',
+      validator: [Validators.required],
+      defaultValue: ''
+    }
   ];
   public originalFields: FormFields[] = [];
   public buttonLabel = FORM.SAVE;
   public oldProduct = signal<Product | null>(null);
   public showDialog = signal<boolean>(false);
+
+  public startIndex = signal<number>(1);
+  public endIndex = signal<number>(10);
+  public quantityItem = signal<number>(10);
+  public filteredProducts = computed(() => this.allProducts().slice(this.startIndex() - 1, this.endIndex()));
 
   constructor() {
     effect(() => {
@@ -71,7 +137,7 @@ export class ProductListPage implements OnInit {
     })
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     this.productService.getAllProductsByConditions();
 
     const user = this.currentUser();
@@ -89,8 +155,6 @@ export class ProductListPage implements OnInit {
   }
 
   public handleActions(event: { action: string, rowData?: Product }) {
-    console.log(event)
-
     if (event.action === 'delete') {
       this.handleSoftDeletion(event.rowData!);
       return;
@@ -101,12 +165,6 @@ export class ProductListPage implements OnInit {
         field.defaultValue = event.rowData![field.name as keyof Product];
       });
       this.oldProduct.set(event.rowData!);
-      this.showDialog.set(true);
-      return;
-    }
-
-    if(event.action === 'create'){
-      this.fields = this.originalFields.map(field => ({ ...field }));
       this.showDialog.set(true);
       return;
     }
@@ -142,7 +200,8 @@ export class ProductListPage implements OnInit {
     this.isCardView.set(isCardView);
   }
 
-  public toggleDialog(){
+  public toggleDialog() {
+    this.fields = this.originalFields.map(field => ({ ...field }));
     this.showDialog.set(true);
   }
 
@@ -196,19 +255,19 @@ export class ProductListPage implements OnInit {
   }
 
   public saveProduct(product: Product) {
-    if (!product || !this.oldProduct()) return;
+    if (!product) return;
 
     if (product.name!.trim() === '') {
       this.toastrService.warning(ERROR_MESSAGES.INVALID_PRODUCT_NAME);
       return;
     }
 
-    if (product.price! < 0) {
+    if (isNaN(Number(product.price)) || product.price! < 0) {
       this.toastrService.warning(ERROR_MESSAGES.INVALID_PRICE);
       return;
     }
 
-    if (product.stock! < 0) {
+    if (isNaN(Number(product.stock)) || product.stock! < 0) {
       this.toastrService.warning(ERROR_MESSAGES.INVALID_STOCK);
       return;
     }
@@ -228,5 +287,33 @@ export class ProductListPage implements OnInit {
         }),
         complete: () => this.productService.getAllProductsByConditions()
       })
+  }
+
+  public handleNavigation(direction: -1 | 1) {
+    let quantity = this.quantityItem();
+    let total = this.allProducts().length;
+    let steps = quantity * direction;
+
+    let nextStart = this.startIndex() + steps;
+    let nextEnd = this.endIndex() + steps;
+
+    if (this.endIndex() === total) {
+      nextEnd = nextStart + quantity - 1;
+    } else if (nextEnd > total) {
+      nextEnd = total;
+    }
+
+    this.startIndex.set(nextStart);
+    this.endIndex.set(nextEnd);
+  }
+
+  public handleQuantityItem(quantityItem: number) {
+    this.quantityItem.set(quantityItem)
+
+    let total = this.allProducts().length;
+    let quantity = quantityItem > total ? total : quantityItem;
+
+    this.startIndex.set(1);
+    this.endIndex.set(quantity)
   }
 }

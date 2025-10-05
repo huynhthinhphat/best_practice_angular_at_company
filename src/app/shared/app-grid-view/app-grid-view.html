@@ -1,60 +1,56 @@
-<div class="table-responsive">
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        @for(col of columns(); track col){
-        <th scope="col">
-          @if(col.field !== 'id'){
-            {{col.headerText}}
-          }
-        </th>
-        }
-      </tr>
-    </thead>
-    <tbody>
-      @if(tableData().length > 0){
-      @for(data of tableData(); track data){
-      <tr>
-        <td>
-          <div>
-            @let user = currentUser();
-            @if(user && user.role === 'Admin'){
-            <div class="action-cell">
-              <button class="action-btn" type="button" [title]="tooltipToogleBtn" appActionMenuDirective
-                [content]="dialogTemplate" (click)="setData(data)">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-              </button>
-            </div>
-            }
-          </div>
-        </td>
-        @for(col of columns(); track col){
-        @let value = getFieldAsString(data, col.field!, col.pipe);
-        @let id = getId(data!);
+@let dataList = tableData();
+@let height = maxHeight();
+@let columnList = columns();
 
-        <td [title]="value">
-          <div>
-            @if(col.field !== 'id'){
-              <span [appStatusIcon]="value"></span>
-              @if(col.field === 'name'){
-              <a [routerLink]="['/products/detail', id]" [title]="value">
-                <span>
-                  {{ value }}
-                </span>
-              </a>
-              } @else {
-              <span class="text-truncate">{{ value }}</span>
-              }
-            }
-          </div>
-        </td>
+<div class="table-container" [style.--maxHeight.px]="height">
+  <div class="table">
+    <div class="thead">
+      @for(col of columnList; let index = $index; track col){
+      <div class="th" (click)="setColumnIndex(index)" appResizable [minWidth]="50" [maxWidth]="1000"
+        [directions]="['right']" (widthChange)="handleWithChange($event)">
+        @if(col.headerText === 'Toggle Columns'){
+        <button class="btn-column-management" [title]="tooltipColumnManagement">
+          <i class="fa-solid fa-list"></i>
+        </button>
+        } @else if(col.field !== 'id'){
+        <span class="text-truncate">{{col.headerText}}</span>
         }
-      </tr>
+      </div>
+      }
+    </div>
+    <div class="tbody">
+      @if(dataList.length > 0){
+      @for(data of dataList; track data){
+      <div class="tr">
+        @for(col of columnList; track col){
+        @let value = getFieldAsString(data, col.field!, col.pipe);
+
+        <div class="td" [title]="value">
+          @if(col.headerText === 'Toggle Columns'){
+          <button class="action-btn" type="button" [title]="tooltipToogleBtn" appActionMenuDirective
+            [content]="dialogTemplate" (click)="setData(data)">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          }@else{
+          @let id = getId(data!);
+
+          @if(col.field === 'name'){
+          <a [routerLink]="['/products/detail', id]">
+            <span class="text-truncate">
+              {{ value }}
+            </span>
+          </a>
+          } @else {
+          <span class="text-truncate">{{ value }}</span>
+          }
+          }
+        </div>
+        }
+      </div>
       }
       }
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
 
 <ng-template #dialogTemplate>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { Observable, switchMap, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { User } from '../../models/user.model';
 import { USER_URL } from '../../constants/url.constants';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
@@ -79,20 +79,13 @@ export class AuthService {
     }
   }
 
-  public isAdmin(): boolean {
+  public isAdmin(): Observable<boolean> {
     const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
-    if (!user) return false;
+    if (!user) return of(false);
 
-    this.getAccountByUserId(user.id!).subscribe({
-      next: (user) => {
-        if (!user || user.role === 'User') return false;
-        return true;
-      },
-      error: () => {
-        return false;
-      }
-    });
-
-    return false;
+    return this.getAccountByUserId(user.id!).pipe(
+    map(u => !!u && u.role !== 'User'),
+    catchError(() => of(false))
+  );
   }
 }

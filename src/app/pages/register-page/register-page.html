@@ -1,3 +1,4 @@
 <app-form [formTitle]="formTitle" [formFields]="fields" [buttonLabel]="buttonLabel" [formLinkMessage]="formLinkMessage"
-    [formLinkTitle]="formLinkTitle" [formUrl]="formUrl" (submitForm)="handleRegister($event)">
+    [formLinkTitle]="formLinkTitle" [formUrl]="formUrl" [validators]="passwordMatchValidator"
+    (submitForm)="handleRegister($event)">
 </app-form>

@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../shared/services/cart-service/cart-service';
 import { REGISTER_URL } from '../../shared/constants/url.constants';
 import { FormFields } from '../../shared/models/form-field.model';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -29,14 +30,14 @@ export class LoginPage {
       label: 'Username',
       icon: 'fa-solid fa-user',
       type: 'text',
-      validator: []
+      validator: [Validators.required]
     },
     {
       name: 'password',
       label: 'Password',
       icon: 'fa-solid fa-lock',
       type: 'password',
-      validator: []
+      validator: [Validators.required]
     },
   ];
   public formTitle = FORM.LOGIN;

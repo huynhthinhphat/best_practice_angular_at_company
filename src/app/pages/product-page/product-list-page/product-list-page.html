@@ -1,8 +1,16 @@
 @let cardView = isCardView();
+@let products = filteredProducts();
+@let show = showDialog();
+@let user = currentUser();
+@let start = startIndex();
+@let end = endIndex();
+@let total = allProducts().length;
+@let quantity = quantityItem();
 
 <div class="product-container">
   <div class="product-header">
     <h1>Products</h1>
+    @if(user?.role === 'Admin'){
     <div>
       <button type="button" (click)="toggleView(true)" [class.active]="cardView" [title]="titleCardBtn">
         <svg class="icon icon-card" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -15,23 +23,26 @@
       <button type="button" (click)="toggleView(false)" [class.active]="!cardView" [title]="titleGridBtn">
         <i class="fa-solid fa-table-list"></i>
       </button>
-      @if(currentUser()?.role === 'Admin'){
-      <button type="button" [title]="titleCreateBtn" (click)="handleActions({ action: 'create' })">
+      <button type="button" [title]="titleCreateBtn" (click)="toggleDialog()">
         <i class="fa-solid fa-plus"></i>
       </button>
-      }
     </div>
+    }
   </div>
+
+  <app-pagination [totalItem]="total" [startIndex]="start" [endIndex]="end" [quantityItem]="quantity"
+    (direction)="handleNavigation($event)" (quantityItemEmit)="handleQuantityItem($event)"></app-pagination>
+
   <div class="product-list">
     @if(cardView){
-    <app-card-view [data]="products()" (emit)="handleEmit($event)"></app-card-view>
+    <app-card-view [maxHeight]="720" [data]="products" (emit)="handleEmit($event)"></app-card-view>
     } @else {
-    <app-grid-view [columns]="headers" [tableData]="products()" (actionEmit)="handleActions($event)"></app-grid-view>
+    <app-grid-view [maxHeight]="720" [columns]="headers" [tableData]="products"
+      (actionEmit)="handleActions($event)"></app-grid-view>
     }
   </div>
 </div>
 
-@let show = showDialog();
 @if(show){
 <app-dialog (showDialog)="showDialog.set($event)">
   <span dialogTitle>Edit Product</span>

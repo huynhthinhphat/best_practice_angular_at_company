@@ -13,14 +13,16 @@ export class AuthRedirectPage implements OnInit {
   private router = inject(Router);
 
   ngOnInit() {
-    const isAdmin = this.authService.isAdmin();
+    this.authService.isAdmin().subscribe({
+      next: (res) => {
+        if (res === true) {
+          this.router.navigate(['/admin/users']);
+          return;
+        }
 
-    if (isAdmin) {
-      this.router.navigate(['/admin']);
-      return;
-    }
-
-    this.router.navigate(['/home']);
-    return;
+        this.router.navigate(['/home']);
+      },
+      error: () => this.router.navigate(['/home'])
+    })
   }
 }

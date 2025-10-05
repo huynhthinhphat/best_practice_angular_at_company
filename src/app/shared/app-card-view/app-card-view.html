@@ -1,4 +1,4 @@
-<div class="card-container" [style.--width.px]="width">
+<div class="card-container" [style.--maxHeight.px]="maxHeight()" [style.--width.px]="width">
     @for (data of data(); let index = $index; track data) {
     <div class="card">
         <img [ngSrc]="data.imageUrl ?? ''" [alt]="data.name" width="300" height="200" class="product-image" priority />
@@ -9,13 +9,16 @@
             </div>
             <p class="product-price" [title]="data.price">{{ data.price | currency:'VND':'symbol':'1.0-0' }}</p>
             <p class="product-stock" [title]="data.stock"><span>Stock: </span>{{ data.stock }}</p>
-            <p [title]="data.description" class="product-description"><span>Description: </span>{{ data.description }}</p>
+            <p [title]="data.description" class="product-description"><span>Description: </span>{{ data.description }}
+            </p>
         </div>
         <div class="action-buttons">
             <button><i class="fa-solid fa-chevron-up"></i></button>
             <div class="button-group">
-                <button type="button" (click)="handleEmit('add', index)"><i class="fa-solid fa-heart"></i>Add to cart</button>
-                <button type="button" (click)="handleEmit('buy', index)"><i class="fa-solid fa-credit-card"></i>Buy Now</button>
+                <button type="button" (click)="handleEmit('add', index)"><i class="fa-solid fa-heart"></i>Add to
+                    cart</button>
+                <button type="button" (click)="handleEmit('buy', index)"><i class="fa-solid fa-credit-card"></i>Buy
+                    Now</button>
             </div>
         </div>
     </div>

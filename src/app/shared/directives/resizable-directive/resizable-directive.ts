@@ -1,11 +1,10 @@
 import { Directive, ElementRef, inject, input, OnDestroy, OnInit, output, Renderer2 } from "@angular/core";
-import { ResizeEvent } from "../../models/resize-event.model";
 
 @Directive({
     selector: '[appResizable]'
 })
 
-export class ResizableDirective implements OnInit, OnDestroy { 
+export class ResizableDirective implements OnInit, OnDestroy {
     private elementRef = inject(ElementRef);
     private renderer = inject(Renderer2);
 
@@ -14,6 +13,8 @@ export class ResizableDirective implements OnInit, OnDestroy {
     public maxWidth = input<number>(1500);
     public maxHeight = input<number>(1500);
     public directions = input<string[]>(['top', 'bottom', 'right', 'left']);
+
+    public widthChange = output<number>();
 
     private handles: HTMLElement[] = [];
     private isResizing = false;
@@ -25,6 +26,8 @@ export class ResizableDirective implements OnInit, OnDestroy {
     private startTop: number = 0;
     private currentHandle!: HTMLElement;
     private resizeDirection: string = '';
+    private mouseMoveHandler!: (event: MouseEvent) => void;
+    private mouseUpHandler!: (event: MouseEvent) => void;
 
     ngOnInit() {
         this.createHandles();
@@ -39,30 +42,30 @@ export class ResizableDirective implements OnInit, OnDestroy {
             this.renderer.setStyle(handle, 'cursor', this.getCursor(direction));
 
             switch (direction) {
-            case 'top':
-                this.renderer.setStyle(handle, 'top', '0');
-                this.renderer.setStyle(handle, 'left', '0');
-                this.renderer.setStyle(handle, 'width', '100%');
-                this.renderer.setStyle(handle, 'height', '5px');
-                break;
-            case 'right':
-                this.renderer.setStyle(handle, 'top', '0');
-                this.renderer.setStyle(handle, 'right', '0');
-                this.renderer.setStyle(handle, 'width', '5px');
-                this.renderer.setStyle(handle, 'height', '100%');
-                break;
-            case 'bottom':
-                this.renderer.setStyle(handle, 'bottom', '0');
-                this.renderer.setStyle(handle, 'left', '0');
-                this.renderer.setStyle(handle, 'width', '100%');
-                this.renderer.setStyle(handle, 'height', '5px');
-                break;
-            case 'left':
-                this.renderer.setStyle(handle, 'top', '0');
-                this.renderer.setStyle(handle, 'left', '0');
-                this.renderer.setStyle(handle, 'width', '5px');
-                this.renderer.setStyle(handle, 'height', '100%');
-                break;
+                case 'top':
+                    this.renderer.setStyle(handle, 'top', '0');
+                    this.renderer.setStyle(handle, 'left', '0');
+                    this.renderer.setStyle(handle, 'width', '100%');
+                    this.renderer.setStyle(handle, 'height', '5px');
+                    break;
+                case 'right':
+                    this.renderer.setStyle(handle, 'top', '0');
+                    this.renderer.setStyle(handle, 'right', '0');
+                    this.renderer.setStyle(handle, 'width', '5px');
+                    this.renderer.setStyle(handle, 'height', '100%');
+                    break;
+                case 'bottom':
+                    this.renderer.setStyle(handle, 'bottom', '0');
+                    this.renderer.setStyle(handle, 'left', '0');
+                    this.renderer.setStyle(handle, 'width', '100%');
+                    this.renderer.setStyle(handle, 'height', '5px');
+                    break;
+                case 'left':
+                    this.renderer.setStyle(handle, 'top', '0');
+                    this.renderer.setStyle(handle, 'left', '0');
+                    this.renderer.setStyle(handle, 'width', '5px');
+                    this.renderer.setStyle(handle, 'height', '100%');
+                    break;
             }
 
             this.renderer.appendChild(this.elementRef.nativeElement, handle);
@@ -74,11 +77,11 @@ export class ResizableDirective implements OnInit, OnDestroy {
 
     private getCursor(direction: string): string {
         switch (direction) {
-        case 'top':
-        case 'bottom': return 'row-resize';
-        case 'left':
-        case 'right': return 'col-resize';
-        default: return 'default';
+            case 'top':
+            case 'bottom': return 'row-resize';
+            case 'left':
+            case 'right': return 'col-resize';
+            default: return 'default';
         }
     }
 
@@ -96,8 +99,11 @@ export class ResizableDirective implements OnInit, OnDestroy {
         this.startLeft = rect.left;
         this.startTop = rect.top;
 
-        document.addEventListener('mousemove', this.onMouseMove.bind(this));
-        document.addEventListener('mouseup', this.onMouseUp.bind(this));
+        this.mouseMoveHandler = this.onMouseMove.bind(this);
+        this.mouseUpHandler = this.onMouseUp.bind(this);
+
+        document.addEventListener('mousemove', this.mouseMoveHandler);
+        document.addEventListener('mouseup', this.mouseUpHandler);
     }
 
     private onMouseMove(event: MouseEvent) {
@@ -112,35 +118,37 @@ export class ResizableDirective implements OnInit, OnDestroy {
         const deltaY = event.clientY - this.startY;
 
         switch (this.resizeDirection) {
-        case 'right':
-            newWidth = Math.max(this.minWidth(), Math.min(this.maxWidth(), this.startWidth + deltaX));
-            break;
-        case 'left':
-            newWidth = Math.max(this.minWidth(), Math.min(this.maxWidth(), this.startWidth - deltaX));
-            newLeft = this.startLeft + deltaX;
-            break;
-        case 'bottom':
-            newHeight = Math.max(this.minHeight(), Math.min(this.maxHeight(), this.startHeight + deltaY));
-            break;
-        case 'top':
-            newHeight = Math.max(this.minHeight(), Math.min(this.maxHeight(), this.startHeight - deltaY));
-            newTop = this.startTop + deltaY;
-            break;
+            case 'right':
+                newWidth = Math.max(this.minWidth(), Math.min(this.maxWidth(), this.startWidth + deltaX));
+                break;
+            case 'left':
+                newWidth = Math.max(this.minWidth(), Math.min(this.maxWidth(), this.startWidth - deltaX));
+                newLeft = this.startLeft + deltaX;
+                break;
+            case 'bottom':
+                newHeight = Math.max(this.minHeight(), Math.min(this.maxHeight(), this.startHeight + deltaY));
+                break;
+            case 'top':
+                newHeight = Math.max(this.minHeight(), Math.min(this.maxHeight(), this.startHeight - deltaY));
+                newTop = this.startTop + deltaY;
+                break;
         }
 
         this.renderer.setStyle(this.elementRef.nativeElement, 'width', `${newWidth}px`);
         this.renderer.setStyle(this.elementRef.nativeElement, 'height', `${newHeight}px`);
-        
+
         if (this.resizeDirection === 'left' || this.resizeDirection === 'top') {
             this.renderer.setStyle(this.elementRef.nativeElement, 'left', `${newLeft}px`);
             this.renderer.setStyle(this.elementRef.nativeElement, 'top', `${newTop}px`);
         }
+
+        this.widthChange.emit(newWidth);
     }
 
     private onMouseUp() {
         this.isResizing = false;
-        document.removeEventListener('mousemove', this.onMouseMove.bind(this));
-        document.removeEventListener('mouseup', this.onMouseUp.bind(this));
+        document.removeEventListener('mousemove', this.mouseMoveHandler);
+        document.removeEventListener('mouseup', this.mouseUpHandler);
     }
 
     private removeHandles() {

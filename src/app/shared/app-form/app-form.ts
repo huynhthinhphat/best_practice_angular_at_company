@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, OnInit, inject, viewChildren, ElementRef, AfterViewInit, signal, effect } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, OnInit, inject, input, output, signal, viewChildren } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ERROR_MESSAGES } from '../constants/message.constants';
-import { User } from '../models/user.model';
-import { PasswordMatchValidator } from '../../core/validators/password-match.validator';
+import { Cloudinary } from '../models/cloudinary.model';
 import { FormFields } from '../models/form-field.model';
 import { ImageService } from '../services/image-service/image-service';
-import { Cloudinary } from '../models/cloudinary.model';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-form',
@@ -32,6 +30,7 @@ export class AppForm<T> implements OnInit, AfterViewInit {
   public formUrl = input<string>('');
   public showLabel = input<boolean>(false);
   public isReset = input<boolean>(false);
+  public validators = input<ValidatorFn>();
   public submitForm = output<T>();
 
   public form!: FormGroup;
@@ -65,17 +64,28 @@ export class AppForm<T> implements OnInit, AfterViewInit {
         defaultValue = field.defaultValue;
       }
 
-      acc[field.name] = [defaultValue ?? '', [...field.validator, Validators.required]];
+      acc[field.name] = [defaultValue ?? '', [...field.validator]];
       return acc;
     }, {} as any)
 
-    this.form = this.formBuilder.group(controls, { validators: PasswordMatchValidator });
+    this.form = this.formBuilder.group(controls, { validators: this.validators() });
   }
 
   public onSubmit() {
+    console.log('Form valid?', this.form.valid);
+    console.log('Form errors:', this.form.errors);
+
+    Object.keys(this.form.controls).forEach(key => {
+      const control = this.form.get(key);
+      console.log(key, {
+        value: control?.value,
+        valid: control?.valid,
+        errors: control?.errors
+      });
+    });
+
     if (this.form.valid) {
       this.submitForm.emit(this.form.value);
-      this.form.reset();
     }
   }
 

@@ -1,11 +1,35 @@
-@if(pagination()?.pages! > 1){
-  <div class="pagination-container">
-    <button [disabled]="currentPage() === 1" (click)="goToPage(1)">First</button>
-    <button [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)">Previous</button>
-    @for(page of range(start, end); track page){
-        <button [ngClass]="{'active': (currentPage()) === page }" (click)="goToPage(page)">{{ page }}</button>
-    }
-    <button [disabled]="currentPage() === pagination()?.last" (click)="goToPage(currentPage() + 1)">Next</button>
-    <button [disabled]="currentPage() === pagination()?.last" (click)="goToPage(pagination()?.last!)">Last</button>
+@let start = startIndex();
+@let end = endIndex();
+@let total = totalItem();
+@let quantity = quantityItem();
+@let show = isShowMenu();
+
+<div class="pagination-container">
+  <div>
+    {{ start }} - {{ end }} trong {{ total }}
   </div>
-}
+
+  <div class="select-container">
+    <button class="btn-select" (click)="toggleMenu()">
+      {{ quantity }}
+      <i class="fa-solid fa-chevron-down"></i>
+    </button>
+
+    @if(show){
+    <ul>
+      @for(option of options; let index = $index; track option){
+      <li tabindex="0" (click)="handleQuantityItem(index)">{{ option }}</li>
+      }
+    </ul>
+    }
+  </div>
+
+  <div>
+    <button type="button" [class.no-active]="start === 1" (click)="handleNavigation(-1)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button type="button" [class.no-active]="end >= total" (click)="handleNavigation(1)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

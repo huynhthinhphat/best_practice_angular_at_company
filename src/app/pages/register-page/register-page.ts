@@ -12,6 +12,7 @@ import { Cart } from '../../shared/models/cart.model';
 import { LOGIN_URL } from '../../shared/constants/url.constants';
 import { FormFields } from '../../shared/models/form-field.model';
 import { Router } from '@angular/router';
+import { PasswordMatchValidator } from '../../core/validators/password-match.validator';
 
 @Component({
   selector: 'app-register-page',
@@ -32,7 +33,7 @@ export class RegisterPage {
       label: 'Fullname',
       type: 'text',
       icon: 'fa-solid fa-user',
-      validator: [Validators.pattern(FULLNAME_PATTERN)],
+      validator: [Validators.required ,Validators.pattern(FULLNAME_PATTERN)],
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_FULLNAME }
       ]
@@ -42,7 +43,7 @@ export class RegisterPage {
       label: 'Username',
       type: 'text',
       icon: 'fa-solid fa-user',
-      validator: [Validators.pattern(USERNAME_PATTERN)],
+      validator: [Validators.required, Validators.pattern(USERNAME_PATTERN)],
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_USERNAME }
       ]
@@ -52,7 +53,7 @@ export class RegisterPage {
       label: 'Password',
       type: 'password',
       icon: 'fa-solid fa-lock',
-      validator: [Validators.pattern(NO_SPACES), Validators.minLength(6)],
+      validator: [Validators.required, Validators.pattern(NO_SPACES), Validators.minLength(6)],
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_PASSWORD },
         { type: 'minlength', message: ERROR_MESSAGES.PASSWORD_MINLENGTH }
@@ -63,9 +64,10 @@ export class RegisterPage {
       label: 'Confirm Password',
       type: 'password',
       icon: 'fa-solid fa-lock',
-      validator: []
+      validator: [Validators.required]
     },
   ];
+  public passwordMatchValidator = PasswordMatchValidator;
   public formTitle = FORM.REGISTER;
   public buttonLabel = FORM.REGISTER;
   public formLinkMessage = FORM.LOGIN_MESSAGE;
