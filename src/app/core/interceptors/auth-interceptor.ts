@@ -17,34 +17,36 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const user = storageService.getData<User>(STORAGE_KEYS.USER);
 
   let clonedReq = req;
-  if (user?.token) {
-    clonedReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${user.token}`
-      }
-    });
-  }
+  // if (user?.token) {
+  //   clonedReq = req.clone({
+  //     setHeaders: {
+  //       Authorization: `Bearer ${user.token}`
+  //     }
+  //   });
+  // }
 
-  return next(clonedReq).pipe(
-    tap({
-      next: (event) => console.log('HTTP Response:', event),
-      error: (err) => console.error('HTTP Error:', err)
-    }),
-    catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
-        toastrService.error(ERROR_MESSAGES.SESSION_EXPIRED);
-        router.navigate(['/login']);
-      } else if (error.status === 403) {
-        toastrService.error(ERROR_MESSAGES.NO_PERMISSION);
-        router.navigate(['/home']);
-      } else if (error.status === 404) {
-        toastrService.error(ERROR_MESSAGES.NOT_FOUND);
-        router.navigate(['/not-found']);
-      } else if (error.status >= 500) {
-        toastrService.error(ERROR_MESSAGES.SERVER_ERROR);
-      } 
+  // return next(clonedReq).pipe(
+  //   tap({
+  //     next: (event) => console.log('HTTP Response:', event),
+  //     error: (err) => console.error('HTTP Error:', err)
+  //   }),
+  //   catchError((error: HttpErrorResponse) => {
+  //     if (error.status === 401) {
+  //       toastrService.error(ERROR_MESSAGES.SESSION_EXPIRED);
+  //       router.navigate(['/login']);
+  //     } else if (error.status === 403) {
+  //       toastrService.error(ERROR_MESSAGES.NO_PERMISSION);
+  //       router.navigate(['/home']);
+  //     } else if (error.status === 404) {
+  //       toastrService.error(ERROR_MESSAGES.NOT_FOUND);
+  //       router.navigate(['/not-found']);
+  //     } else if (error.status >= 500) {
+  //       toastrService.error(ERROR_MESSAGES.SERVER_ERROR);
+  //     } 
 
-      return throwError(() => error);
-    })
-  );
+  //     return throwError(() => error);
+  //   })
+  // );
+
+  return next(clonedReq)
 };

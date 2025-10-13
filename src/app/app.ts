@@ -11,8 +11,6 @@ import { ThemeService } from './shared/services/theme-service/theme-service';
 export class App implements OnInit {
   private themeService = inject(ThemeService);
 
-  protected readonly title = signal('mini-shop');
-
   ngOnInit() {
     document.body.classList.toggle('dark-mode', this.themeService.getTheme() === 'dark');
   }

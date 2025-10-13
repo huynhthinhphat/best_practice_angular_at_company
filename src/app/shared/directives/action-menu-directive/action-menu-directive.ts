@@ -50,6 +50,9 @@ export class ActionMenuDirective implements AfterViewInit {
     if (this.scrollContainer) {
       this.scrollListener = this.renderer.listen(this.scrollContainer, 'scroll', () => this.updatePosition());
       this.resizeListener = this.renderer.listen(this.scrollContainer, 'resize', () => this.updatePosition());
+    } else {
+      this.scrollListener = this.renderer.listen(window, 'scroll', () => this.updatePosition());
+      this.resizeListener = this.renderer.listen(window, 'resize', () => this.updatePosition());
     }
   }
 
@@ -59,12 +62,20 @@ export class ActionMenuDirective implements AfterViewInit {
     const hostRect = this.elementRef.nativeElement.getBoundingClientRect();
     const containerRect = this.scrollContainer?.getBoundingClientRect();
 
-    if (!hostRect || !containerRect) return;
+    if (!hostRect) return;
 
-    if (hostRect.bottom > containerRect.bottom || hostRect.top < containerRect.top) {
-      this.renderer.addClass(this.menu, 'hidden');
-    } else {
-      this.renderer.removeClass(this.menu, 'hidden');
+    if (containerRect) {
+      const isOutOfTop = hostRect.top < containerRect.top;
+      const isOutOfBottom = hostRect.bottom > containerRect.bottom;
+      const isOutOfLeft = hostRect.left < containerRect.left;
+      const isOutOfRight = hostRect.right > containerRect.right;
+
+      if (isOutOfTop || isOutOfBottom || isOutOfLeft || isOutOfRight) {
+        this.renderer.addClass(this.menu, 'hidden');
+        return;
+      } else {
+        this.renderer.removeClass(this.menu, 'hidden');
+      }
     }
 
     this.renderer.setStyle(this.menu, 'top', `${hostRect.bottom}px`);

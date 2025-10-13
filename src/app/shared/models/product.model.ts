@@ -10,4 +10,6 @@ export interface Product {
     quantityToBuy?: number;
     cartItemId?: string;
     isDeleted?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

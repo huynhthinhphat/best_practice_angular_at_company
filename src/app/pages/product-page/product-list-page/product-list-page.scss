@@ -1,24 +1,5 @@
-.product-container {
-  height: 90vh;
-  margin-left: 2rem;
-  box-shadow: var(--dialog-box-shadow);
-  background-color: var(--emphasis-bg);
-  overflow: hidden;
-
-  .product-list {
-    padding: 1rem;
-  }
-
-  .product-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 1rem;
-    margin-bottom: 5px;
-
-    h1 {
-      color: var(--heading-color);
-    }
-
+.content-container {
+  .content-header {
     div {
       display: flex;
       justify-content: space-between;

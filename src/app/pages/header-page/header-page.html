@@ -1,25 +1,30 @@
-@let isVisibleInput = isShowInputSearch();
+@let isShowInput = isShowInputSearch();
 @let loginIn = isLoginIn();
 @let darkMode = isDarkMode();
 @let showMenu = isShowMenu();
+@let products = productList();
+@let firstChar = firstCharacter();
+@let user = currentUser();
+@let quantity = quantityItems();
 
 <header>
   <div class="header-container">
     <div>
       <div class="logo" [routerLink]="['/']"></div>
-
+      @if(!user || user.role === 'User'){
       <div class="search-box">
-        <button class="btn-search" [ngClass]="{'is-active' : isVisibleInput}" (click)="toggleInputSearch()">
+        <button class="btn-search" [ngClass]="{'is-active' : isShowInput}" (click)="toggleInputSearch()">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
         <input type="text" id="search" class="search-input" placeholder="Search by product name..." list="products"
-          (input)="searchProduct($event.target.value)" [ngClass]="{'is-active' : isVisibleInput}">
-        <!-- <datalist id="products">
-                  @for(product of products(); track product.id){
-                  <option [value]="product.name"></option>
-                  }
-                </datalist> -->
+          (input)="searchProduct($event.target.value)" [ngClass]="{'is-active' : isShowInput}">
+        <datalist id="products">
+          @for(product of products; track product.id){
+          <option [value]="product.name"></option>
+          }
+        </datalist>
       </div>
+      }
     </div>
 
     <nav class="nav-menu" [class.is-login]="loginIn">
@@ -50,31 +55,33 @@
         <li class="user-info">
           <div class="rounded-circle" (click)="toggleMenu()" #menuWrapper>
             <span>
-              {{ firstCharacter() }}
+              {{ firstChar }}
             </span>
             @if(showMenu){
             <ul class="menu">
-              <li>
-                <a href="">
-                  Profile
-                  <i class="fa-solid fa-user"></i>
-                </a>
-              </li>
-              <li class="cart-item">
-                <a [routerLink]="['/cart', currentUser()?.id]" [title]="titleCart">
-                  Cart
-                  <i class="fa-solid fa-cart-shopping"></i>
-                  <span class="notification-indicator-number">
-                    {{ quantityItems() }}
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a routerLink="/orders/user" [title]="titleOrder">
-                  Orders
-                  <i class="fa-solid fa-receipt"></i>
-                </a>
-              </li>
+              @if(user?.role === 'User'){
+                <li>
+                  <a href="">
+                    Profile
+                    <i class="fa-solid fa-user"></i>
+                  </a>
+                </li>
+                <li class="cart-item">
+                  <a [routerLink]="['/cart', user?.id]" [title]="titleCart">
+                    Cart
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="notification-indicator-number">
+                      {{ quantity }}
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a routerLink="/orders/user" [title]="titleOrder">
+                    Orders
+                    <i class="fa-solid fa-receipt"></i>
+                  </a>
+                </li>
+              }
               <li>
                 <a (click)="logout()">
                   Logout
@@ -90,44 +97,3 @@
     </nav>
   </div>
 </header>
-
-<!-- <ng-template>
-  <nav class="nav-bars">
-    <div (click)="toggleMenu()">
-      ☰ Menu
-      @if(isShowMenu()){
-      <ul>
-        @if(!isVisible && currentUser() == null){
-        <li>
-          <a routerLink="/login">Login</a>
-        </li>
-        <li>
-          <a routerLink="/register">Register</a>
-        </li>
-        }@else {
-        @if(currentUser()?.role === 'User'){
-        <li>
-          <a [routerLink]="['/orders/user']">📦 Orders</a>
-        </li>
-        <li>
-          <a [routerLink]="['/cart', currentUser()?.id]">🛒 Cart ({{ quantityItems() }})</a>
-        </li>
-        }
-        <li>
-          <a (click)="logout()">🚪 Logout</a>
-        </li>
-        }
-      </ul>
-      }
-    </div>
-  </nav>
-</ng-template> -->
-
-<!-- <div>
-  <p>Welcome, {{ currentUser()?.fullName }}</p>
-  @if(currentUser()?.role === 'User'){
-  <button [routerLink]="['/orders/user']" class="btn">📦 Orders</button>
-  <button [routerLink]="['/cart', currentUser()?.id]" class="btn">🛒 Cart ({{ quantityItems() }})</button>
-  }
-  <button (click)="logout()" class="btn btn-logout">🚪 Logout</button>
-</div> -->

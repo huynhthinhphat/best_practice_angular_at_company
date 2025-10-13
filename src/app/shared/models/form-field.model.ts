@@ -12,5 +12,5 @@ export interface FormFields {
     type: string,
     message: string
   }[],
-  defaultValue?: string | number | boolean,
+  defaultValue?: string | number | boolean | Date,
 }

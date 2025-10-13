@@ -52,7 +52,7 @@ export class AppForm<T> implements OnInit, AfterViewInit {
     if (!fields) return;
 
     const controls = fields.reduce((acc, field) => {
-      let defaultValue: string | number | boolean | undefined = '';
+      let defaultValue: string | number | boolean | Date | undefined = '';
 
       if (field.type === 'select' && field.categories) {
         if (field.defaultValue !== '') {
@@ -68,24 +68,12 @@ export class AppForm<T> implements OnInit, AfterViewInit {
       return acc;
     }, {} as any)
 
-    this.form = this.formBuilder.group(controls, { validators: this.validators() });
+    this.form = this.formBuilder.nonNullable.group(controls, { validators: this.validators() });
   }
 
   public onSubmit() {
-    console.log('Form valid?', this.form.valid);
-    console.log('Form errors:', this.form.errors);
-
-    Object.keys(this.form.controls).forEach(key => {
-      const control = this.form.get(key);
-      console.log(key, {
-        value: control?.value,
-        valid: control?.valid,
-        errors: control?.errors
-      });
-    });
-
     if (this.form.valid) {
-      this.submitForm.emit(this.form.value);
+      this.submitForm.emit(this.form.value as T);
     }
   }
 

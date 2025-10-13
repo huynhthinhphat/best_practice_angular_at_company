@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, input, output, QueryList, signal, viewChildren } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Product } from '../models/product.model';
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';

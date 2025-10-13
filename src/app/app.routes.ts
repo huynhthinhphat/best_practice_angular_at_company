@@ -18,6 +18,7 @@ import { ProductListPage } from './pages/product-page/product-list-page/product-
 import { CategoryListPage } from './pages/category-page/category-list-page/category-list-page';
 import { OrderListPage } from './pages/order-page/order-list-page/order-list-page';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
+import { RoleGuard } from './core/guard/role-guard/role-guard-guard';
 
 export const routes: Routes = [
     {
@@ -30,7 +31,8 @@ export const routes: Routes = [
         component: AuthLayout,
         children: [
             { path: 'login', component: LoginPage },
-            { path: 'register', component: RegisterPage}
+            { path: 'register', component: RegisterPage},
+            { path: '**', redirectTo: 'login' }
         ]
     },
     {
@@ -40,6 +42,8 @@ export const routes: Routes = [
     {
         path: '',
         component: UserLayout,
+        canActivate: [RoleGuard],
+        data: { roles: ['User'] },
         children: [
             {
                 path: 'home',
@@ -77,15 +81,15 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminLayout,
+        canActivate: [RoleGuard],
+        data: { roles: ['Admin']},
         children: [
             {
                 path: 'users',
                 component: UserPage,
-                canActivate: [checkoutActivateGuard]
             },
             {
                 path: 'products',
-                // canActivate: [checkoutActivateGuard],
                 children: [
                     {
                         path: '',
@@ -95,7 +99,6 @@ export const routes: Routes = [
             },
             {
                 path: 'categories',
-                canActivate: [checkoutActivateGuard],
                 children: [
                     { path: '', component: CategoryListPage },
                     {
@@ -111,7 +114,6 @@ export const routes: Routes = [
             },
             {
                 path: 'orders',
-                canActivate: [checkoutActivateGuard],
                 children: [
                     { path: '', component: OrderListPage },
                     {

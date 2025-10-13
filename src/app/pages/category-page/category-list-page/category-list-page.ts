@@ -6,10 +6,11 @@ import { Category } from '../../../shared/models/category.model';
 import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
 
 @Component({
   selector: 'app-category-list-page',
-  imports: [ RouterLink ],
+  imports: [RouterLink, AppGridView],
   templateUrl: './category-list-page.html',
   styleUrl: './category-list-page.css'
 })
@@ -21,7 +22,12 @@ export class CategoryListPage implements OnInit {
   public categories = this.categoryService.categories;
   public currentPage = signal<number>(1);
   public headers: ColumnDef<Category>[] = [
-    { field: 'name', headerText: 'Category Name' }
+    { 
+      field: 'name', 
+      headerText: 'Category Name', 
+      isResize: false,
+      isShow: true    
+    }
   ]
 
   public ngOnInit() {

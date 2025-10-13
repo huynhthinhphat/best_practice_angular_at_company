@@ -7,8 +7,8 @@
 @let total = allProducts().length;
 @let quantity = quantityItem();
 
-<div class="product-container">
-  <div class="product-header">
+<div class="content-container">
+  <div class="content-header">
     <h1>Products</h1>
     @if(user?.role === 'Admin'){
     <div>
@@ -33,12 +33,12 @@
   <app-pagination [totalItem]="total" [startIndex]="start" [endIndex]="end" [quantityItem]="quantity"
     (direction)="handleNavigation($event)" (quantityItemEmit)="handleQuantityItem($event)"></app-pagination>
 
-  <div class="product-list">
+  <div class="content-list">
     @if(cardView){
     <app-card-view [maxHeight]="720" [data]="products" (emit)="handleEmit($event)"></app-card-view>
     } @else {
-    <app-grid-view [maxHeight]="720" [columns]="headers" [tableData]="products"
-      (actionEmit)="handleActions($event)"></app-grid-view>
+    <app-grid-view [maxHeight]="720" [columns]="headers" [tableData]="products" (actionEmit)="handleActions($event)"
+      (sortEmit)="onSort($event)"></app-grid-view>
     }
   </div>
 </div>

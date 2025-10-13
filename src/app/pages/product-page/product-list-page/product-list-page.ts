@@ -15,10 +15,17 @@ import { AppDialog } from '../../../shared/app-dialog/app-dialog';
 import { AppForm } from '../../../shared/app-form/app-form';
 import { FormFields } from '../../../shared/models/form-field.model';
 import { CategoryService } from '../../../shared/services/category-service/category-service';
-import { ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
+import { BUTTON_TOOLTIP, ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import Swal from 'sweetalert2';
 import { Validators } from '@angular/forms';
 import { AppPagination } from '../../../shared/app-pagination/app-pagination';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { productSelector, selectAllProducts } from '../product.selector';
+import { addProduct, deleteProducts, loadProducts, updateProduct } from '../product.action';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { HttpResponse } from '@angular/common/http';
+import { getCurrentUser } from '../../user-page/user.selector';
 
 @Component({
   selector: 'app-product-page',
@@ -28,46 +35,82 @@ import { AppPagination } from '../../../shared/app-pagination/app-pagination';
   standalone: true
 })
 export class ProductListPage implements OnInit {
+  private store = inject(Store<AppState>);
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
   private cartService = inject(CartService);
-  private authService = inject(AuthService);
   private router = inject(Router);
   private toastrService = inject(ToastrService)
   private storageService = inject(StorageService);
 
-  public currentUser = this.authService.currentUser;
-  public allProducts = this.productService.products;
+  public currentUser = toSignal(this.store.select(getCurrentUser));
+  public originalProducts: Product[] = [];
+  public isSetOriginalProducts: boolean = false;
+  public selectedSortOptions: SortOption<Product>[] = [];
+  public storeProducts = toSignal(this.store.select(selectAllProducts), { initialValue: [] });
+  public allProducts = signal<Product[]>([]);
   public headers: ColumnDef<Product>[] = [
     {
-      headerText: 'Toggle Columns'
-    },
-    {
       field: 'name',
-      headerText: 'Product Name'
+      headerText: 'Product Name',
+      isSort: true,
+      isResize: true,
+      width: 320,
+      isShow: true
     },
     {
       field: 'description',
-      headerText: 'Description'
+      headerText: 'Description',
+      isSort: false,
+      isResize: true,
+      width: 320,
+      isShow: true
     },
     {
       field: 'stock',
-      headerText: 'Stock'
+      headerText: 'Stock',
+      isSort: true,
+      isResize: true,
+      isShow: true
     },
     {
       field: 'price',
       headerText: 'Price',
-      pipe: 'currency'
+      pipe: 'currency',
+      isSort: true,
+      isResize: true,
+      isShow: true
     },
     {
       field: 'categoryName',
-      headerText: 'Category Name'
-    }
+      headerText: 'Category Name',
+      isSort: true,
+      isResize: true,
+      isShow: false
+    },
+    {
+      field: 'createdAt',
+      headerText: 'Created At',
+      pipe: 'date',
+      width: 150,
+      isSort: true,
+      isResize: true,
+      isShow: true
+    },
+    {
+      field: 'updatedAt',
+      headerText: 'Updated At',
+      pipe: 'date',
+      width: 150,
+      isSort: true,
+      isResize: true,
+      isShow: true
+    },
   ];
   public isCardView = signal<boolean>(true);
-  public titleGridBtn = "Grid View";
-  public titleCardBtn = "Card View";
-  public titleCreateBtn = "Create a product";
+  public titleGridBtn = BUTTON_TOOLTIP.GIRD_VIEW;
+  public titleCardBtn = BUTTON_TOOLTIP.CARD_VIEW;
+  public titleCreateBtn = BUTTON_TOOLTIP.CREATE_PRODUCT;
   public fields: FormFields[] = [
     {
       name: 'id',
@@ -123,8 +166,8 @@ export class ProductListPage implements OnInit {
   public originalFields: FormFields[] = [];
   public buttonLabel = FORM.SAVE;
   public oldProduct = signal<Product | null>(null);
+  public productTemp!: Product;
   public showDialog = signal<boolean>(false);
-
   public startIndex = signal<number>(1);
   public endIndex = signal<number>(10);
   public quantityItem = signal<number>(10);
@@ -132,45 +175,73 @@ export class ProductListPage implements OnInit {
 
   constructor() {
     effect(() => {
-      this.fields.find(field => field.name === 'categoryId')!.categories = this.categoryService.categories();
+      if (this.storeProducts().length !== this.allProducts().length) {
+        this.allProducts.set(this.storeProducts());
+      }
+
+      if (this.currentUser()?.role === 'Admin') {
+        this.isCardView.set(false);
+      }
+
+      this.setCategories();
+      this.setOriginalProducts();
       this.originalFields = this.fields.map(field => ({ ...field }));
     })
   }
 
   ngOnInit() {
-    this.productService.getAllProductsByConditions();
+    this.loadProducts();
 
     const user = this.currentUser();
-    if (!user || user.role === 'User') {
-      this.isCardView.set(true);
-    } else {
-      this.isCardView.set(false);
-    }
+    this.isCardView.set((!user || user.role === 'User') ? true : false)
+  }
+
+  private setCategories() {
+    this.fields.find(field => field.name === 'categoryId')!.categories = this.categoryService.categories();
+  }
+
+  private setOriginalProducts() {
+    if (this.isSetOriginalProducts && this.allProducts().length === 0) return;
+
+    this.originalProducts = [...this.allProducts()];
+    this.isSetOriginalProducts = true;
+  }
+
+  private loadProducts() {
+    this.productService.getAllProductsByConditions().subscribe({
+      next: (products: Product[]) => {
+        if (products.length === 0) return;
+
+        this.store.dispatch(loadProducts({ products: products }));
+      }
+    })
   }
 
   public onClickProduct(productId: string) {
     if (!productId) return;
-
     this.router.navigate(['/products/detail', productId]);
   }
 
   public handleActions(event: { action: string, rowData?: Product }) {
-    if (event.action === 'delete') {
-      this.handleSoftDeletion(event.rowData!);
+    this.productTemp = {...event.rowData};
+
+    const { action, rowData } = event;
+
+    if (!rowData) return;
+
+    if (action === 'delete') {
+      this.handleDelete(rowData);
       return;
     }
 
-    if (event.action === 'edit') {
-      this.fields.forEach(field => {
-        field.defaultValue = event.rowData![field.name as keyof Product];
-      });
-      this.oldProduct.set(event.rowData!);
+    if (action === 'edit') {
+      this.setForm(rowData);
+      this.oldProduct.set(rowData);
       this.showDialog.set(true);
-      return;
     }
   }
 
-  private handleSoftDeletion(product: Product) {
+  private handleDelete(product: Product) {
     Swal.fire({
       title: SWAL_MESSAGES.CONFIRM_DELETE_TITLE,
       icon: 'question',
@@ -187,11 +258,11 @@ export class ProductListPage implements OnInit {
           if (!res) return;
 
           this.toastrService.success(SUCCESS_MESSAGES.DELETE);
+          this.store.dispatch(deleteProducts({ ids: [product.id!] }))
         }),
         error: ((error) => {
           this.toastrService.error(error.message);
-        }),
-        complete: (() => this.productService.getAllProductsByConditions())
+        })
       })
     });
   }
@@ -201,7 +272,7 @@ export class ProductListPage implements OnInit {
   }
 
   public toggleDialog() {
-    this.fields = this.originalFields.map(field => ({ ...field }));
+    this.setForm(null);
     this.showDialog.set(true);
   }
 
@@ -214,7 +285,7 @@ export class ProductListPage implements OnInit {
       return;
     }
 
-    if (user.role === 'Admin') {
+    if (user.role !== 'User') {
       this.toastrService.error(ERROR_MESSAGES.PERMISSION_DENIED);
       return;
     }
@@ -273,21 +344,49 @@ export class ProductListPage implements OnInit {
     }
 
     const categoryName = this.categoryService.categories().find(category => category.id === product.categoryId)?.name;
-    let productToSave: Product = { ...product, categoryName: categoryName! };
+    let productToSave: Product = { ...product, categoryName: categoryName!, createdAt: this.productTemp.createdAt };
 
     this.productService.saveProduct(this.oldProduct()!, productToSave)
       .subscribe({
-        next: ((res: Product) => {
+        next: ((res: HttpResponse<Product>) => {
           if (!res) return;
+
           this.toastrService.success(SUCCESS_MESSAGES.SAVED_PRODUCT);
           this.showDialog.set(false)
+
+          const product = res.body;
+          if (!product) return;
+
+          if (res.status === 200) {
+            this.store.dispatch(updateProduct({ product: product }))
+          } else if (res.status === 201) {
+            this.store.dispatch(addProduct({ product: product }))
+          }
         }),
         error: ((error) => {
           this.toastrService.error(error.message);
-        }),
-        complete: () => this.productService.getAllProductsByConditions()
+        })
       })
   }
+
+  private setForm(data: Product | null) {
+    this.fields.forEach(field => {
+      const value = field.defaultValue;
+
+      if (data) {
+        field.defaultValue = data[field.name as keyof Product];
+      } else {
+        if (typeof value === 'string') {
+          field.defaultValue = '';
+        } else if (typeof value === 'number') {
+          field.defaultValue = 0;
+        } else if (typeof value === 'boolean') {
+          field.defaultValue = false;
+        }
+      }
+    });
+  }
+
 
   public handleNavigation(direction: -1 | 1) {
     let quantity = this.quantityItem();
@@ -315,5 +414,57 @@ export class ProductListPage implements OnInit {
 
     this.startIndex.set(1);
     this.endIndex.set(quantity)
+  }
+
+  public onSort(data: SortOption<Product>) {
+    const existing = this.selectedSortOptions.find(item => item.column === data.column);
+
+    let direction = data.direction;
+    if (!existing) {
+      if (direction !== '') {
+        this.selectedSortOptions.push(data);
+      }
+    } else {
+      if (direction !== '') {
+        existing.direction = data.direction;
+      } else {
+        this.selectedSortOptions = this.selectedSortOptions.filter(
+          item => item.column !== data.column
+        );
+      }
+    }
+    this.selectedSortOptions = this.selectedSortOptions.filter(item => item.direction !== '');
+
+    let sorted = [...this.originalProducts];
+    let options = this.selectedSortOptions;
+
+    if (options.length > 0) {
+      sorted = sorted.sort((a, b) => {
+        for (const { column, direction } of options) {
+          const firstValue = a[column as keyof Product];
+          const secondValue = b[column as keyof Product];
+
+          if (firstValue == null && secondValue == null) continue;
+          if (firstValue == null) return 1;
+          if (secondValue == null) return -1;
+
+          let compare = 0;
+          let firstNumber = Number(firstValue);
+          let secondNumber = Number(secondValue);
+
+          if (Number.isFinite(firstNumber) && Number.isFinite(secondNumber)) {
+            compare = firstNumber - secondNumber;
+          } else if (typeof firstValue === 'string' && typeof secondValue === 'string') {
+            compare = firstValue.localeCompare(secondValue, undefined, { sensitivity: 'base' });
+          }
+
+          if (compare !== 0) {
+            return direction === 'desc' ? -compare : compare;
+          }
+        }
+        return 0;
+      });
+    }
+    this.allProducts.set(sorted);
   }
 }

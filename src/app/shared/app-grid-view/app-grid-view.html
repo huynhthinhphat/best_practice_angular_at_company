@@ -1,50 +1,69 @@
 @let dataList = tableData();
 @let height = maxHeight();
-@let columnList = columns();
+@let columns = columnList();
+@let show = isShow();
 
+<div class="button-container">
+  <button type="button" class="btn-column-management" [title]="tooltipColumnManagement" appActionMenuDirective
+    [content]="dialogBtnManagement">
+    <i class="fa-solid fa-list"></i>
+    <span>Column Management</span>
+  </button>
+</div>
 <div class="table-container" [style.--maxHeight.px]="height">
-  <div class="table">
+  <div class="table" (dragover)="onDragOver($event)">
     <div class="thead">
-      @for(col of columnList; let index = $index; track col){
-      <div class="th" (click)="setColumnIndex(index)" appResizable [minWidth]="50" [maxWidth]="1000"
-        [directions]="['right']" (widthChange)="handleWithChange($event)">
-        @if(col.headerText === 'Toggle Columns'){
-        <button class="btn-column-management" [title]="tooltipColumnManagement">
-          <i class="fa-solid fa-list"></i>
-        </button>
-        } @else if(col.field !== 'id'){
-        <span class="text-truncate">{{col.headerText}}</span>
+      @if(show){
+      <div class="th">
+      </div>
+      }
+      @for(col of columns; let index = $index; track col){
+      @if(col.isShow){
+      <div class="th" [style.width.px]="col.width" appResizable [enable]="col.isResize!" [minWidth]="40"
+        [directions]="['right']" [columnIndex]="index" (widthChange)="handleWithChange($event)" [title]="col.headerText"
+        draggable="true" (dragstart)="onDragStart($event, index)" (dragenter)="onDragEnter(index)"
+        (dragend)="onDragEnd($event)" [class.dragging]="index === draggedIndex()">
+        @if(col.field !== 'id'){
+        <span class="text-truncate" appColumnsSortDirective [columnKey]="col.field" (directionEmit)="onSort($event)">
+          {{col.headerText}}
+          @if(col.isSort){
+          <i class="fa-solid"></i>
+          }
+        </span>
         }
       </div>
+      }
       }
     </div>
     <div class="tbody">
       @if(dataList.length > 0){
       @for(data of dataList; track data){
       <div class="tr">
-        @for(col of columnList; track col){
-        @let value = getFieldAsString(data, col.field!, col.pipe);
-
-        <div class="td" [title]="value">
-          @if(col.headerText === 'Toggle Columns'){
+        @if(show){
+        <div class="td">
           <button class="action-btn" type="button" [title]="tooltipToogleBtn" appActionMenuDirective
             [content]="dialogTemplate" (click)="setData(data)">
-            <i class="fa-solid fa-ellipsis-vertical"></i>
+            <i class="fa-solid fa-ellipsis-vertical">
+            </i>
           </button>
-          }@else{
-          @let id = getId(data!);
-
+        </div>
+        }
+        @for(col of columns; let index = $index; track col){
+        @if(col.isShow){
+        @let value = getFieldAsString(data, col.field!, col.pipe);
+        <div class="td" [attr.data-col-index]="index" [style.width.px]="col.width" [title]="value" #tdTbody>
           @if(col.field === 'name'){
-          <a [routerLink]="['/products/detail', id]">
-            <span class="text-truncate">
-              {{ value }}
-            </span>
+          @let id = getId(data!);
+          <a [routerLink]="['/products/detail', id]" class="text-truncate">
+            {{ value }}
           </a>
           } @else {
-          <span class="text-truncate">{{ value }}</span>
-          }
+          <span class="text-truncate">
+            {{ value }}
+          </span>
           }
         </div>
+        }
         }
       </div>
       }
@@ -63,5 +82,28 @@
       Delete
       <i class="fa-solid fa-trash"></i>
     </button>
+  </div>
+</ng-template>
+
+<ng-template #dialogBtnManagement>
+  <div class="menu">
+    <div>
+      <button type="button" (click)="onResetColumns()">
+        Reset Columns
+      </button>
+    </div>
+
+    <div (dragover)="onDragOver($event)">
+      @for(col of columns; let index = $index; track col){
+      <div draggable="true" (dragstart)="onDragStart($event, index)" (dragenter)="onDragEnter(index)"
+        (dragend)="onDragEnd($event)" [class.dragging]="index === draggedIndex()">
+        <input type="checkbox" name="columns" [id]="col.field" [value]="col.field" [checked]="col.isShow"
+          (change)="onColumnToggle(index)">
+        <label [for]="col.field">
+          {{ col.headerText }}
+        </label>
+      </div>
+      }
+    </div>
   </div>
 </ng-template>

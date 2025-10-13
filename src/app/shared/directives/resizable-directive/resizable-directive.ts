@@ -8,13 +8,15 @@ export class ResizableDirective implements OnInit, OnDestroy {
     private elementRef = inject(ElementRef);
     private renderer = inject(Renderer2);
 
+    public enable = input<boolean>(false);
     public minWidth = input<number>(100);
     public minHeight = input<number>(100);
     public maxWidth = input<number>(1500);
     public maxHeight = input<number>(1500);
     public directions = input<string[]>(['top', 'bottom', 'right', 'left']);
+    public columnIndex = input<number>();
 
-    public widthChange = output<number>();
+    public widthChange = output<{ columnIndex: number;  width: number}>();
 
     private handles: HTMLElement[] = [];
     private isResizing = false;
@@ -30,6 +32,8 @@ export class ResizableDirective implements OnInit, OnDestroy {
     private mouseUpHandler!: (event: MouseEvent) => void;
 
     ngOnInit() {
+        if (!this.enable()) return;
+        
         this.createHandles();
     }
 
@@ -142,7 +146,7 @@ export class ResizableDirective implements OnInit, OnDestroy {
             this.renderer.setStyle(this.elementRef.nativeElement, 'top', `${newTop}px`);
         }
 
-        this.widthChange.emit(newWidth);
+        this.widthChange.emit({columnIndex: this.columnIndex()!, width: newWidth});
     }
 
     private onMouseUp() {

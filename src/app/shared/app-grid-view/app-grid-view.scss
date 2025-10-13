@@ -1,12 +1,11 @@
 .table-container {
-  width: 100%;
+  overflow-x: auto;
   max-height: var(--maxHeight);
-  border: 1px solid #ddd;
   border-radius: 6px;
-  overflow: auto;
+  border: 1px solid #ddd;
 
   .table {
-    width: 100%;
+    min-width: max-content;
 
     .thead {
       position: sticky;
@@ -31,6 +30,7 @@
           justify-content: center;
 
           .btn-column-management {
+            position: relative;
             cursor: pointer;
             font-size: 15px;
             border-radius: 50%;
@@ -45,21 +45,17 @@
           }
         }
 
-        &:nth-child(2),
-        &:nth-child(3) {
-          width: 20rem;
-        }
-
         &:last-child {
           flex: 1;
+        }
+
+        *::selection{
+          background-color: transparent;
         }
       }
     }
 
     .tbody {
-      height: calc(100% - 4vh);
-      overflow-y: auto;
-
       .tr {
         height: 4vh;
         display: flex;
@@ -84,30 +80,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
-            .action-btn {
-              cursor: pointer;
-              position: relative;
-              width: 30px;
-              height: 30px;
-              font-size: 16px;
-              border-radius: 7px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: var(--gray-900);
-              border: 2px solid transparent;
-              background-color: transparent;
-
-              &:hover {
-                border-color: var(--dropdown-border-color);
-              }
-            }
-          }
-
-          &:nth-child(2),
-          &:nth-child(3) {
-            width: 20rem;
           }
 
           &:last-child {
@@ -117,131 +89,102 @@
       }
     }
   }
-
 }
 
-// .table {
-//   table-layout: fixed;
-//   width: 100%;
-//   border-collapse: collapse;
-
-//   .th,
-//   .td {
-//     position: relative;
-//     width: 8rem;
-//     padding: 8px;
-//     border-bottom: 1px solid #eee;
-//     text-align: left;
-
-//     .text-truncate {
-//       display: block;
-//       max-width: 100%;
-//       overflow: hidden;
-//       text-overflow: ellipsis;
-//       white-space: nowrap;
-//     }
-
-//     &:first-child {
-//       padding-left: 0;
-//       padding-right: 0;
-//       width: 3rem;
-//     }
-
-//     &:nth-child(2) {
-//       width: 15rem;
-//     }
-
-//     &:nth-child(3) {
-//       width: 20rem;
-//     }
-//   }
-
-//   .thead .th {
-//     position: sticky;
-//     top: 0;
-//     background-color: var(--bg-200-rgba);
-//     color: var(--text-900-rgba);
-//     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-//     z-index: 5;
-
-//     &:first-child {
-//       text-align: center;
-
-//       .btn-column-management {
-//         cursor: pointer;
-//         font-size: 16px;
-//         padding: 7px 10px;
-//         border-radius: 50%;
-//         color: var(--text-900-rgba);
-//         background-color: transparent;
-//         border: 1px solid transparent;
-
-//         &:hover {
-//           background-color: var(--dropdown-link-hover-bg);
-//         }
-//       }
-//     }
-//   }
-
-//   tbody {
-//     tr {
-//       &:hover {
-//         background-color: var(--dropdown-link-hover-bg);
-//       }
-//     }
-
-//     td {
-//       position: relative;
-//       color: var(--gray-900);
-
-//       a {
-//         color: var(--gray-900);
-//         text-decoration: none;
-
-//         &:hover {
-//           text-decoration: underline;
-//         }
-//       }
-
 .action-menu {
+  padding: 6px;
   position: absolute;
-  top: 100%;
-  left: 0%;
   background: var(--dialog-color);
   border: 1px solid var(--dropdown-border-color);
-  padding: 6px;
   border-radius: 6px;
   box-shadow: var(--dialog-box-shadow);
+  z-index: 5;
 
   &.hidden {
     display: none;
   }
 
-  .action-dropdown {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    border-radius: 6px;
-    width: 5rem;
+  .menu{
+    width: 15rem;
 
-    button {
-      cursor: pointer;
+    div{
       width: 100%;
+    }
+
+    >div:first-child{
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .3rem .5rem;
-      background-color: transparent;
-      border: none;
-      color: var(--gray-900);
+      justify-content: end;
+      border: 1px solid transparent;
+      border-bottom-color: var(--dropdown-border-color);
 
-      &:last-child {
-        color: rgba(230, 55, 87, 1);
-      }
+      button{
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 8rem;
+        height: 1.8rem;
+        margin: .25rem .5rem .25rem 0;
+        padding: .3rem .5rem;
+        background-color: transparent;
+        border: none;
+        border-radius: 7px;
+        color: var(--gray-900);
+        border: 1px solid var(--dropdown-border-color);
 
-      &:hover {
-        background-color: var(--dropdown-link-hover-bg);
+        &:hover {
+          background-color: var(--dropdown-link-hover-bg);
+        }
       }
+    }
+
+    >div:last-child{
+      display: flex;
+      flex-direction: column;
+
+      div{
+        display: flex;
+        color: var(--gray-900);
+        padding: .3rem 0;
+        user-select: none;
+      }
+    }
+
+    input{
+      margin-left: .5rem;
+    }
+
+    label{
+      cursor: pointer;
+      padding-left: 15px;
+    }
+  }
+}
+
+.action-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 6px;
+  width: 5rem;
+
+  button {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .3rem .5rem;
+    background-color: transparent;
+    border: 1px solid var(--dropdown-border-color);
+    color: var(--gray-900);
+
+    &:last-child {
+      color: rgba(230, 55, 87, 1);
+    }
+
+    &:hover {
+      background-color: var(--dropdown-link-hover-bg);
     }
   }
 }
@@ -253,3 +196,40 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.button-container{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: .25rem;
+}
+
+.action-btn,
+.btn-column-management {
+  cursor: pointer;
+  position: relative;
+  height: 30px;
+  font-size: 16px;
+  border-radius: 7px;
+  padding: 0 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: var(--gray-900);
+  border: 2px solid transparent;
+  background-color: transparent;
+
+  &:hover {
+    border-color: var(--dropdown-border-color);
+  }
+}
+
+div[draggable="true"] {
+  cursor: move;
+}
+
+.dragging {
+  opacity: 0.4;
+}
+

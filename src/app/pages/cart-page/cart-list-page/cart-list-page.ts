@@ -4,7 +4,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
 import { DisableButton } from '../../../shared/directives/disable-button/disable-button';
@@ -13,6 +12,7 @@ import { Cart } from '../../../shared/models/cart.model';
 import { Product } from '../../../shared/models/product.model';
 import { CartService } from '../../../shared/services/cart-service/cart-service';
 import { StorageService } from '../../../shared/services/storage-service/storage-service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart-list-page',

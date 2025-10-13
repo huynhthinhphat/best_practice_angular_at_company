@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { forkJoin, Observable, tap, throwError } from 'rxjs';
+import { forkJoin, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { CART_ITEMS_URL, CART_URL } from '../../constants/url.constants';
 import { Cart } from '../../models/cart.model';
 import { CartItem } from '../../models/cart-item.model';
@@ -23,12 +23,12 @@ export class CartService {
 
   constructor() {
     effect(() => {
-      const currentQuantityItems = this.quantityItems();
-      const user = this.storageService.getData(STORAGE_KEYS.USER);
+      // const currentQuantityItems = this.quantityItems();
+      // const user = this.storageService.getData(STORAGE_KEYS.USER);
 
-      if (user) {
-        this.storageService.saveData(STORAGE_KEYS.USER, { ...user, quantityItems: currentQuantityItems });
-      }
+      // if (user) {
+      //   this.storageService.saveData(STORAGE_KEYS.USER, { ...user, quantityItems: currentQuantityItems });
+      // }
     })
   }
 
@@ -117,10 +117,24 @@ export class CartService {
     return this.http.post<Cart>(CART_URL, cart);
   }
 
+  public getCartItemsByUserId(userId: string): Observable<CartItem[]> {
+    const params = new HttpParams().set('userId', userId);
+
+    return this.http.get<Cart[]>(CART_URL, { params })
+      .pipe(
+        switchMap((cart: Cart[]) => {
+          if (cart.length === 0 || !cart[0].id) return of();
+
+          const cartId = cart[0].id;
+          return this.http.get<CartItem[]>(`${CART_ITEMS_URL}?cartId=${cartId}`)
+        })
+      )
+  }
+
   public setCartId() {
     let user = this.storageService.getData<User>(STORAGE_KEYS.USER);
     if (!user) return;
-    
+
     const params = new HttpParams().set('userId', user.id!);
     this.http.get<Cart[]>(CART_URL, { params }).subscribe({
       next: ((carts: Cart[]) => {

@@ -6,6 +6,10 @@ import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Order } from '../../../shared/models/order.model';
 import { AppTabFilter } from '../../../shared/app-tab-filter/app-tab-filter';
 import { AuthService } from '../../../shared/services/auth-service/auth';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { getCurrentUser } from '../../user-page/user.selector';
 
 @Component({
   selector: 'app-order-list-page',
@@ -17,23 +21,23 @@ import { AuthService } from '../../../shared/services/auth-service/auth';
 export class OrderListPage {
   private router = inject(Router);
   private orderService = inject(OrderService);
-  private authService = inject(AuthService);
+  private store = inject(Store<AppState>);
 
-  private currentUser = this.authService.currentUser;
+  private currentUser = toSignal(this.store.select(getCurrentUser));
   public pagination = this.orderService.pagination;
   public currentPage = signal<number>(1);
   public orders = this.orderService.orders;
   public selectedStatus = signal<string>('');
   public status: string[] = ['', 'pending', 'processing', 'delivered', 'completed', 'cancelled']
   public headers: ColumnDef<Order>[] = [
-    { field: 'username', headerText: 'Username' },
-    { field: 'phoneNumber', headerText: 'Phone' },
-    { field: 'address', headerText: 'Address' },
-    { field: 'quantity', headerText: 'Quantity' },
-    { field: 'totalPrice', headerText: 'Total Price' },
-    { field: 'status', headerText: 'Status', pipe: 'uppercase' },
-    { field: 'createdAt', headerText: 'Created At' },
-    { field: 'updatedAt', headerText: 'Updated At' },
+    { field: 'username', headerText: 'Username', isResize: false },
+    { field: 'phoneNumber', headerText: 'Phone', isResize: false },
+    { field: 'address', headerText: 'Address', isResize: false },
+    { field: 'quantity', headerText: 'Quantity', isResize: false },
+    { field: 'totalPrice', headerText: 'Total Price', isResize: false },
+    { field: 'status', headerText: 'Status', pipe: 'uppercase', isResize: false },
+    { field: 'createdAt', headerText: 'Created At', isResize: false },
+    { field: 'updatedAt', headerText: 'Updated At', isResize: false },
   ]
 
   constructor() {

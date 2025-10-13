@@ -39,12 +39,34 @@ body {
   min-height: 5px;
 }
 
-*::-webkit-scrollbar{
-  width: 5px;   
+.content-container {
+  height: 90vh;
+  margin-left: 2rem;
+  box-shadow: var(--dialog-box-shadow);
+  background-color: var(--emphasis-bg);
+
+  .content-list {
+    padding: 1rem;
+  }
+
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin-bottom: 5px;
+
+    h1 {
+      color: var(--heading-color);
+    }
+  }
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
   height: 5px;
 }
 
-*::-webkit-scrollbar-thumb{
+*::-webkit-scrollbar-thumb {
   background-color: #aaa;
   border-radius: 3px;
 }

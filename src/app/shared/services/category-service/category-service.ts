@@ -3,18 +3,21 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 import { CATEGORY_URL } from '../../constants/url.constants';
-import { AuthService } from '../auth-service/auth';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { getCurrentUser } from '../../../pages/user-page/user.selector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
   private http = inject(HttpClient);
-  private authService = inject(AuthService);
+  private store = inject(Store<AppState>);
 
   public categories = signal<Category[]>([]);
-  private currentUser = this.authService.currentUser;
+  private currentUser = toSignal(this.store.select(getCurrentUser));
 
   constructor() {
     effect(() => {

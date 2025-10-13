@@ -1,10 +1,17 @@
-import { Component, effect, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth-service/auth';
 import { ProductService } from '../../shared/services/product-service/product-service';
 import { CartService } from '../../shared/services/cart-service/cart-service';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../shared/services/theme-service/theme-service';
+import { BUTTON_TOOLTIP } from '../../shared/constants/message.constants';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { selectProductsByCondition } from '../product-page/product.selector';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { getCurrentUser } from '../user-page/user.selector';
+import { setCurrentUser } from '../user-page/user.action';
 
 @Component({
   selector: 'app-header-page',
@@ -13,48 +20,44 @@ import { ThemeService } from '../../shared/services/theme-service/theme-service'
   styleUrl: './header-page.scss'
 })
 export class HeaderPage {
-  private menuWrapper = viewChild<ElementRef>('menuWrapper');
-
+  private store = inject(Store<AppState>);
   private authService = inject(AuthService);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private themeService = inject(ThemeService);
   private router = inject(Router);
 
+  public userId = this.authService.userId;
   public isLoginIn = signal<boolean>(false);
-  public currentUser = this.authService.currentUser;
+  public currentUser = toSignal(this.store.select(getCurrentUser));
   public quantityItems = this.cartService.quantityItems;
-  public products = this.productService.products;
-  public productName = '';
+  public productList = toSignal(this.store.select(selectProductsByCondition, { startIndex: 0, endIndex: 10 }), { initialValue: [] });
 
   public isShowMenu = signal<boolean>(false);
   public isShowInputSearch = signal<boolean>(false);
   public isDarkMode = this.themeService.isDarkMode;
 
-  public titleOrder = 'Orders';
-  public titleCart = 'Cart';
-  public titleMode = 'Toggle Dark/Light Mode';
+  public titleOrder = BUTTON_TOOLTIP.ORDER;
+  public titleCart = BUTTON_TOOLTIP.CART;
+  public titleMode = BUTTON_TOOLTIP.MODE;
 
   public firstCharacter = signal<string>('');
 
   constructor() {
     effect(() => {
-      const user = this.authService.currentUser();
+      if (!this.userId()) return;
 
-      this.isLoginIn.set(user ? true : false);
-      this.setAvatarName();
+      const user = this.currentUser();
+      this.isLoginIn.set(!!user);
+
+      if (this.isLoginIn()) {
+        this.setAvatarName();
+      }
     })
   }
 
-  @HostListener('document:click', ['$event'])
-  public onClickOutside(event: MouseEvent) {
-    if (this.isShowMenu() && !this.menuWrapper()!.nativeElement.contains(event.target)) {
-       this.isShowMenu.set(false);
-    }
-  }
-
   private setAvatarName() {
-    const user = this.authService.currentUser();
+    const user = this.currentUser();
     if (!user) return;
 
     const fullName = user.fullName?.trim();
@@ -63,7 +66,7 @@ export class HeaderPage {
       return;
     }
 
-    this.firstCharacter.set(fullName.charAt(0).toUpperCase());  
+    this.firstCharacter.set(fullName.charAt(0).toUpperCase());
   }
 
   public searchProduct(data: string) {
@@ -82,12 +85,19 @@ export class HeaderPage {
     this.isShowMenu.set(!this.isShowMenu());
   }
 
-  public toggleTheme(){
+  public toggleTheme() {
     this.themeService.toggleTheme();
   }
 
   public logout() {
-    this.authService.logout();
+    const user = this.currentUser();
+    if (!user || !user.id) return;
+
+    this.store.dispatch(setCurrentUser({ user: null }))
+    localStorage.clear();
+
+    console.log(this.currentUser())
+
     this.router.navigate(['/home']);
   }
 }

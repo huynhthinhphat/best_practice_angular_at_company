@@ -2,9 +2,12 @@ import { AfterViewInit, Component, computed, ElementRef, inject, OnDestroy, OnIn
 import { CategoryService } from '../../shared/services/category-service/category-service';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../shared/services/product-service/product-service';
-import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router, RouterLink } from '@angular/router';
 import { ResizableDirective } from '../../shared/directives/resizable-directive/resizable-directive';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { getCurrentUser } from '../user-page/user.selector';
 
 @Component({
   selector: 'app-left-side-page',
@@ -15,17 +18,17 @@ import { ResizableDirective } from '../../shared/directives/resizable-directive/
 export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
   private categoryTab = viewChild<ElementRef>('categoryTab');
 
+  private store = inject(Store<AppState>);
   private categoryService = inject(CategoryService);
   private productService = inject(ProductService);
-  private authService = inject(AuthService);
   private router = inject(Router);
 
   public isExpanding = computed(() => this.currentWidth() > this.minWidth);
   public minWidth: number = 70;
-  public maxWidth: number = 500;
+  public maxWidth: number = 1000;
   public currentWidth = signal<number>(202);
 
-  public currentUser = this.authService.currentUser;
+  public currentUser = toSignal(this.store.select(getCurrentUser));
   public categories = this.categoryService.categories;
   public selectedCategoryId = signal<string>('');
   public routers: {route: string, icon: string}[] = [];

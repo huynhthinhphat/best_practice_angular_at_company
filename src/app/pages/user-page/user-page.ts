@@ -17,9 +17,9 @@ export class UserPage implements OnInit {
   public currentPage = signal<number>(1);
   public users = this.userService.users;
   public headers: ColumnDef<User>[] = [
-    { field: 'username', headerText: 'Username' },
-    { field: 'fullName', headerText: 'Fullname' },
-    { field: 'role', headerText: 'Role' }
+    { field: 'username', headerText: 'Username', isResize: false },
+    { field: 'fullName', headerText: 'Fullname', isResize: false },
+    { field: 'role', headerText: 'Role', isResize: false }
   ]
 
   public ngOnInit() {

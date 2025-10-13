@@ -74,3 +74,16 @@ export const FORM = {
   REGISTER_MESSAGE: "Don't have account yet?",
   SAVE: 'Save',
 }
+
+export const BUTTON_TOOLTIP = {
+  TOOGLE: 'Toggle Actions',
+  CREATE_PRODUCT: 'Create a product',
+  GIRD_VIEW: 'Grid View',
+  CARD_VIEW: 'Card View',
+  EDIT: 'Edit item',
+  DELETE: 'Delete item',
+  COLUMN_MANAGEMENT: 'Choose columns',
+  ORDER: 'Orders',
+  CART: 'Cart',
+  MODE: 'Toggle Dark/Light Mode',
+}

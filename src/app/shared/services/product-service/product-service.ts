@@ -1,42 +1,24 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { Observable, switchMap, throwError } from 'rxjs';
 import { Product } from '../../models/product.model';
 import { PRODUCT_URL } from '../../constants/url.constants';
-import { PaginationResponse } from '../../models/pagination-response.model';
 import { AuthService } from '../auth-service/auth';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
+import { updateProduct } from '../../../pages/product-page/product.action';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   private http = inject(HttpClient);
-  private authService = inject(AuthService);
 
-  private currentUser = this.authService.currentUser;
   public categoryId = signal<string>('');
-  public products = signal<Product[]>([]);
   public productName = signal<string>('');
-  public pagination = signal<PaginationResponse<Product> | null>(null);
 
-  constructor() {
-    effect(() => {
-      if (!this.currentUser() || this.currentUser()?.role === 'User') {
-        this.getAllProductsByConditions();
-      }
-    })
-  }
-
-  public getAllProductsByConditions(isDeleted: boolean = false) {
+  public getAllProductsByConditions(isDeleted: boolean = false): Observable<Product[]> {
     const params = new HttpParams().set('categoryId', this.categoryId()).set('name', this.productName()).set('isDeleted', isDeleted);
-    this.http.get<Product[]>(PRODUCT_URL, { params }).subscribe({
-      next: (res: Product[]) => {
-        if (!res) return;
-
-        this.products.set(res);
-      }
-    });
+    return this.http.get<Product[]>(PRODUCT_URL, { params });
   }
 
   public getProductById(id: string): Observable<Product> {
@@ -56,11 +38,12 @@ export class ProductService {
     return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
   }
 
-  public saveProduct(oldProduct: Product | null, product: Product): Observable<Product> {
+  public saveProduct(oldProduct: Product | null, product: Product): Observable<HttpResponse<Product>> {
     if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_SAVE));
 
     return this.getProductByNameAndCategory(product.name!, product.categoryName!).pipe(
       switchMap((res: Product[]) => {
+        const now = new Date();
         const isExisted = res.length > 0;
         const isUpdate = !!product.id;
         const hasNameOrCategoryChanged = oldProduct && (oldProduct.name !== product.name || oldProduct.categoryName !== product.categoryName);
@@ -70,12 +53,12 @@ export class ProductService {
         }
 
         if(isUpdate){
-          return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
+          return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, {...product, updatedAt: now}, { observe: 'response' });
         }
 
-        const newProduct = { ...product };
+        const newProduct: Product = { ...product, createdAt: now };
         delete newProduct.id;
-        return this.http.post<Product>(`${PRODUCT_URL}`, newProduct);       
+        return this.http.post<Product>(`${PRODUCT_URL}`, newProduct, { observe: 'response' });       
       })
     )
   }

@@ -2,18 +2,11 @@
     padding: 0 15rem;
 }
 
-.home-container {
+.home-container{
     display: flex;
-    height: calc(100vh - 70px);
 }
 
 .content {
-    width: 141vh;
-}
-
-@media (max-width: 768px) {
-    .home-container {
-        display: block;
-        height: auto;
-    }
+    flex: 1;
+    overflow: hidden;
 }

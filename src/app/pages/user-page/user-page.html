@@ -1,8 +1,10 @@
 @if(users().length > 0){
-<div class="user-container">
-    <div>
+<div class="content-container">
+    <div class="content-header">
         <h1>Users</h1>
     </div>
-    <app-grid-view [columns]="headers" [tableData]="users()"></app-grid-view>
+    <div class="content-list">
+        <app-grid-view [columns]="headers" [tableData]="users()"></app-grid-view>
+    </div>
 </div>
 }

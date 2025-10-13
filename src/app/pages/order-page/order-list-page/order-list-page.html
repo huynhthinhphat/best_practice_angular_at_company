@@ -1,5 +1,7 @@
-<div class="order-list-container">
-    <h2>📦 Orders</h2>
+<div class="content-container">
+    <div class="content-header">
+        <h1>Orders</h1>
+    </div>
 
     @if(status.length > 0){
     <app-tab-filter [status]="status" (handleSelectedStatus)="updateStatus($event)"></app-tab-filter>

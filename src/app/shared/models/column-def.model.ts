@@ -3,4 +3,8 @@ export interface ColumnDef<T> {
     field?: keyof T;
     columnType?: string;
     pipe?: string;
+    isSort?: boolean;
+    isResize: boolean;
+    width?: number;
+    isShow?: boolean
 }
