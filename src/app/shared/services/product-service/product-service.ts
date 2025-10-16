@@ -1,11 +1,9 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { effect, inject, Injectable, signal } from '@angular/core';
-import { Observable, switchMap, throwError } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { catchError, forkJoin, Observable, switchMap, throwError } from 'rxjs';
 import { Product } from '../../models/product.model';
 import { PRODUCT_URL } from '../../constants/url.constants';
-import { AuthService } from '../auth-service/auth';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
-import { updateProduct } from '../../../pages/product-page/product.action';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +11,10 @@ import { updateProduct } from '../../../pages/product-page/product.action';
 export class ProductService {
   private http = inject(HttpClient);
 
-  public categoryId = signal<string>('');
   public productName = signal<string>('');
 
-  public getAllProductsByConditions(isDeleted: boolean = false): Observable<Product[]> {
-    const params = new HttpParams().set('categoryId', this.categoryId()).set('name', this.productName()).set('isDeleted', isDeleted);
+  public getAllProductsByConditions(selectedCategoryId: string = '', isDeleted: boolean = false): Observable<Product[]> {
+    const params = new HttpParams().set('categoryId', selectedCategoryId).set('name', this.productName()).set('isDeleted', isDeleted);
     return this.http.get<Product[]>(PRODUCT_URL, { params });
   }
 
@@ -25,41 +22,28 @@ export class ProductService {
     return this.http.get<Product>(`${PRODUCT_URL}/${id}`);
   }
 
-  public getProductByNameAndCategory(name: string, categoryName: string): Observable<Product[]> {
+  public getProductByNameAndCategory(name: string = '', categoryName: string): Observable<Product[]> {
     const params = new HttpParams().set('name', name).set('categoryName', categoryName);
     return this.http.get<Product[]>(`${PRODUCT_URL}`, { params });
   }
 
-  public deleteProductById(product: Product): Observable<Product> {
-    if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE));
+  public deleteProducts(ids: string[]): Observable<Product[]> {
+    if (ids.length === 0) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_DELETE));  
 
-    product = { ...product, isDeleted: true };
+    const requests = ids.map(id => {
+      return this.http.patch<Product>(`${PRODUCT_URL}/${id}`, { isDeleted: true });
+    });
 
-    return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, product);
+    return forkJoin(requests).pipe(
+      catchError(err => throwError(() => err))
+    );
   }
 
-  public saveProduct(oldProduct: Product | null, product: Product): Observable<HttpResponse<Product>> {
-    if (!product) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_SAVE));
+  public updateProduct(product: Product): Observable<Product> {
+    return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, {...product});
+  }
 
-    return this.getProductByNameAndCategory(product.name!, product.categoryName!).pipe(
-      switchMap((res: Product[]) => {
-        const now = new Date();
-        const isExisted = res.length > 0;
-        const isUpdate = !!product.id;
-        const hasNameOrCategoryChanged = oldProduct && (oldProduct.name !== product.name || oldProduct.categoryName !== product.categoryName);
-
-        if ((isUpdate && hasNameOrCategoryChanged && isExisted) || (!isUpdate && isExisted)) {
-          return throwError(() => new Error(ERROR_MESSAGES.EXISTED_PRODUCT));
-        }
-
-        if(isUpdate){
-          return this.http.put<Product>(`${PRODUCT_URL}/${product.id}`, {...product, updatedAt: now}, { observe: 'response' });
-        }
-
-        const newProduct: Product = { ...product, createdAt: now };
-        delete newProduct.id;
-        return this.http.post<Product>(`${PRODUCT_URL}`, newProduct, { observe: 'response' });       
-      })
-    )
+  public addProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(`${PRODUCT_URL}`, { ...product, isDeleted: false, createdAt: new Date()});
   }
 }

@@ -29,7 +29,6 @@ export class AppForm<T> implements OnInit, AfterViewInit {
   public formLinkTitle = input<string>('');
   public formUrl = input<string>('');
   public showLabel = input<boolean>(false);
-  public isReset = input<boolean>(false);
   public validators = input<ValidatorFn>();
   public submitForm = output<T>();
 
@@ -64,7 +63,7 @@ export class AppForm<T> implements OnInit, AfterViewInit {
         defaultValue = field.defaultValue;
       }
 
-      acc[field.name] = [defaultValue ?? '', [...field.validator]];
+      acc[field.name!] = [defaultValue ?? '', [...field.validator]];
       return acc;
     }, {} as any)
 

@@ -1,11 +1,7 @@
 @let cardView = isCardView();
-@let products = filteredProducts();
-@let show = showDialog();
+@let products = allProducts();
 @let user = currentUser();
-@let start = startIndex();
-@let end = endIndex();
-@let total = allProducts().length;
-@let quantity = quantityItem();
+@let dialogHide = isDialogHidden();
 
 <div class="content-container">
   <div class="content-header">
@@ -23,31 +19,17 @@
       <button type="button" (click)="toggleView(false)" [class.active]="!cardView" [title]="titleGridBtn">
         <i class="fa-solid fa-table-list"></i>
       </button>
-      <button type="button" [title]="titleCreateBtn" (click)="toggleDialog()">
-        <i class="fa-solid fa-plus"></i>
-      </button>
     </div>
     }
   </div>
 
-  <app-pagination [totalItem]="total" [startIndex]="start" [endIndex]="end" [quantityItem]="quantity"
-    (direction)="handleNavigation($event)" (quantityItemEmit)="handleQuantityItem($event)"></app-pagination>
-
   <div class="content-list">
     @if(cardView){
-    <app-card-view [maxHeight]="720" [data]="products" (emit)="handleEmit($event)"></app-card-view>
+    <app-card-view [maxHeight]="700" [data]="products" (emit)="handleEmit($event)"></app-card-view>
     } @else {
-    <app-grid-view [maxHeight]="720" [columns]="headers" [tableData]="products" (actionEmit)="handleActions($event)"
-      (sortEmit)="onSort($event)"></app-grid-view>
+    <app-grid-view [maxHeight]="700" [headers]="headers" [tableData]="products" (actionEmit)="handleActions($event)"
+      [titleDialog]="titleDialog" [fields]="fields" [buttonLabel]="buttonLabel"
+      [isDialogHidden]="dialogHide"></app-grid-view>
     }
   </div>
 </div>
-
-@if(show){
-<app-dialog (showDialog)="showDialog.set($event)">
-  <span dialogTitle>Edit Product</span>
-
-  <app-form dialogContent [formFields]="fields" [buttonLabel]="buttonLabel" [showLabel]="true" [isReset]="show"
-    (submitForm)="saveProduct($event)"></app-form>
-</app-dialog>
-}

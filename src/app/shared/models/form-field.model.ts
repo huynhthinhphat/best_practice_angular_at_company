@@ -2,9 +2,9 @@ import { Validators } from "@angular/forms";
 import { Category } from "./category.model";
 
 export interface FormFields {
-  name: string,
-  label: string,
-  type: string,
+  name?: string,
+  label?: string,
+  type?: string,
   icon?: string,
   validator: Validators[],
   categories?: Category[],
@@ -13,4 +13,5 @@ export interface FormFields {
     message: string
   }[],
   defaultValue?: string | number | boolean | Date,
+  isShow?: boolean
 }

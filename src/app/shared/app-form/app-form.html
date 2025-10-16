@@ -7,7 +7,7 @@
 
     @for(field of formFields(); track field.name) {
     <div class="form-input">
-        @let firstError = getError(field.name);
+        @let firstError = getError(field.name!);
 
         @if(firstError){
         <small>(*) {{ firstError }}</small>
@@ -16,7 +16,7 @@
         <small>(*) {{ errorMessage.PASSWORD_MISMATCH }}</small>
         }
 
-        @if(showLabel() && field.name !== 'id'){
+        @if(showLabel() && field.isShow){
         <label class="form-label" [for]="field.name">
             {{field.label}}
         </label>
@@ -24,10 +24,10 @@
 
         <div>
             @if(field.type === 'textarea'){
-            <textarea [id]="field.name" [formControlName]="field.name" [placeholder]="field.label"></textarea>
+            <textarea [id]="field.name" [formControlName]="field.name!" [placeholder]="field.label"></textarea>
             }
             @else if(field.type === 'select'){
-            <select [id]="field.name" [formControlName]="field.name">
+            <select [id]="field.name" [formControlName]="field.name!">
                 @for(category of field.categories; track category.id) {
                 <option [value]="category.id">{{ category.name }}</option>
                 }
@@ -66,8 +66,8 @@
                 }
             </div>
             }
-            @else if(field.name !== 'id'){
-            <input [type]="field.type" [id]="field.name" [formControlName]="field.name" [placeholder]="field.label"
+            @else if(field.isShow){
+            <input [type]="field.type" [id]="field.name" [formControlName]="field.name!" [placeholder]="field.label"
                 #formInput>
             }
 

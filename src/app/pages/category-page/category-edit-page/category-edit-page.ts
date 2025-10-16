@@ -55,9 +55,9 @@ export class CategoryEditPage implements OnInit {
         if (!res) return;
 
         if (action === 'update') {
-          this.toastrService.success(SUCCESS_MESSAGES.UPDATE_CATEGORY);
+          this.toastrService.success(SUCCESS_MESSAGES.SAVE);
         } else {
-          this.toastrService.success(SUCCESS_MESSAGES.CREATE_CATEGORY);
+          this.toastrService.success(SUCCESS_MESSAGES.ADD);
         }
         this.location.back();
       }),

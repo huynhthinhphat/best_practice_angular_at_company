@@ -1,13 +1,13 @@
-import { AfterViewInit, Component, computed, ElementRef, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { CategoryService } from '../../shared/services/category-service/category-service';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../shared/services/product-service/product-service';
 import { Router, RouterLink } from '@angular/router';
 import { ResizableDirective } from '../../shared/directives/resizable-directive/resizable-directive';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
+import { AppState } from '../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../user-page/user.selector';
+import { getCurrentUser } from '../../shared/services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-left-side-page',
@@ -15,7 +15,7 @@ import { getCurrentUser } from '../user-page/user.selector';
   templateUrl: './left-side-page.html',
   styleUrl: './left-side-page.scss'
 })
-export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
+export class LeftSidePage implements AfterViewInit {
   private categoryTab = viewChild<ElementRef>('categoryTab');
 
   private store = inject(Store<AppState>);
@@ -35,21 +35,23 @@ export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
 
   public titleBtn = 'Toggle Navigation';
 
-  ngOnInit() {
-    if (this.currentUser()?.role === 'Admin') {
-      this.routers = [
-        {route: 'users', icon: 'fa-users'},
-        {route: 'products', icon: 'fa-box'},
-        {route: 'categories', icon: 'fa-tags'},
-        {route: 'orders', icon: 'fa-receipt'},
-      ];
+  constructor() {
+    effect(() => {
+      if (this.currentUser()?.role === 'Admin') {
+        this.routers = [
+          {route: 'users', icon: 'fa-users'},
+          {route: 'products', icon: 'fa-box'},
+          {route: 'categories', icon: 'fa-tags'},
+          {route: 'orders', icon: 'fa-receipt'},
+        ];
 
-      const paths = this.router.url.split('/');
-      const router = paths[paths.length - 1];
+        const paths = this.router.url.split('/');
+        const router = paths[paths.length - 1];
 
-      this.selectedCategoryId.set(router);
-      this.router.navigate([`/admin/${router}`], { state: { isAdmin: true } });
-    }
+        this.selectedCategoryId.set(router);
+        this.router.navigate([`/admin/${router}`]);
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -67,7 +69,7 @@ export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
 
   public onCategoryClick(categoryId: string) {
     if (!this.currentUser() || this.currentUser()?.role === 'User') {
-      this.productService.categoryId.set(categoryId);
+      // this.productService.categoryId.set(categoryId);
     }
 
     this.selectedCategoryId.set(categoryId);
@@ -76,9 +78,5 @@ export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
   public toggleTab() {
     const newWidth = this.isExpanding() ? this.minWidth : 202;
     this.currentWidth.set(newWidth);
-  }
-
-  ngOnDestroy() {
-    this.selectedCategoryId.set('');
   }
 }

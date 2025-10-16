@@ -4,7 +4,7 @@ export interface ColumnDef<T> {
     columnType?: string;
     pipe?: string;
     isSort?: boolean;
-    isResize: boolean;
+    isResize?: boolean;
     width?: number;
     isShow?: boolean
 }

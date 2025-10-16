@@ -6,9 +6,9 @@ import { OrderDetail } from '../models/order-detail.model';
 import { ORDER_STATUS } from '../constants/order-status.constants';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import { getCurrentUser } from '../../pages/user-page/user.selector';
+import { AppState } from '../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { getCurrentUser } from '../services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-order-detail',

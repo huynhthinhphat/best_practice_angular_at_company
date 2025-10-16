@@ -7,7 +7,7 @@ export const getSelectors = productAdapter.getSelectors();
 
 export const selectAllProducts = createSelector(
   productSelector,
-  (state) => getSelectors.selectAll(state)
+  (state) => [...getSelectors.selectAll(state)]
 ) 
 
 export const selectProductsByCondition = createSelector(

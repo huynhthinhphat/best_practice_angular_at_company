@@ -5,10 +5,13 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
-import { appReducers } from './app.reducer';
+import { appReducers } from './state/app.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideEffects } from '@ngrx/effects';
+import { ProductEffects } from './shared/services/product-service/state/product.effect';
+import { NotificationEffect } from './state/notification.effect';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimations(),
     provideStore(appReducers),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideEffects(NotificationEffect, ProductEffects)
 ]
 };

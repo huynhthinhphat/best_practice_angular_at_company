@@ -5,11 +5,10 @@ import { CommonModule } from '@angular/common';
 import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Order } from '../../../shared/models/order.model';
 import { AppTabFilter } from '../../../shared/app-tab-filter/app-tab-filter';
-import { AuthService } from '../../../shared/services/auth-service/auth';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
+import { AppState } from '../../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../../user-page/user.selector';
+import { getCurrentUser } from '../../../shared/services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-order-list-page',

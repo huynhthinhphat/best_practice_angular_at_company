@@ -7,8 +7,8 @@ import { ERROR_MESSAGES } from '../../constants/message.constants';
 import { STORAGE_KEYS } from '../../constants/storage.constants';
 import { StorageService } from '../storage-service/storage-service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { setCurrentUser } from '../../../pages/user-page/user.action';
+import { AppState } from '../../../state/app.state';
+import { setCurrentUser } from '../user-service/state/user.action';
 
 @Injectable({
   providedIn: 'root'

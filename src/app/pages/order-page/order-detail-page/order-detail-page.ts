@@ -53,7 +53,7 @@ export class OrderDetailPage implements OnInit {
           if (!order) return;
 
           this.order.set(order);
-          this.toastrService.success(SUCCESS_MESSAGES.UPDATE_ORDER);
+          this.toastrService.success(SUCCESS_MESSAGES.UPDATE);
         },
         error: () => {
           this.toastrService.error(ERROR_MESSAGES.UPDATE_ORDER_FAILED);

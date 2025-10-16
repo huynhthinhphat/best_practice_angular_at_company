@@ -7,11 +7,11 @@ import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../shared/services/theme-service/theme-service';
 import { BUTTON_TOOLTIP } from '../../shared/constants/message.constants';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import { selectProductsByCondition } from '../product-page/product.selector';
+import { AppState } from '../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../user-page/user.selector';
-import { setCurrentUser } from '../user-page/user.action';
+import { selectProductsByCondition } from '../../shared/services/product-service/state/product.selector';
+import { setCurrentUser } from '../../shared/services/user-service/state/user.action';
+import { getCurrentUser } from '../../shared/services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-header-page',
@@ -95,8 +95,6 @@ export class HeaderPage {
 
     this.store.dispatch(setCurrentUser({ user: null }))
     localStorage.clear();
-
-    console.log(this.currentUser())
 
     this.router.navigate(['/home']);
   }

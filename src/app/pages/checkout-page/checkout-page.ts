@@ -97,7 +97,7 @@ export class CheckoutPage implements OnInit, OnDestroy {
         }
 
         this.router.navigate(['/orders/detail', res.id], { state: { orderSuccess : true }, replaceUrl: true });
-        this.toastrService.success(SUCCESS_MESSAGES.ORDER);
+        this.toastrService.success(SUCCESS_MESSAGES.PLACED_ORDER);
       },
       error: (error) => {
         this.toastrService.error(error.message);

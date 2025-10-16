@@ -50,7 +50,7 @@ export class ProductDetailPage implements OnInit {
       next: (cart) => {
         if (cart) {
           this.cartService.getCartByCartId();
-          this.toastrService.success(SUCCESS_MESSAGES.ADD_TO_CART);
+          this.toastrService.success(SUCCESS_MESSAGES.ADD);
         }
       },
       error: (error) => {

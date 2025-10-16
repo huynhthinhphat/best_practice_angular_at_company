@@ -11,7 +11,7 @@
         </button>
     </div>
     <div>
-        @if(user?.role === 'User' || !user){
+        @if(!user || user.role === 'User'){
         <ul>
             @for(category of categories(); track category.id){
             <li [ngClass]="{ 'active': categoryId === category.id}" (click)="onCategoryClick(category.id!)"
@@ -21,7 +21,7 @@
             </li>
             }
         </ul>
-        } @else {
+        } @else if(user.role === 'Admin'){
         <ul>
             @for(router of routers; track router){
             <li [ngClass]="{'active': categoryId === router.route}" [routerLink]="['/admin/' + router.route]"

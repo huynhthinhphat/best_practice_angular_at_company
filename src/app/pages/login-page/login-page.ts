@@ -9,14 +9,14 @@ import { CartService } from '../../shared/services/cart-service/cart-service';
 import { REGISTER_URL } from '../../shared/constants/url.constants';
 import { FormFields } from '../../shared/models/form-field.model';
 import { Validators } from '@angular/forms';
-import { AppState } from '../../app.state';
+import { AppState } from '../../state/app.state';
 import { Store } from '@ngrx/store';
-import { addLoggedInUserToList, setCurrentUser } from '../user-page/user.action';
 import { StorageService } from '../../shared/services/storage-service/storage-service';
 import { STORAGE_KEYS } from '../../shared/constants/storage.constants';
 import { CartItem } from '../../shared/models/cart-item.model';
-import { loadCarts } from '../cart-page/cart.action';
 import { catchError, of, switchMap, tap } from 'rxjs';
+import { setCurrentUser } from '../../shared/services/user-service/state/user.action';
+import { loadCarts } from '../../shared/services/cart-service/state/cart.action';
 
 @Component({
   selector: 'app-login-page',

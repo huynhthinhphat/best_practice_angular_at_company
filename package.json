@@ -33,6 +33,7 @@
     "@angular/platform-server": "^20.2.0",
     "@angular/router": "^20.2.0",
     "@angular/ssr": "^20.2.0",
+    "@ngrx/effects": "^20.0.1",
     "@ngrx/entity": "^20.0.1",
     "@ngrx/store": "^20.0.1",
     "@ngrx/store-devtools": "^20.0.1",

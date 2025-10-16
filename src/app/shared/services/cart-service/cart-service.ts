@@ -38,7 +38,7 @@ export class CartService {
   }
 
   public deleteCartItems(selectedItemIdList: string[]): Observable<CartItem[]> {
-    if (!selectedItemIdList || selectedItemIdList.length === 0) return throwError(() => new Error(ERROR_MESSAGES.NO_PRODUCT_TO_DELETE));
+    if (!selectedItemIdList || selectedItemIdList.length === 0) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_DELETE));
 
     const selectedItemIdReq = selectedItemIdList.map(item => {
       return this.http.delete<CartItem>(`${CART_ITEMS_URL}/${item}`);

@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, EmbeddedViewRef, HostListener, inject, input, Renderer2, TemplateRef, viewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EmbeddedViewRef, HostListener, inject, input, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
   selector: '[appActionMenuDirective]'
@@ -9,6 +9,7 @@ export class ActionMenuDirective implements AfterViewInit {
   private viewContainerRef = inject(ViewContainerRef);
 
   public content = input<TemplateRef<any> | null>(null);
+  public keepMenuOpenAfterClick = input<boolean>(false);
 
   private menu: HTMLElement | null = null;
   private embeddedViewRef: EmbeddedViewRef<any> | null = null;
@@ -30,7 +31,6 @@ export class ActionMenuDirective implements AfterViewInit {
     }
 
     this.menu = this.renderer.createElement('div');
-
     this.renderer.addClass(this.menu, 'action-menu');
 
     this.embeddedViewRef = this.viewContainerRef.createEmbeddedView(this.content()!);
@@ -42,9 +42,10 @@ export class ActionMenuDirective implements AfterViewInit {
 
     this.clickOutsideListener = this.renderer.listen('document', 'click', (event: MouseEvent) => {
       const target = event.target as Node;
-      if (!this.menu?.contains(target) && !this.elementRef.nativeElement.contains(target)) {
+
+      if ((!this.menu?.contains(target) && !this.elementRef.nativeElement.contains(target)) || (this.menu?.contains(target) && !this.keepMenuOpenAfterClick())) {
         this.destroyMenu();
-      }
+      }   
     });
 
     if (this.scrollContainer) {

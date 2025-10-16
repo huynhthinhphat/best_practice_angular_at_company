@@ -1,47 +1,21 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 import { CATEGORY_URL } from '../../constants/url.constants';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../../../pages/user-page/user.selector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
   private http = inject(HttpClient);
-  private store = inject(Store<AppState>);
 
   public categories = signal<Category[]>([]);
-  private currentUser = toSignal(this.store.select(getCurrentUser));
 
-  constructor() {
-    effect(() => {
-      this.getAllCategoriesByConditions();
-    })
-  }
-
-  public getAllCategoriesByConditions() {
-    const user = this.currentUser();
-    let isUser: boolean = false;
-    if (!user || user?.role === 'User') {
-      isUser = true;
-    }
-
-    const params = new HttpParams().set('isDeleted', false);
-    this.http.get<Category[]>(CATEGORY_URL, { params }).subscribe(res => {
-      if (!res) return;
-
-      if (isUser) {
-        this.categories.set([{ id: '', name: 'All', icon: 'border-all' }, ...res]);
-        return;
-      }
-      this.categories.set([...res]);
-    });
+  public getAllCategoriesByConditions(isDeleted : boolean = false): Observable<Category[]> {
+    const params = new HttpParams().set('isDeleted', isDeleted);
+    return this.http.get<Category[]>(CATEGORY_URL, { params });
   }
 
   public getCategoryById(id: string): Observable<Category> {
@@ -54,14 +28,14 @@ export class CategoryService {
   }
 
   public handleSoftDeletion(category: Category): Observable<Category> {
-    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NO_CATEGORY_TO_DELETE));
+    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_DELETE));
 
     category = { ...category, isDeleted: true };
     return this.http.put<Category>(`${CATEGORY_URL}/${category.id}`, category);
   }
 
   public saveCategory(category: Category, action: string): Observable<Category> {
-    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NO_CATEGORY_TO_UPDATE));
+    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_SAVE));
 
     if (action === 'update') {
       return this.http.put<Category>(`${CATEGORY_URL}/${category.id}`, category)

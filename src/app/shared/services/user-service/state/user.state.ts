@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState } from "@ngrx/entity";
-import { User } from "../../shared/models/user.model";
+import { User } from "../../../models/user.model";
 
 export interface UserState extends EntityState<User> {
     currentUser: User | null;

@@ -17,7 +17,6 @@ export class ColumnsSortDirective<T> implements OnInit, AfterViewInit{
 
   ngOnInit() {
     this.host = this.elementRef.nativeElement as HTMLElement;
-
   }
 
   ngAfterViewInit() {
@@ -31,53 +30,42 @@ export class ColumnsSortDirective<T> implements OnInit, AfterViewInit{
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    this.handleIElement(true);
+    this.handleHover(true);
   }
 
   @HostListener('mouseleave')
   onMouseLeave() {
-    this.handleIElement(false);
+    this.handleHover(false);
   }
 
-  private handleIElement(isAdd: boolean) {
+  private handleHover(isAdd: boolean) {
     if (!this.icon || ['fa-chevron-up', 'fa-chevron-down'].some(className => this.icon!.classList.contains(className))) return;
 
     let className = 'fa-sort';
-    if (isAdd) {
-      this.renderer.addClass(this.icon, className);
-      return;
-    }
-    this.renderer.removeClass(this.icon, className);
+    isAdd ? this.renderer.addClass(this.icon, className) : this.renderer.removeClass(this.icon, className);
   }
 
   @HostListener('click')
   public toggleSort() {
     if (!this.icon) return; 
-
     this.renderer.removeClass(this.icon, 'fa-sort');
-    let removedClassName = '';
-    let addedClassName = '';
+    
+    this.updateIconClass();
 
-    if (this.direction === 'asc') {
-      removedClassName = 'fa-chevron-down';
-      addedClassName = 'fa-chevron-up';
-    } else if (this.direction === 'desc') {
-      removedClassName = 'fa-chevron-up';
-      addedClassName = 'fa-chevron-down';
-    } else {
-      removedClassName = 'fa-chevron-down';
-      addedClassName = 'fa-sort';
-    }
-
-    this.handleClass(removedClassName, addedClassName);
-
-    const sortOption : SortOption<T> = {column: this.columnKey()!, direction: this.direction}
+    const sortOption: SortOption<T> = { column: this.columnKey()!, direction: this.direction }
     this.directionEmit.emit(sortOption);
+
     this.direction = this.direction === 'asc' ? 'desc' : (this.direction === 'desc' ? '' : 'asc');
   }
 
-  private handleClass(removedClassName: string, addedClassName: string) {
-    this.renderer.removeClass(this.icon, removedClassName);
-    this.renderer.addClass(this.icon, addedClassName);
+  private updateIconClass() {
+    if (!this.icon) return;
+    this.renderer.removeClass(this.icon, 'fa-sort');
+    this.renderer.removeClass(this.icon, 'fa-chevron-up');
+    this.renderer.removeClass(this.icon, 'fa-chevron-down');
+
+    if (this.direction === 'asc') this.renderer.addClass(this.icon, 'fa-chevron-up');
+    else if (this.direction === 'desc') this.renderer.addClass(this.icon, 'fa-chevron-down');
+    else this.renderer.addClass(this.icon, 'fa-sort');
   }
 }
