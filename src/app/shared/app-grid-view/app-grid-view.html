@@ -11,6 +11,7 @@
 @let start = startIndex();
 @let end = endIndex();
 @let quantity = quantityItem();
+@let showIcons = isShowIcons();
 
 <div class="header-container">
   <button type="button" class="btn-column-management" [title]="tooltipColumnManagement" appActionMenuDirective
@@ -72,15 +73,18 @@
         @if(col.isShow){
         @let value = getFieldAsString(item, col.field!, col.pipe);
         <div class="td" [attr.data-col-index]="index" [style.width.px]="col.width" [title]="value" #tdTbody>
-          @if(col.field === 'name'){
+          @if(col.isRedirect){
           @let id = getId(item!);
           <a [routerLink]="['/products/detail', id]" class="text-truncate">
             {{ value }}
           </a>
           } @else {
-          <span class="text-truncate">
-            {{ value }}
-          </span>
+          @if(col.field === 'icon'){
+            <i [class]="`fa-solid fa-${item[col.field]}`"></i>
+          }@else {
+            <span class="text-truncate">
+              {{ value }}
+            </span>}
           }
         </div>
         }
@@ -134,7 +138,7 @@
 <app-dialog (showDialog)="setToggleDialog($event)">
   <span dialogTitle>{{ titleDialogValue }}</span>
 
-  <app-form dialogContent [formFields]="fields" [buttonLabel]="buttonText" [showLabel]="true"
+  <app-form dialogContent [formFields]="fields" [buttonLabel]="buttonText" [showLabel]="true" [isShowIcons]="showIcons"
     (submitForm)="emitFormData($event)"></app-form>
 </app-dialog>
 }

@@ -6,9 +6,8 @@ import { OrderDetail } from '../models/order-detail.model';
 import { ORDER_STATUS } from '../constants/order-status.constants';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../services/user-service/state/user.selector';
+import { selectCurrentUser } from '../services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-order-detail',
@@ -17,10 +16,10 @@ import { getCurrentUser } from '../services/user-service/state/user.selector';
   styleUrl: './app-order-detail.css'
 })
 export class AppOrderDetail {
-  private store = inject(Store<AppState>);
+  private store = inject(Store);
   private location = inject(Location);
 
-  public currentUser = toSignal(this.store.select(getCurrentUser));
+  public currentUser = toSignal(this.store.select(selectCurrentUser));
   public order = input<Order | null>(null);
   public orderDetail = input<OrderDetail[]>([]);
   public handleStatusOrder = output<string>();

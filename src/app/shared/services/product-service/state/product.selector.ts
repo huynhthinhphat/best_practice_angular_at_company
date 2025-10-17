@@ -13,4 +13,14 @@ export const selectAllProducts = createSelector(
 export const selectProductsByCondition = createSelector(
   productSelector,
   (state: ProductState, props: { startIndex: number; endIndex: number }) => getSelectors.selectAll(state).slice(props.startIndex, props.endIndex)
-) 
+)
+
+export const selectErrorProduct = createSelector(
+  productSelector,
+  (state) => state.error
+)
+
+export const selectIsOpenDialog = createSelector(
+  productSelector,
+  (state) => state.isOpenDialog
+)

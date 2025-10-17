@@ -7,6 +7,7 @@ import { ERROR_MESSAGES } from '../constants/message.constants';
 import { Cloudinary } from '../models/cloudinary.model';
 import { FormFields } from '../models/form-field.model';
 import { ImageService } from '../services/image-service/image-service';
+import { CATEGORY_ICON } from '../constants/category-icons';
 
 @Component({
   selector: 'app-form',
@@ -30,12 +31,15 @@ export class AppForm<T> implements OnInit, AfterViewInit {
   public formUrl = input<string>('');
   public showLabel = input<boolean>(false);
   public validators = input<ValidatorFn>();
+  public isShowIcons = input<boolean>(false);
   public submitForm = output<T>();
 
   public form!: FormGroup;
   public previewImage = this.imageService.previewUrl;
   public isLoading = signal<boolean>(false);
   public readonly errorMessage = ERROR_MESSAGES;
+  public iconList = Object.values(CATEGORY_ICON);
+  public selectedIconIndex = signal<number>(-1);
 
   ngOnInit() {
     this.initForm();
@@ -61,12 +65,15 @@ export class AppForm<T> implements OnInit, AfterViewInit {
         }
       } else {
         defaultValue = field.defaultValue;
+
+        if (field.name === 'icon') {
+          this.selectedIconIndex.set(this.iconList.findIndex(icon => icon === defaultValue))
+        }
       }
 
       acc[field.name!] = [defaultValue ?? '', [...field.validator]];
       return acc;
     }, {} as any)
-
     this.form = this.formBuilder.nonNullable.group(controls, { validators: this.validators() });
   }
 
@@ -112,5 +119,14 @@ export class AppForm<T> implements OnInit, AfterViewInit {
         this.toastrService.error(ERROR_MESSAGES.UPLOAD_FILE_FAILED);
       }
     })
+  }
+
+  public selectIcon(index: number) {
+    this.selectedIconIndex.set(index);
+    this.form.get('icon')?.setValue(this.iconList[index]);
+  }
+
+  public getTitleIcon(iconName: string): string {
+    return iconName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
   }
 }

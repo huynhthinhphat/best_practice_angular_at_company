@@ -7,11 +7,10 @@ import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../shared/services/theme-service/theme-service';
 import { BUTTON_TOOLTIP } from '../../shared/constants/message.constants';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectProductsByCondition } from '../../shared/services/product-service/state/product.selector';
 import { setCurrentUser } from '../../shared/services/user-service/state/user.action';
-import { getCurrentUser } from '../../shared/services/user-service/state/user.selector';
+import { selectCurrentUser } from '../../shared/services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-header-page',
@@ -20,7 +19,7 @@ import { getCurrentUser } from '../../shared/services/user-service/state/user.se
   styleUrl: './header-page.scss'
 })
 export class HeaderPage {
-  private store = inject(Store<AppState>);
+  private store = inject(Store);
   private authService = inject(AuthService);
   private productService = inject(ProductService);
   private cartService = inject(CartService);
@@ -29,7 +28,7 @@ export class HeaderPage {
 
   public userId = this.authService.userId;
   public isLoginIn = signal<boolean>(false);
-  public currentUser = toSignal(this.store.select(getCurrentUser));
+  public currentUser = toSignal(this.store.select(selectCurrentUser));
   public quantityItems = this.cartService.quantityItems;
   public productList = toSignal(this.store.select(selectProductsByCondition, { startIndex: 0, endIndex: 10 }), { initialValue: [] });
 

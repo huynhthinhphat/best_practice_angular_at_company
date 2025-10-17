@@ -6,5 +6,6 @@ export interface ColumnDef<T> {
     isSort?: boolean;
     isResize?: boolean;
     width?: number;
-    isShow?: boolean
+    isShow?: boolean,
+    isRedirect?: boolean
 }

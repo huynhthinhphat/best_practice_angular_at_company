@@ -1,7 +1,7 @@
 @let cardView = isCardView();
 @let products = allProducts();
 @let user = currentUser();
-@let dialogHide = isDialogHidden();
+@let openDialog = isOpenDialog();
 
 <div class="content-container">
   <div class="content-header">
@@ -29,7 +29,7 @@
     } @else {
     <app-grid-view [maxHeight]="700" [headers]="headers" [tableData]="products" (actionEmit)="handleActions($event)"
       [titleDialog]="titleDialog" [fields]="fields" [buttonLabel]="buttonLabel"
-      [isDialogHidden]="dialogHide"></app-grid-view>
+      [isOpenDialog]="openDialog"></app-grid-view>
     }
   </div>
 </div>

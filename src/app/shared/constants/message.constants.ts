@@ -30,7 +30,9 @@ export enum ERROR_MESSAGES {
   NOT_FOUND = 'Resource not found',
   SERVER_ERROR = 'Server error. Please try again later.',
   EXISTED_CATEGORY = 'Category already exists',
-  EXISTED_PRODUCT = 'Product already exists'
+  INVALID_CATEGORY_NAME = 'Invalid category name',
+  EXISTED_PRODUCT = 'Product already exists',
+  UNKNOW_ERROR= 'An unknown error occurred. Please try again.'
 };
 
 export enum SUCCESS_MESSAGES {
@@ -40,9 +42,7 @@ export enum SUCCESS_MESSAGES {
   ADD = 'Added successfully',
   SAVE = 'Saved successfully',
   UPDATE = 'Updated successfully',
-  PLACED_ORDER = 'Order placed successfully',
-  NOT_FOUND_TO_DELETE = "NOT_FOUND_TO_DELETE",
-  NOT_FOUND_TO_SAVE = "NOT_FOUND_TO_SAVE"
+  PLACED_ORDER = 'Order placed successfully'
 };
 
 export enum SWAL_MESSAGES {
@@ -71,7 +71,9 @@ export enum FORM {
   LOGIN_MESSAGE = 'Already have account?',
   REGISTER_MESSAGE = "Don't have account yet?",
   SAVE = 'Save',
-  TITLE_EDIT_PRODUCT = 'Edit Product'
+  TITLE_EDIT_PRODUCT = 'Edit Product',
+  TITLE_EDIT_CATEGORY = 'Edit Category',
+  TITLE_EDIT_ORDER = 'Edit Order'
 }
 
 export enum BUTTON_TOOLTIP {

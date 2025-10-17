@@ -1,20 +1,13 @@
-@let total = allCategories().length;
-@let quantity = quantityItem();
-@let start = startIndex();
-@let end = endIndex();
+@let categories = allCategories();
+@let openDialog = isOpenDialog();
 
 <div class="content-container">
     <div class="content-header">
         <h1>Categories</h1>
-        <div class="btn-create">
-            <button [routerLink]="'/admin/categories/create'" [state]="{'isAdmin': true}">Create</button>
-        </div>
     </div>
-    @if(total > 0){
-        <app-pagination [totalItem]="total" [startIndex]="start" [endIndex]="end" [quantityItem]="quantity"
-            (direction)="handleNavigation($event)" (quantityItemEmit)="handleQuantityItem($event)"></app-pagination>
-    }
     <div class="content-list">
-        <!-- <app-grid-view [maxHeight]="720" [columns]="headers" [tableData]="categories" (actionEmit)="handleAction($event)"></app-grid-view> -->
+        <app-grid-view [maxHeight]="700" [headers]="headers" [tableData]="categories" (actionEmit)="handleActions($event)"
+            [titleDialog]="titleDialog" [fields]="fields" [buttonLabel]="buttonLabel"
+            [isOpenDialog]="openDialog" [isShowIcons]="true"></app-grid-view>
     </div>
 </div>

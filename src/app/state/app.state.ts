@@ -7,5 +7,5 @@ export interface AppState {
     product: ProductState,
     cart: CartState,
     user: UserState,
-    category: CategoryState
+    category: CategoryState,
 }

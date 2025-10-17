@@ -3,12 +3,12 @@ import { userAdapter, UserState } from "./user.state";
 
 export const userSelector = createFeatureSelector<UserState>('user');
 
-export const getCurrentUser = createSelector(
+export const selectCurrentUser = createSelector(
     userSelector,
     (state) => state.currentUser
 )
 
-export const getAllUsers = createSelector(
+export const selectAllUsers = createSelector(
     userSelector,
     (state: UserState) => userAdapter.getSelectors().selectAll(state)
 )

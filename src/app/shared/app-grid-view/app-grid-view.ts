@@ -32,7 +32,8 @@ export class AppGridView<T> implements OnInit {
   public tableData = input<T[]>([]);
   public titleDialog = input<string>('');
   public buttonLabel = input<string>('');
-  public isDialogHidden = input<boolean>(false);
+  public isOpenDialog = input<boolean>(false);
+  public isShowIcons = input<boolean>(false);
 
   public actionEmit = output<{ action?: string, prevData?: T | null, newData?: T | null, ids?: string[] }>();
 
@@ -63,9 +64,12 @@ export class AppGridView<T> implements OnInit {
     effect(() => {
       this.initData();
       this.setEndIndex();
-      this.cloneColumns();
 
-      if (this.isDialogHidden()) {
+      if (this.columnList().length === 0){
+        this.cloneColumns();
+      }
+
+      if (this.isOpenDialog()) {
         this.setToggleDialog(false);
       }
     })
@@ -77,7 +81,8 @@ export class AppGridView<T> implements OnInit {
 
   private initData() {
     const data = this.tableData();
-    if (data.length !== this.allData().length || this.isDialogHidden()) {
+    console.log(data.length !== this.allData().length)
+    if (data.length !== this.allData().length || this.isOpenDialog()) {
       this.allData.set(data);
       this.originalData.set([...data]);
     }
@@ -89,7 +94,7 @@ export class AppGridView<T> implements OnInit {
   }
 
   public getFieldAsString(row: T, field: keyof T, pipeName: string = ''): string {
-    let value = row[field];
+    let value = row[field] as unknown;
     if (value == null) return '';
 
     switch (pipeName) {
@@ -139,10 +144,6 @@ export class AppGridView<T> implements OnInit {
     }
 
     this.emitData(action, prevData, newData, ids);
-
-    this.item = null;
-    this.prevData = null;
-    this.prevAction = '';
   }
 
   private emitData(action?: string, prevData?: T | null, newData?: T | null, ids: string[] = []) {
@@ -184,10 +185,8 @@ export class AppGridView<T> implements OnInit {
   }
 
   private cloneColumns() {
-    if(this.columnList().length === 0){
-      const clonedColumns = this.headers().map(col => ({ ...col }));
-      this.columnList.set([...clonedColumns]);
-    }
+    const clonedColumns = this.headers().map(col => ({ ...col }));
+    this.columnList.set([...clonedColumns]);
   }
 
   public onDragStart(event: DragEvent, index: number) {

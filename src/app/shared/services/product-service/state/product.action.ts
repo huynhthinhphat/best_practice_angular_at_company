@@ -7,12 +7,12 @@ export const loadProductSuccess = createAction(PRODUCT_ACTIONS_TYPES.LOAD_SUCCES
 
 export const addProduct = createAction(PRODUCT_ACTIONS_TYPES.ADD, props<{ product: Product }>());
 export const addProductSuccess = createAction(PRODUCT_ACTIONS_TYPES.ADD_SUCCESS, props<{ product: Product }>());
-export const addProductFailure = createAction(PRODUCT_ACTIONS_TYPES.ADD_FAILURE, props<{ error: string }>())
+export const addProductFailure = createAction(PRODUCT_ACTIONS_TYPES.ADD_FAILURE, props<{ error: string }>());
 
-export const updateProduct = createAction(PRODUCT_ACTIONS_TYPES.UPDATE, props<{ product: Product }>());
+export const updateProduct = createAction(PRODUCT_ACTIONS_TYPES.UPDATE, props<{ prevProduct: Product, newData: Product }>());
 export const updateProductSuccess = createAction(PRODUCT_ACTIONS_TYPES.UPDATE_SUCCESS, props<{ product: Product }>());
-export const updateProductFailure = createAction(PRODUCT_ACTIONS_TYPES.UPDATE_FAILURE, props<{ error: string }>())
+export const updateProductFailure = createAction(PRODUCT_ACTIONS_TYPES.UPDATE_FAILURE, props<{ error: string }>());
 
 export const deleteProducts = createAction(PRODUCT_ACTIONS_TYPES.DELETE, props<{ ids: string[] }>())
 export const deleteProductsSuccess = createAction(PRODUCT_ACTIONS_TYPES.DELETE_SUCCESS, props<{ ids: string[] }>())
-export const deleteProductsFailure = createAction(PRODUCT_ACTIONS_TYPES.DELETE_FAILURE, props<{ error: string }>())
+export const deleteProductFailure = createAction(PRODUCT_ACTIONS_TYPES.DELETE_FAILURE, props<{ error: string }>());

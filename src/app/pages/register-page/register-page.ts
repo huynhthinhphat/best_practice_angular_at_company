@@ -36,7 +36,8 @@ export class RegisterPage {
       validator: [Validators.required ,Validators.pattern(FULLNAME_PATTERN)],
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_FULLNAME }
-      ]
+      ],
+      isShow: true
     },
     {
       name: 'username',
@@ -46,7 +47,8 @@ export class RegisterPage {
       validator: [Validators.required, Validators.pattern(USERNAME_PATTERN)],
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_USERNAME }
-      ]
+      ],
+      isShow: true
     },
     {
       name: 'password',
@@ -57,14 +59,16 @@ export class RegisterPage {
       errors: [
         { type: 'pattern', message: ERROR_MESSAGES.INVALID_PASSWORD },
         { type: 'minlength', message: ERROR_MESSAGES.PASSWORD_MINLENGTH }
-      ]
+      ],
+      isShow: true
     },
     {
       name: 'confirmPassword',
       label: 'Confirm Password',
       type: 'password',
       icon: 'fa-solid fa-lock',
-      validator: [Validators.required]
+      validator: [Validators.required],
+      isShow: true
     },
   ];
   public passwordMatchValidator = PasswordMatchValidator;

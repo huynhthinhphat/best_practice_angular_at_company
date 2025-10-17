@@ -9,7 +9,6 @@ import { CartService } from '../../shared/services/cart-service/cart-service';
 import { REGISTER_URL } from '../../shared/constants/url.constants';
 import { FormFields } from '../../shared/models/form-field.model';
 import { Validators } from '@angular/forms';
-import { AppState } from '../../state/app.state';
 import { Store } from '@ngrx/store';
 import { StorageService } from '../../shared/services/storage-service/storage-service';
 import { STORAGE_KEYS } from '../../shared/constants/storage.constants';
@@ -25,7 +24,7 @@ import { loadCarts } from '../../shared/services/cart-service/state/cart.action'
   styleUrl: './login-page.css'
 })
 export class LoginPage {
-  private store = inject(Store<AppState>);
+  private store = inject(Store);
   private authService = inject(AuthService);
   private cartService = inject(CartService);
   private storageService = inject(StorageService);
@@ -40,14 +39,16 @@ export class LoginPage {
       label: 'Username',
       icon: 'fa-solid fa-user',
       type: 'text',
-      validator: [Validators.required]
+      validator: [Validators.required],
+      isShow: true
     },
     {
       name: 'password',
       label: 'Password',
       icon: 'fa-solid fa-lock',
       type: 'password',
-      validator: [Validators.required]
+      validator: [Validators.required],
+      isShow: true
     },
   ];
   public formTitle = FORM.LOGIN;

@@ -14,14 +14,11 @@ import { BUTTON_TOOLTIP, ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES }
 import Swal from 'sweetalert2';
 import { Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../../../shared/services/user-service/state/user.selector';
-import { CategoryStoreService } from '../../../shared/services/category-service/category-store-service';
-import { Category } from '../../../shared/models/category.model';
+import { selectCurrentUser } from '../../../shared/services/user-service/state/user.selector';
 import { addProduct, deleteProducts, loadProducts, updateProduct } from '../../../shared/services/product-service/state/product.action';
-import { ProductService } from '../../../shared/services/product-service/product-service';
-import { selectAllProducts } from '../../../shared/services/product-service/state/product.selector';
+import { selectAllProducts, selectIsOpenDialog } from '../../../shared/services/product-service/state/product.selector';
+import { selectAllCategories } from '../../../shared/services/category-service/state/category.selector';
 
 @Component({
   selector: 'app-product-page',
@@ -31,21 +28,14 @@ import { selectAllProducts } from '../../../shared/services/product-service/stat
   standalone: true
 })
 export class ProductListPage implements OnInit {
-  private store = inject(Store<AppState>);
-  private productService = inject(ProductService);
-  private categoryStoreService = inject(CategoryStoreService);
+  private store = inject(Store);
   private cartService = inject(CartService);
   private router = inject(Router);
   private toastr = inject(ToastrService)
   private storageService = inject(StorageService);
 
-  public currentUser = toSignal(this.store.select(getCurrentUser));
-
-  private categoryStore = this.categoryStoreService.categories;
-  public allCategories = signal<Category[]>([]);
-
+  public currentUser = toSignal(this.store.select(selectCurrentUser));
   public allProducts = signal<Product[]>([]);
-  
   public headers: ColumnDef<Product>[] = [
     {
       field: 'id',
@@ -57,7 +47,8 @@ export class ProductListPage implements OnInit {
       isSort: true,
       isResize: true,
       width: 320,
-      isShow: true
+      isShow: true,
+      isRedirect: true
     },
     {
       field: 'description',
@@ -80,14 +71,16 @@ export class ProductListPage implements OnInit {
       pipe: 'currency',
       isSort: true,
       isResize: true,
-      isShow: true
+      isShow: true,
+      isRedirect: true
     },
     {
       field: 'categoryName',
       headerText: 'Category Name',
       isSort: true,
       isResize: true,
-      isShow: false
+      isShow: false,
+      isRedirect: true
     },
     {
       field: 'createdAt',
@@ -96,7 +89,8 @@ export class ProductListPage implements OnInit {
       width: 150,
       isSort: true,
       isResize: true,
-      isShow: true
+      isShow: true,
+      isRedirect: true
     },
     {
       field: 'updatedAt',
@@ -105,7 +99,8 @@ export class ProductListPage implements OnInit {
       width: 150,
       isSort: true,
       isResize: true,
-      isShow: true
+      isShow: true,
+      isRedirect: true
     },
   ];
   public isCardView = signal<boolean>(true);
@@ -182,16 +177,13 @@ export class ProductListPage implements OnInit {
   public titleDialog = FORM.TITLE_EDIT_PRODUCT;
   public buttonLabel = FORM.SAVE;
   public oldProduct = signal<Product | null>(null);
-  public isDialogHidden = signal<boolean>(false);
+  public isOpenDialog = signal<boolean>(false);
   public startIndex = signal<number>(1);
   public endIndex = signal<number>(10);
   public quantityItem = signal<number>(10);
 
   constructor() {
     effect(() => {
-      this.allCategories.set(this.categoryStore());
-      this.setCategories();
-
       if (this.currentUser()?.role === 'Admin') {
         this.isCardView.set(false);
       }
@@ -202,18 +194,12 @@ export class ProductListPage implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(loadProducts());
-    this.categoryStoreService.setCategories();
     
     const user = this.currentUser();
     this.isCardView.set((!user || user.role === 'User') ? true : false)
 
-    this.store.select(selectAllProducts).subscribe(products => {
-      this.allProducts.set(products)
-    });
-  }
-
-  private setCategories() {
-    this.fields.find(field => field.name === 'categoryId')!.categories = this.allCategories();
+    this.store.select(selectAllProducts).subscribe(products => this.allProducts.set(products));
+    this.store.select(selectAllCategories).subscribe(categories => this.fields.find(field => field.name === 'categoryId')!.categories = categories);
   }
 
   public onClickProduct(productId: string) {
@@ -224,8 +210,8 @@ export class ProductListPage implements OnInit {
   public handleActions(event: { action?: string, prevData?: Product | null, newData?: Product | null, ids?: string[] }) {
     const { action, prevData, newData, ids } = event;
 
-    if (action === 'delete') {
-      this.handleDelete(ids!);
+    if (action === 'delete' && ids?.length) {
+      this.handleDelete(ids);
       return;
     }
 
@@ -255,7 +241,7 @@ export class ProductListPage implements OnInit {
   }
 
   public toggleDialog() {
-    this.isDialogHidden.set(true);
+    this.isOpenDialog.set(true);
   }
 
   public handleEmit(item: { data: Product; action: string }) {
@@ -307,62 +293,34 @@ export class ProductListPage implements OnInit {
     this.router.navigate(['/checkout'], { state: { fromProductDetailPage: true } });
   }
 
-  private saveProduct(prevProduct: Product | null, nextProduct: Product | null) {
-    if (!nextProduct) return;
+  private saveProduct(prevProduct: Product | null, newData: Product | null) {
+    if (!newData) return;
     
-    if (nextProduct.name!.trim() === '') {
+    if (newData.name!.trim().length === 0) {
       this.toastr.warning(ERROR_MESSAGES.INVALID_PRODUCT_NAME);
       return;
     }
 
-    const price = Number(nextProduct.price);
+    const price = Number(newData.price);
     if (isNaN(price) || price < 0) {
       this.toastr.warning(ERROR_MESSAGES.INVALID_PRICE);
       return;
     }
 
-    const stock = Number(nextProduct.stock)
+    const stock = Number(newData.stock)
     if (isNaN(stock) || stock < 0) {
       this.toastr.warning(ERROR_MESSAGES.INVALID_STOCK);
       return;
     }
+    if (prevProduct) {
+      this.store.dispatch(updateProduct({ prevProduct: prevProduct!, newData: newData! }));
+    } else {
+      delete newData.id;
+      this.store.dispatch(addProduct({ product: newData! }));
+    }
 
-    const categoryName = this.categoryStore().find(category => category.id === nextProduct.categoryId)?.name;
-    const productName = nextProduct.name;
-
-    this.productService.getProductByNameAndCategory(productName, categoryName!)
-      .subscribe({
-        next: (products) => {
-          const isExisted = products.length > 0;
-          const isUpdate = !!nextProduct.id;
-
-          const hasNameOrCategoryChanged = prevProduct && (prevProduct.name !== productName || prevProduct.categoryName !== categoryName);
-
-          if (((isUpdate && hasNameOrCategoryChanged) || !isUpdate) && isExisted) {
-            this.toastr.error(ERROR_MESSAGES.EXISTED_PRODUCT);
-            return;
-          }
-
-          let product: Product = { 
-            ...nextProduct,
-            categoryName: categoryName,
-            price: price,
-            stock: stock,
-            updatedAt: new Date()
-          };
-
-          if (isUpdate) {
-            console.log('update');
-            this.store.dispatch(updateProduct({ product: product }));
-          } else {
-            console.log('create')
-            delete product.id;
-            this.store.dispatch(addProduct({ product: product }));
-          }
-          this.isDialogHidden.set(true)
-        },
-        error: (error) => this.toastr.error(error.message)
-      }
-    )
+    this.store.select(selectIsOpenDialog).subscribe(isShow => {
+      this.isOpenDialog.set(!isShow)
+    })
   }
 }

@@ -72,27 +72,28 @@
     },
     {
       "id": "4",
-      "name": "Smartphone1",
+      "name": "123a",
       "description": "Latest model smartphone with 5G1",
       "stock": 0,
       "price": 0,
       "categoryId": "2",
       "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759457637/x1mhrce8zuz55gbixmki.jpg",
-      "categoryName": "Clothing",
       "createdAt": "2025-10-08T00:00:00.000Z",
-      "updatedAt": "2025-10-14T08:00:01.167Z"
+      "categoryName": "Clothing",
+      "updatedAt": "2025-10-16T14:54:12.365Z"
     },
     {
       "id": "5",
-      "name": "Tablet123",
+      "name": "1",
       "description": "10-inch tablet with retina display123",
       "stock": 123,
       "price": 123,
-      "categoryId": "3",
+      "categoryId": "2",
       "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760535614/fwyjkr9sccpq7fmy97fe.jpg",
       "createdAt": "2025-10-08T00:00:00.000Z",
-      "categoryName": "Sports",
-      "updatedAt": "2025-10-15T13:40:39.797Z"
+      "categoryName": "Clothing",
+      "updatedAt": "2025-10-16T04:37:36.586Z",
+      "isDeleted": true
     },
     {
       "id": "6",
@@ -104,7 +105,7 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
-      "updatedAt": "2025-10-15T16:46:25.951Z"
+      "updatedAt": "2025-10-16T03:41:19.022Z"
     },
     {
       "id": "7",
@@ -121,15 +122,14 @@
     {
       "id": "8",
       "name": "Cotton T-Shirt",
-      "price": 24.99,
       "description": "100% cotton casual t-shirt",
-      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
-      "categoryId": "1",
-      "categoryName": "Electronics",
       "stock": 100,
-      "isDeleted": false,
+      "price": 24.99,
+      "categoryId": "1",
+      "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
-      "updatedAt": "2025-10-09T00:00:00.000Z"
+      "categoryName": "Electronics",
+      "updatedAt": "2025-10-16T03:40:12.541Z"
     },
     {
       "id": "9",
@@ -137,11 +137,11 @@
       "description": "Formal dress shirt",
       "stock": 1001,
       "price": 0,
-      "categoryId": "2",
+      "categoryId": "1",
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
-      "updatedAt": "2025-10-15T13:46:22.374Z"
+      "updatedAt": "2025-10-16T19:33:39.082Z"
     },
     {
       "id": "10",
@@ -423,6 +423,95 @@
       "categoryName": "Electronics",
       "updatedAt": "2025-10-15T13:41:10.364Z",
       "isDeleted": false
+    },
+    {
+      "id": "c109",
+      "name": "phan",
+      "description": "123",
+      "stock": "0123",
+      "price": "0123",
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760599209/zrzw6mwkyjpojsqmij2w.jpg",
+      "createdAt": "2025-10-16T07:20:11.683Z",
+      "isDeleted": false
+    },
+    {
+      "id": "b756",
+      "name": "1",
+      "description": "Latest model smartphone with 5G1",
+      "stock": 0,
+      "price": 0,
+      "categoryId": "2",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759457637/x1mhrce8zuz55gbixmki.jpg",
+      "createdAt": "2025-10-16T07:26:48.668Z",
+      "isDeleted": false
+    },
+    {
+      "id": "5654",
+      "name": "1",
+      "description": "Latest model smartphone with 5G1",
+      "stock": 0,
+      "price": 0,
+      "categoryId": "2",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759457637/x1mhrce8zuz55gbixmki.jpg",
+      "createdAt": "2025-10-16T07:26:52.156Z",
+      "isDeleted": true
+    },
+    {
+      "id": "1ff1",
+      "name": "123123123",
+      "description": "123123",
+      "stock": 0,
+      "price": 0,
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760604136/f2uswyfmxv0cq3myf7yr.jpg",
+      "createdAt": "2025-10-16T08:42:18.733Z",
+      "isDeleted": false
+    },
+    {
+      "id": "9962",
+      "name": "111111",
+      "description": "1",
+      "stock": 0,
+      "price": 0,
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760604175/scymwfeqtsmxnla919m5.jpg",
+      "createdAt": "2025-10-16T08:43:01.853Z",
+      "isDeleted": false
+    },
+    {
+      "id": "9518",
+      "name": "nhm",
+      "description": "123",
+      "stock": "01",
+      "price": "02",
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760626649/hkk3ipqv2yqitxl6dqth.jpg",
+      "createdAt": "2025-10-16T14:57:56.391Z",
+      "isDeleted": false
+    },
+    {
+      "id": "48ea",
+      "name": "aaaa",
+      "description": "a",
+      "stock": 0,
+      "price": 0,
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760642351/yytxcfqayowww35lo3qt.jpg",
+      "createdAt": "2025-10-16T19:19:36.591Z",
+      "isDeleted": false
+    },
+    {
+      "id": "0c6b",
+      "name": "đồ giá gẻ1",
+      "description": "đồ giá gẻ",
+      "stock": 0,
+      "price": 0,
+      "categoryId": "1",
+      "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1760643208/ogpqo7tunubcwjqewys9.jpg",
+      "createdAt": "2025-10-16T19:33:56.654Z",
+      "updatedAt": "2025-10-16T19:33:56.654Z",
+      "isDeleted": false
     }
   ],
   "categories": [
@@ -436,19 +525,137 @@
     },
     {
       "id": "2",
-      "name": "Clothing",
+      "name": "Electronics1",
       "isDeleted": false,
-      "icon": "shirt",
+      "icon": "book",
       "createdAt": "2025-10-08T00:00:00.000Z",
-      "updatedAt": "2025-10-12T16:42:01.195Z"
+      "updatedAt": "2025-10-16T19:15:16.479Z"
     },
     {
       "id": "3",
       "name": "Sports",
-      "isDeleted": false,
+      "isDeleted": true,
       "icon": "volleyball",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "updatedAt": "2025-10-12T16:42:01.195Z"
+    },
+    {
+      "id": "e537",
+      "icon": "house",
+      "name": "123",
+      "createdAt": "2025-10-16T19:15:28.111Z",
+      "isDeleted": false,
+      "updatedAt": "2025-10-16T19:15:36.614Z"
+    },
+    {
+      "id": "fb1f",
+      "icon": "laptop",
+      "name": "acascasc",
+      "createdAt": "2025-10-16T19:16:06.927Z",
+      "isDeleted": true,
+      "updatedAt": "2025-10-16T19:22:36.027Z"
+    },
+    {
+      "id": "31d8",
+      "icon": "gem",
+      "name": "aaaaaaaaa",
+      "createdAt": "2025-10-16T19:22:14.687Z",
+      "isDeleted": true,
+      "updatedAt": "2025-10-16T19:22:33.331Z"
+    },
+    {
+      "id": "7005",
+      "icon": "",
+      "name": "aaaaaaaaa",
+      "createdAt": "2025-10-16T19:22:54.062Z",
+      "isDeleted": true,
+      "updatedAt": "2025-10-16T19:26:20.220Z"
+    },
+    {
+      "id": "3b4c",
+      "icon": "",
+      "name": "aaaaaaaaa",
+      "createdAt": "2025-10-16T19:26:49.045Z",
+      "isDeleted": true
+    },
+    {
+      "id": "308c",
+      "icon": "",
+      "name": "aaaaaaaaa",
+      "createdAt": "2025-10-16T19:27:09.062Z",
+      "isDeleted": true
+    },
+    {
+      "id": "e5e6",
+      "icon": "glasses",
+      "name": "aaaaaaaaa1",
+      "createdAt": "2025-10-16T19:38:44.079Z",
+      "updatedAt": "2025-10-16T19:38:44.079Z",
+      "isDeleted": true
+    },
+    {
+      "id": "165b",
+      "icon": "",
+      "name": "1",
+      "createdAt": "2025-10-16T19:39:13.490Z",
+      "updatedAt": "2025-10-16T19:39:13.490Z",
+      "isDeleted": false
+    },
+    {
+      "id": "f678",
+      "icon": "",
+      "name": "12",
+      "createdAt": "2025-10-16T19:40:06.447Z",
+      "updatedAt": "2025-10-16T19:40:06.447Z",
+      "isDeleted": false
+    },
+    {
+      "id": "9b91",
+      "icon": "",
+      "name": "a",
+      "createdAt": "2025-10-16T19:41:40.444Z",
+      "updatedAt": "2025-10-16T19:41:40.444Z",
+      "isDeleted": false
+    },
+    {
+      "id": "963e",
+      "icon": "",
+      "name": "22",
+      "createdAt": "2025-10-16T19:42:49.817Z",
+      "updatedAt": "2025-10-16T19:42:49.816Z",
+      "isDeleted": false
+    },
+    {
+      "id": "e9b0",
+      "icon": "",
+      "name": "aaa",
+      "createdAt": "2025-10-16T19:44:42.832Z",
+      "updatedAt": "2025-10-16T19:44:42.832Z",
+      "isDeleted": false
+    },
+    {
+      "id": "f7eb",
+      "icon": "",
+      "name": "bbb",
+      "createdAt": "2025-10-16T19:45:07.529Z",
+      "updatedAt": "2025-10-16T19:45:07.529Z",
+      "isDeleted": false
+    },
+    {
+      "id": "5d72",
+      "icon": "ring",
+      "name": "bhn",
+      "createdAt": "2025-10-16T19:45:29.824Z",
+      "updatedAt": "2025-10-16T19:45:29.824Z",
+      "isDeleted": false
+    },
+    {
+      "id": "9a10",
+      "icon": "",
+      "name": "12333",
+      "createdAt": "2025-10-16T19:45:54.023Z",
+      "updatedAt": "2025-10-16T19:45:54.023Z",
+      "isDeleted": false
     }
   ],
   "carts": [

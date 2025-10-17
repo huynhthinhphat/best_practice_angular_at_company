@@ -1,11 +1,19 @@
 @let loading = isLoading();
+@let showIcons = isShowIcons();
+@let preview = previewImage();
+@let title = formTitle();
+@let fields = formFields();
+@let isShowLabel = showLabel();
+@let icons = iconList;
+@let selectedIcon = selectedIconIndex();
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    @if(formTitle(); as title){
+    @if(title){
     <h2>{{ title }}</h2>
     }
 
-    @for(field of formFields(); track field.name) {
+    @for(field of fields; track field.name) {
+    @if(field.isShow){
     <div class="form-input">
         @let firstError = getError(field.name!);
 
@@ -16,7 +24,7 @@
         <small>(*) {{ errorMessage.PASSWORD_MISMATCH }}</small>
         }
 
-        @if(showLabel() && field.isShow){
+        @if(isShowLabel && field.isShow){
         <label class="form-label" [for]="field.name">
             {{field.label}}
         </label>
@@ -39,7 +47,6 @@
                     style="display: none;" #fileInput />
 
                 @let imageUrl = field.defaultValue;
-                @let preview = previewImage();
 
                 @if((!imageUrl || imageUrl === '') && !loading){
                 <div class="camera-box" (click)="fileInput.click()">
@@ -66,7 +73,7 @@
                 }
             </div>
             }
-            @else if(field.isShow){
+            @else{
             <input [type]="field.type" [id]="field.name" [formControlName]="field.name!" [placeholder]="field.label"
                 #formInput>
             }
@@ -77,7 +84,22 @@
             </label>
             }
         </div>
+
+        @if(showIcons){
+        <div class="icon-container">
+            <p>Icon List</p>
+            <div class="icon-list">
+                @for(icon of icons; let index = $index; track icon){
+                <div class="icon-item" [title]="getTitleIcon(icon)"
+                    [class.active]="index === selectedIcon" (click)="selectIcon(index)">
+                    <i [class]="`fa-solid fa-${icon}`"></i>
+                </div>
+                }
+            </div>
+        </div>
+        }
     </div>
+    }
     }
 
     @if(buttonLabel(); as buttonLabel){
@@ -87,7 +109,7 @@
     }
 
     @if(formLinkMessage(); as formLinkMessage){
-    <div>
+    <div class="link-container">
         <p><i>{{ formLinkMessage }}</i></p>
         <a [routerLink]="[formUrl()]">
             {{ formLinkTitle() }}

@@ -41,30 +41,30 @@ export class CategoryEditPage implements OnInit {
       return;
     }
 
-    this.categoryService.getCategoryByName(this.categoryName).pipe(
-      switchMap((res: Category[]) => {
-        if (res.length > 0) {
-          return throwError(() => new Error(ERROR_MESSAGES.EXISTED_CATEGORY))
-        }
+    // this.categoryService.getCategoryByName(this.categoryName).pipe(
+    //   switchMap((res: Category[]) => {
+    //     if (res.length > 0) {
+    //       return throwError(() => new Error(ERROR_MESSAGES.EXISTED_CATEGORY))
+    //     }
 
-        this.category.set({ ...this.category(), name: this.categoryName });
-        return this.categoryService.saveCategory(this.category()!, action)
-      })
-    ).subscribe({
-      next: ((res: Category) => {
-        if (!res) return;
+    //     this.category.set({ ...this.category(), name: this.categoryName });
+    //     return this.categoryService.saveCategory(this.category()!, action)
+    //   })
+    // ).subscribe({
+    //   next: ((res: Category) => {
+    //     if (!res) return;
 
-        if (action === 'update') {
-          this.toastrService.success(SUCCESS_MESSAGES.SAVE);
-        } else {
-          this.toastrService.success(SUCCESS_MESSAGES.ADD);
-        }
-        this.location.back();
-      }),
-      error: (err) => {
-        this.toastrService.error(err.message);
-      },
-    })
+    //     if (action === 'update') {
+    //       this.toastrService.success(SUCCESS_MESSAGES.SAVE);
+    //     } else {
+    //       this.toastrService.success(SUCCESS_MESSAGES.ADD);
+    //     }
+    //     this.location.back();
+    //   }),
+    //   error: (err) => {
+    //     this.toastrService.error(err.message);
+    //   },
+    // })
   }
 
   public goBack() {

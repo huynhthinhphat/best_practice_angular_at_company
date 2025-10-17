@@ -7,7 +7,6 @@ import { ERROR_MESSAGES } from '../../constants/message.constants';
 import { STORAGE_KEYS } from '../../constants/storage.constants';
 import { StorageService } from '../storage-service/storage-service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../state/app.state';
 import { setCurrentUser } from '../user-service/state/user.action';
 
 @Injectable({
@@ -15,7 +14,7 @@ import { setCurrentUser } from '../user-service/state/user.action';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private store = inject(Store<AppState>);
+  private store = inject(Store);
   private storageService = inject(StorageService);
 
   public userId = signal<string>('');

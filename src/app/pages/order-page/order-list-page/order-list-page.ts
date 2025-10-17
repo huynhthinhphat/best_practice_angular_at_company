@@ -6,9 +6,8 @@ import { ColumnDef } from '../../../shared/models/column-def.model';
 import { Order } from '../../../shared/models/order.model';
 import { AppTabFilter } from '../../../shared/app-tab-filter/app-tab-filter';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../../../shared/services/user-service/state/user.selector';
+import { selectCurrentUser } from '../../../shared/services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-order-list-page',
@@ -20,9 +19,9 @@ import { getCurrentUser } from '../../../shared/services/user-service/state/user
 export class OrderListPage {
   private router = inject(Router);
   private orderService = inject(OrderService);
-  private store = inject(Store<AppState>);
+  private store = inject(Store);
 
-  private currentUser = toSignal(this.store.select(getCurrentUser));
+  private currentUser = toSignal(this.store.select(selectCurrentUser));
   public pagination = this.orderService.pagination;
   public currentPage = signal<number>(1);
   public orders = this.orderService.orders;

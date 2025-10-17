@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { catchError, forkJoin, Observable, of, switchMap, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 import { CATEGORY_URL } from '../../constants/url.constants';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
@@ -11,8 +11,6 @@ import { ERROR_MESSAGES } from '../../constants/message.constants';
 export class CategoryService {
   private http = inject(HttpClient);
 
-  public categories = signal<Category[]>([]);
-
   public getAllCategoriesByConditions(isDeleted : boolean = false): Observable<Category[]> {
     const params = new HttpParams().set('isDeleted', isDeleted);
     return this.http.get<Category[]>(CATEGORY_URL, { params });
@@ -22,24 +20,49 @@ export class CategoryService {
     return this.http.get<Category>(`${CATEGORY_URL}/${id}`);
   }
 
-  public getCategoryByName(name: string): Observable<Category[]> {
-    const params = new HttpParams().set('name', name);
-    return this.http.get<Category[]>(`${CATEGORY_URL}`, { params });
-  }
-
-  public handleSoftDeletion(category: Category): Observable<Category> {
-    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_DELETE));
-
-    category = { ...category, isDeleted: true };
-    return this.http.put<Category>(`${CATEGORY_URL}/${category.id}`, category);
-  }
-
-  public saveCategory(category: Category, action: string): Observable<Category> {
-    if (!category) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_SAVE));
-
-    if (action === 'update') {
-      return this.http.put<Category>(`${CATEGORY_URL}/${category.id}`, category)
+  public checkCategoryExist(prevCategory: Category | null, nextCategory: Category): Observable<Category> {
+    if(nextCategory.name?.trim().length === 0){
+      return throwError(() => new Error(ERROR_MESSAGES.INVALID_CATEGORY_NAME));
     }
-    return this.http.post<Category>(CATEGORY_URL, category);
+    
+    const params = new HttpParams().set('name', nextCategory.name?.trim()!);
+    return this.http.get<Category[]>(`${CATEGORY_URL}`, { params }).pipe(
+      switchMap((categories) => {
+        const isExist = categories.length > 0;
+        const isUpdate = !!nextCategory.id;
+        const hasNameChanged = prevCategory && (prevCategory.name?.trim() !== nextCategory.name?.trim());
+        console.log(isExist, isUpdate, hasNameChanged)
+        if (isExist && (isUpdate && hasNameChanged || !isUpdate)) {
+          return throwError(() => new Error(ERROR_MESSAGES.EXISTED_CATEGORY));
+        }
+
+        let category: Category = {
+          ...nextCategory,
+          updatedAt: new Date()
+        }
+
+        return of(category);
+      })
+    )
+  }
+
+  public deleteCategories(ids: string[]): Observable<Category[]> {
+    if (ids.length === 0) return throwError(() => new Error(ERROR_MESSAGES.NOT_FOUND_TO_DELETE));  
+  
+    const requests = ids.map(id => {
+      return this.http.patch<Category>(`${CATEGORY_URL}/${id}`, { isDeleted: true });
+    });
+  
+    return forkJoin(requests).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  public updateCategory(category: Category): Observable<Category> {
+    return this.http.patch<Category>(`${CATEGORY_URL}/${category.id}`, { ...category });
+  }
+
+  public addCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(`${CATEGORY_URL}`, { ...category, isDeleted: false, createdAt: new Date()});
   }
 }

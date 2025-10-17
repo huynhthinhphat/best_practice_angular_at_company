@@ -1,17 +1,25 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { addProduct, addProductFailure, addProductSuccess, deleteProducts, deleteProductsFailure, deleteProductsSuccess, loadProducts, loadProductSuccess, updateProduct, updateProductFailure, updateProductSuccess } from "./product.action";
+import { addProduct, addProductFailure, addProductSuccess, deleteProductFailure, deleteProducts, deleteProductsSuccess, loadProducts, loadProductSuccess, updateProduct, updateProductFailure, updateProductSuccess } from "./product.action";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 import { ProductService } from "../product-service";
+import { Store } from "@ngrx/store";
+import { selectAllCategories } from "../../category-service/state/category.selector";
+import { withLatestFrom } from "rxjs";
+import { ToastrService } from "ngx-toastr";
+import { SUCCESS_MESSAGES } from "../../../constants/message.constants";
+import { selectErrorProduct } from "./product.selector";
 
 @Injectable()
 export class ProductEffects {
     private actions$ = inject(Actions);
     private productService = inject(ProductService);
+    private toastr = inject(ToastrService);
+    private store = inject(Store);
 
     loadProduct$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(loadProducts),
+            ofType(loadProducts, addProductSuccess),
             switchMap(() =>
                 this.productService.getAllProductsByConditions()
                     .pipe(
@@ -25,11 +33,13 @@ export class ProductEffects {
         return this.actions$.pipe(
             ofType(deleteProducts),
             switchMap(({ ids }) =>
-                this.productService.deleteProducts(ids)
-                    .pipe(
-                        map(() => deleteProductsSuccess({ ids: ids })),
-                        catchError(error => of(deleteProductsFailure({ error : error})))
-                    )
+                this.productService.deleteProducts(ids).pipe(
+                    map(() => {
+                        this.toastr.success(SUCCESS_MESSAGES.DELETE);
+                        return deleteProductsSuccess({ ids: ids })
+                    }),
+                    catchError((error: Error) => of(deleteProductFailure({ error: error.message })))
+                )
             )
         )
     })
@@ -37,29 +47,59 @@ export class ProductEffects {
     updatedProduct$ = createEffect(() =>
         this.actions$.pipe(
             ofType(updateProduct),
-            tap(action => console.log('updateProduct action dispatched:', action)),
-            switchMap(({ product }) =>
-                this.productService.updateProduct(product).pipe(
-                    map(product => updateProductSuccess({ product })),
-                    catchError(error => {
-                        console.log('Caught error in effect:', error);
-                        return of(updateProductFailure({ error: error.message || 'Unknown error' }));
-                    })
+            withLatestFrom(this.store.select(selectAllCategories)),
+            switchMap(([{ prevProduct, newData }, categories]) =>
+                this.productService.doesProductExist(prevProduct, newData).pipe(
+                    switchMap((product) => {
+                        const category = categories?.find(category => category.id === product.categoryId);
+
+                        return this.productService.updateProduct(product).pipe(
+                            map(updatedProduct => {
+                                this.toastr.success(SUCCESS_MESSAGES.UPDATE);
+                                return updateProductSuccess({ product: { ...updatedProduct, categoryName: category?.name } })
+                            }),
+                            catchError((error: Error) => of(updateProductFailure({ error: error.message })))
+                        )
+                    }),
+                    catchError((error: Error) => of(updateProductFailure({ error: error.message }))
+                    )
                 )
             )
         )
-    );
+    )
 
     addProduct$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(addProduct),
-            switchMap(({ product }) => 
-                this.productService.addProduct(product)
-                    .pipe(
-                        map(product => addProductSuccess({ product: product })),
-                        catchError(error => of(addProductFailure({ error: error })))
+            withLatestFrom(this.store.select(selectAllCategories)),
+            switchMap(([{ product }, categories]) =>
+                this.productService.doesProductExist(null, product).pipe(
+                    switchMap((product) => {
+                        const category = categories?.find(category => category.id === product.categoryId);
+
+                        return this.productService.addProduct(product).pipe(
+                            map(newProduct => {
+                                this.toastr.success(SUCCESS_MESSAGES.ADD);
+                                return addProductSuccess({ product: { ...newProduct, categoryName: category?.name } })
+                            }),
+                            catchError((error: Error) => of(addProductFailure({ error: error.message })))
+                        )
+                    }),
+                    catchError((error: Error) => of(addProductFailure({ error: error.message }))
+                    )
                 )
             )
         )
     })
+
+    showErrorDialog$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(updateProductFailure, deleteProductFailure, addProductFailure),
+            withLatestFrom(this.store.select(selectErrorProduct)),
+            tap(([_, error]) => {
+                this.toastr.error(error!);
+            })
+        ),
+        { dispatch: false }
+    );
 }

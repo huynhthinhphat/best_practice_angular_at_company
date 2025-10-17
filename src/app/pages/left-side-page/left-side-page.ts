@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
-import { CategoryService } from '../../shared/services/category-service/category-service';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../shared/services/product-service/product-service';
 import { Router, RouterLink } from '@angular/router';
 import { ResizableDirective } from '../../shared/directives/resizable-directive/resizable-directive';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../state/app.state';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { getCurrentUser } from '../../shared/services/user-service/state/user.selector';
+import { selectCurrentUser } from '../../shared/services/user-service/state/user.selector';
+import { selectAllCategories } from '../../shared/services/category-service/state/category.selector';
+import { Category } from '../../shared/models/category.model';
 
 @Component({
   selector: 'app-left-side-page',
@@ -15,12 +14,10 @@ import { getCurrentUser } from '../../shared/services/user-service/state/user.se
   templateUrl: './left-side-page.html',
   styleUrl: './left-side-page.scss'
 })
-export class LeftSidePage implements AfterViewInit {
+export class LeftSidePage implements OnInit, AfterViewInit {
   private categoryTab = viewChild<ElementRef>('categoryTab');
 
-  private store = inject(Store<AppState>);
-  private categoryService = inject(CategoryService);
-  private productService = inject(ProductService);
+  private store = inject(Store);
   private router = inject(Router);
 
   public isExpanding = computed(() => this.currentWidth() > this.minWidth);
@@ -28,8 +25,8 @@ export class LeftSidePage implements AfterViewInit {
   public maxWidth: number = 1000;
   public currentWidth = signal<number>(202);
 
-  public currentUser = toSignal(this.store.select(getCurrentUser));
-  public categories = this.categoryService.categories;
+  public currentUser = toSignal(this.store.select(selectCurrentUser));
+  public categories = signal<Category[]>([]);
   public selectedCategoryId = signal<string>('');
   public routers: {route: string, icon: string}[] = [];
 
@@ -52,6 +49,10 @@ export class LeftSidePage implements AfterViewInit {
         this.router.navigate([`/admin/${router}`]);
       }
     })
+  }
+
+  ngOnInit() {
+    this.store.select(selectAllCategories).subscribe(categories => this.categories.set(categories));
   }
 
   ngAfterViewInit() {

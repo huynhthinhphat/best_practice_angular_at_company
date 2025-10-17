@@ -16,7 +16,7 @@ form {
     color: var(--color-text-primary);
   }
 
-  div:last-child:not(.form-input div) {
+  .link-container {
     margin-top: 15px;
   }
 
@@ -50,6 +50,45 @@ form {
     font-size: 15px;
     color: white;
     font-weight: bold;
+  }
+
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+
+    p {
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .icon-list {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 15px;
+      margin-top: .5rem;
+      margin-bottom: 1rem;
+
+      .icon-item {
+        cursor: pointer;
+        font-size: 20px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        transition: .25s;
+
+        &:hover,
+        &.active {
+          background-color: var(--bg-tertiary);
+          border-color: var(--bg-color-border-secondary);
+          color: var(--color-text-secondary);
+        }
+      }
+    }
   }
 }
 
