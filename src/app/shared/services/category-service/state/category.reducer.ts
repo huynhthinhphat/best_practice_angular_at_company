@@ -1,12 +1,19 @@
 import { createReducer, on } from "@ngrx/store";
-import { addCategoryFailure, addCategorySuccess, deleteCategoriesFailure, deleteCategoriesSuccess, loadCategoriesSuccess, updateCategoryFailure, updateCategorySuccess } from "./category.action";
+import { addCategoryFailure, addCategorySuccess, deleteCategoriesFailure, deleteCategoriesSuccess, loadCategories, loadCategoriesSuccess, updateCategoryFailure, updateCategorySuccess } from "./category.action";
 import { categoryAdapter, initialCategoryState } from "./category.state";
 
 export const categoryReducer = createReducer(
     initialCategoryState,
 
+    on(loadCategories, (state) => ({
+        ...state,
+        isLoading: false,
+        error: null,
+        isOpenDialog: false
+    })),
+
     on(loadCategoriesSuccess, (state, { categories }) =>
-        categoryAdapter.setAll(categories, state)
+        categoryAdapter.setAll(categories, {...state, isLoading: false, error: null, isOpenDialog: false })
     ),
 
     on(addCategorySuccess, (state, { category }) =>

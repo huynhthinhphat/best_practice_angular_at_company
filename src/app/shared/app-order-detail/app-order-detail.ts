@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { Order } from '../models/order.model';
 import { StatusIcon } from '../directives/status-icon/status-icon';
 import { CurrencyPipe, DatePipe } from '@angular/common';
@@ -7,7 +7,8 @@ import { ORDER_STATUS } from '../constants/order-status.constants';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentUser } from '../services/user-service/state/user.selector';
+import { User } from '../models/user.model';
+//import { selectCurrentUser } from '../services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-order-detail',
@@ -19,7 +20,7 @@ export class AppOrderDetail {
   private store = inject(Store);
   private location = inject(Location);
 
-  public currentUser = toSignal(this.store.select(selectCurrentUser));
+  public currentUser = signal<User | null>(null);
   public order = input<Order | null>(null);
   public orderDetail = input<OrderDetail[]>([]);
   public handleStatusOrder = output<string>();

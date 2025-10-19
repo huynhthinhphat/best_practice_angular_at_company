@@ -1,12 +1,16 @@
-import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ResizableDirective } from '../../shared/directives/resizable-directive/resizable-directive';
 import { Store } from '@ngrx/store';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentUser } from '../../shared/services/user-service/state/user.selector';
 import { selectAllCategories } from '../../shared/services/category-service/state/category.selector';
 import { Category } from '../../shared/models/category.model';
+import { User } from '../../shared/models/user.model';
+import { selectUser } from '../../shared/services/user-service/state/user.selector';
+import { StorageService } from '../../shared/services/storage-service/storage-service';
+import { STORAGE_KEYS } from '../../shared/constants/storage.constants';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CategoryService } from '../../shared/services/category-service/category-service';
 
 @Component({
   selector: 'app-left-side-page',
@@ -14,23 +18,26 @@ import { Category } from '../../shared/models/category.model';
   templateUrl: './left-side-page.html',
   styleUrl: './left-side-page.scss'
 })
-export class LeftSidePage implements OnInit, AfterViewInit {
+export class LeftSidePage implements OnInit, AfterViewInit, OnDestroy {
   private categoryTab = viewChild<ElementRef>('categoryTab');
 
   private store = inject(Store);
   private router = inject(Router);
+  private storageService = inject(StorageService);
+  private categoryService = inject(CategoryService);
 
   public isExpanding = computed(() => this.currentWidth() > this.minWidth);
   public minWidth: number = 70;
   public maxWidth: number = 1000;
   public currentWidth = signal<number>(202);
 
-  public currentUser = toSignal(this.store.select(selectCurrentUser));
+  public currentUser = toSignal(this.store.select(selectUser));
   public categories = signal<Category[]>([]);
-  public selectedCategoryId = signal<string>('');
+  public selectedCategoryName = signal<string>('');
   public routers: {route: string, icon: string}[] = [];
 
   public titleBtn = 'Toggle Navigation';
+  public textFirstCategory = 'All';
 
   constructor() {
     effect(() => {
@@ -45,8 +52,7 @@ export class LeftSidePage implements OnInit, AfterViewInit {
         const paths = this.router.url.split('/');
         const router = paths[paths.length - 1];
 
-        this.selectedCategoryId.set(router);
-        this.router.navigate([`/admin/${router}`]);
+        this.selectedCategoryName.set(router);
       }
     })
   }
@@ -68,16 +74,18 @@ export class LeftSidePage implements OnInit, AfterViewInit {
     resizeObserver.observe(nativeElement);
   }
 
-  public onCategoryClick(categoryId: string) {
-    if (!this.currentUser() || this.currentUser()?.role === 'User') {
-      // this.productService.categoryId.set(categoryId);
-    }
-
-    this.selectedCategoryId.set(categoryId);
+  public onCategoryClick(name: string) {
+    this.categoryService.categoryName.set(name);
+    this.selectedCategoryName.set(name)
   }
 
   public toggleTab() {
     const newWidth = this.isExpanding() ? this.minWidth : 202;
     this.currentWidth.set(newWidth);
+  }
+
+  ngOnDestroy() {
+    this.selectedCategoryName.set('');
+    this.categoryService.categoryName.set('');
   }
 }

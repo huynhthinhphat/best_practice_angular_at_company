@@ -1,16 +1,12 @@
-@let start = startIndex();
-@let end = endIndex();
-@let dataList = filteredData();
-@let total = data().length;
-@let quantity = quantityItem();
+@let allItems = data();
+@let dataList = receivedData();
 
 <div class="pagination-container">
-    <app-pagination [totalItem]="total" [startIndex]="start" [endIndex]="end" [quantityItem]="quantity"
-        (direction)="handleNavigation($event)" (quantityItemEmit)="handleQuantityItem($event)"></app-pagination>
+    <app-pagination [dataInput]="allItems" (dataOutput)="handleDataOutput($event)"></app-pagination>
 </div>
 
 <div class="card-container" [style.--maxHeight.px]="maxHeight()" [style.--width.px]="width">
-    @for (data of dataList; let index = $index; track data) {
+    @for (data of dataList; let index = $index; track data.id) {
     <div class="card">
         <img [ngSrc]="data.imageUrl ?? ''" [alt]="data.name" width="300" height="200" class="product-image" priority />
         <div class="product-info">

@@ -1,24 +1,27 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
-import { ColumnDef } from '../../../shared/models/column-def.model';
-import { Product } from '../../../shared/models/product.model';
-import { ToastrService } from 'ngx-toastr';
-import { AppCardView } from '../../../shared/app-card-view/app-card-view';
-import { CartService } from '../../../shared/services/cart-service/cart-service';
-import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
-import { StorageService } from '../../../shared/services/storage-service/storage-service';
-import { User } from '../../../shared/models/user.model';
-import { FormFields } from '../../../shared/models/form-field.model';
-import { BUTTON_TOOLTIP, ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
 import Swal from 'sweetalert2';
-import { Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentUser } from '../../../shared/services/user-service/state/user.selector';
-import { addProduct, deleteProducts, loadProducts, updateProduct } from '../../../shared/services/product-service/state/product.action';
-import { selectAllProducts, selectIsOpenDialog } from '../../../shared/services/product-service/state/product.selector';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Validators } from '@angular/forms';
+import { User } from '../../../shared/models/user.model';
+import { Product } from '../../../shared/models/product.model';
+import { ColumnDef } from '../../../shared/models/column-def.model';
+import { FormFields } from '../../../shared/models/form-field.model';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { AppGridView } from '../../../shared/app-grid-view/app-grid-view';
+import { AppCardView } from '../../../shared/app-card-view/app-card-view';
+import { STORAGE_KEYS } from '../../../shared/constants/storage.constants';
+import { CartService } from '../../../shared/services/cart-service/cart-service';
+import { selectUser } from '../../../shared/services/user-service/state/user.selector';
+import { StorageService } from '../../../shared/services/storage-service/storage-service';
 import { selectAllCategories } from '../../../shared/services/category-service/state/category.selector';
+import { selectProductsByConditions, selectIsOpenDialog } from '../../../shared/services/product-service/state/product.selector';
+import { BUTTON_TOOLTIP, ERROR_MESSAGES, FORM, SUCCESS_MESSAGES, SWAL_MESSAGES } from '../../../shared/constants/message.constants';
+import { addProduct, deleteProducts, loadProducts, updateProduct } from '../../../shared/services/product-service/state/product.action';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ProductService } from '../../../shared/services/product-service/product-service';
+import { tap } from 'rxjs';
+import { CategoryService } from '../../../shared/services/category-service/category-service';
 
 @Component({
   selector: 'app-product-page',
@@ -29,12 +32,14 @@ import { selectAllCategories } from '../../../shared/services/category-service/s
 })
 export class ProductListPage implements OnInit {
   private store = inject(Store);
+  private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
   private cartService = inject(CartService);
   private router = inject(Router);
   private toastr = inject(ToastrService)
   private storageService = inject(StorageService);
 
-  public currentUser = toSignal(this.store.select(selectCurrentUser));
+  public currentUser = toSignal(this.store.select(selectUser));
   public allProducts = signal<Product[]>([]);
   public headers: ColumnDef<Product>[] = [
     {
@@ -173,32 +178,28 @@ export class ProductListPage implements OnInit {
       isShow: false
     }
   ];
-  public originalFields: FormFields[] = []; 
   public titleDialog = FORM.TITLE_EDIT_PRODUCT;
   public buttonLabel = FORM.SAVE;
-  public oldProduct = signal<Product | null>(null);
   public isOpenDialog = signal<boolean>(false);
-  public startIndex = signal<number>(1);
-  public endIndex = signal<number>(10);
-  public quantityItem = signal<number>(10);
 
   constructor() {
     effect(() => {
       if (this.currentUser()?.role === 'Admin') {
         this.isCardView.set(false);
       }
-
-      this.originalFields = this.fields.map(field => ({ ...field }));
     })
+
+    effect(() => {
+      this.store.select(selectProductsByConditions, { productName: '', categoryName: '', startIndex: 0, endIndex: undefined })
+        .subscribe(data => this.allProducts.set([...data]));
+    });
+
   }
 
   ngOnInit() {
-    this.store.dispatch(loadProducts());
-    
     const user = this.currentUser();
     this.isCardView.set((!user || user.role === 'User') ? true : false)
 
-    this.store.select(selectAllProducts).subscribe(products => this.allProducts.set(products));
     this.store.select(selectAllCategories).subscribe(categories => this.fields.find(field => field.name === 'categoryId')!.categories = categories);
   }
 
@@ -232,7 +233,7 @@ export class ProductListPage implements OnInit {
     }).then((result) => {
       if (!result.isConfirmed) return;
 
-      this.store.dispatch(deleteProducts({ids: ids}))
+      this.store.dispatch(deleteProducts({ ids: ids }))
     });
   }
 
@@ -295,7 +296,7 @@ export class ProductListPage implements OnInit {
 
   private saveProduct(prevProduct: Product | null, newData: Product | null) {
     if (!newData) return;
-    
+
     if (newData.name!.trim().length === 0) {
       this.toastr.warning(ERROR_MESSAGES.INVALID_PRODUCT_NAME);
       return;

@@ -18,7 +18,7 @@ export class CategoryEffect {
 
     loadCategories$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(loadCategories, addCategorySuccess),
+            ofType(loadCategories),
             switchMap(() =>
                 this.categoryService.getAllCategoriesByConditions()
                     .pipe(

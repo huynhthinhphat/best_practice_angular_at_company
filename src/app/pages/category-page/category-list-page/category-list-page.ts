@@ -112,7 +112,7 @@ export class CategoryListPage implements OnInit {
   ];
   
   ngOnInit() {
-    this.store.select(selectAllCategories).subscribe(categories => this.allCategories.set(categories));
+    this.store.select(selectAllCategories).subscribe(categories => this.allCategories.set([...categories]));
   }
 
   public handleActions(event: { action?: string, prevData?: Category | null, newData?: Category | null, ids?: string[] }) {

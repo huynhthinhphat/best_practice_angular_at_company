@@ -15,10 +15,10 @@
     @for(field of fields; track field.name) {
     @if(field.isShow){
     <div class="form-input">
-        @let firstError = getError(field.name!);
+        @let error = getError(field.name!);
 
-        @if(firstError){
-        <small>(*) {{ firstError }}</small>
+        @if(error){
+        <small>(*) {{ error }}</small>
         }
         @else if(field.name === 'confirmPassword' && form.errors?.['passwordMismatch']){
         <small>(*) {{ errorMessage.PASSWORD_MISMATCH }}</small>

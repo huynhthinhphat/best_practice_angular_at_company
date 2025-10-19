@@ -12,6 +12,7 @@ import { provideEffects } from '@ngrx/effects';
 import { ProductEffects } from './shared/services/product-service/state/product.effect';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CategoryEffect } from './shared/services/category-service/state/category.effect';
+import { UserEffects } from './shared/services/user-service/state/user.effect';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideStore(appReducers),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects([ProductEffects, CategoryEffect])
+    provideEffects([ProductEffects, CategoryEffect, UserEffects])
 ]
 };

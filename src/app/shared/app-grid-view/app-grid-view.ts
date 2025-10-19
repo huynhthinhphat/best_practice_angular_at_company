@@ -1,4 +1,4 @@
-import { Component, computed, effect, ElementRef, inject, input, OnDestroy, OnInit, output, signal, viewChildren } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, input, OnInit, output, signal, viewChildren } from '@angular/core';
 import { CurrencyPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { ColumnDef } from '../models/column-def.model';
 import { RouterLink } from '@angular/router';
@@ -20,7 +20,7 @@ import { AppPagination } from '../app-pagination/app-pagination';
   standalone: true,
   providers: [CurrencyPipe, DatePipe, UpperCasePipe]
 })
-export class AppGridView<T> implements OnInit {
+export class AppGridView<T> implements OnInit, AfterViewInit {
   private currencyPipe = inject(CurrencyPipe);
   private datePipe = inject(DatePipe);
 
@@ -58,19 +58,14 @@ export class AppGridView<T> implements OnInit {
   private selectedSortOptions: SortOption<T>[] = [];
   private allData = signal<T[]>([]);
   private originalData = signal<T[]>([]);
-  public filteredData = computed(() => [...this.allData()].slice(this.startIndex() - 1, this.endIndex()));
+  public filteredData = computed(() => this.allData().slice(this.startIndex() - 1, this.endIndex()));
+  public receivedData = signal<T[]>([]);
 
   constructor() {
     effect(() => {
-      this.initData();
-      this.setEndIndex();
-
-      if (this.columnList().length === 0){
-        this.cloneColumns();
-      }
-
       if (this.isOpenDialog()) {
         this.setToggleDialog(false);
+        this.initData();
       }
     })
   }
@@ -79,10 +74,18 @@ export class AppGridView<T> implements OnInit {
     this.fieldList.set(this.fields());
   }
 
+  ngAfterViewInit() {
+    if (this.columnList().length === 0){
+      this.cloneColumns();
+    }
+      
+    this.setEndIndex();
+    this.initData();
+  }
+
   private initData() {
     const data = this.tableData();
-    console.log(data.length !== this.allData().length)
-    if (data.length !== this.allData().length || this.isOpenDialog()) {
+    if (data.length !== this.allData().length) {
       this.allData.set(data);
       this.originalData.set([...data]);
     }
@@ -91,6 +94,10 @@ export class AppGridView<T> implements OnInit {
   private setEndIndex() {
     const length = this.allData().length;
     this.endIndex.update(val => val > length && length !== 0 ? length : val);
+  }
+
+  public handleDataOutput(data: T[]) {
+    this.receivedData.set([...data]);
   }
 
   public getFieldAsString(row: T, field: keyof T, pipeName: string = ''): string {

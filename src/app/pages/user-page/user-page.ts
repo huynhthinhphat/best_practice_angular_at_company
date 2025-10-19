@@ -13,9 +13,7 @@ import { User } from '../../shared/models/user.model';
 export class UserPage implements OnInit {
   private userService = inject(UserService);
 
-  public pagination = this.userService.pagination;
   public currentPage = signal<number>(1);
-  public users = this.userService.users;
   public headers: ColumnDef<User>[] = [
     { field: 'username', headerText: 'Username', isResize: false },
     { field: 'fullName', headerText: 'Fullname', isResize: false },

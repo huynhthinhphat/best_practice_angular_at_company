@@ -1,5 +1,6 @@
-@let data = filteredData();
+@let allItems = tableData();
 @let total = tableData().length;
+@let dataList = receivedData();
 @let maxHeightValue = maxHeight();
 @let columns = columnList();
 @let isVisible = isShow();
@@ -8,9 +9,6 @@
 @let titleDialogValue = titleDialog();
 @let buttonText = buttonLabel();
 @let isDialogVisible = isToggleDialog();
-@let start = startIndex();
-@let end = endIndex();
-@let quantity = quantityItem();
 @let showIcons = isShowIcons();
 
 <div class="header-container">
@@ -22,8 +20,7 @@
 
   @if(total > 0){
   <div class="actions-container">
-    <app-pagination [totalItem]="total" [startIndex]="start" [endIndex]="end" [quantityItem]="quantity"
-      (direction)="handleNavigation($event)" (quantityItemEmit)="handleQuantityItem($event)"></app-pagination>
+    <app-pagination [dataInput]="allItems" (dataOutput)="handleDataOutput($event)"></app-pagination>
 
     <button type="button" [title]="tooltipCreateBtn" (click)="setToggleDialog(true, 'create')">
       <i class="fa-solid fa-plus"></i>
@@ -38,7 +35,7 @@
       <div class="th">
       </div>
       }
-      @for(col of columns; let index = $index; track col){
+      @for(col of columns; let index = $index; track $index){
       @if(col.isShow){
       <div class="th" [style.width.px]="col.width" appResizable [enable]="col.isResize!" [minWidth]="40"
         [directions]="['right']" [columnIndex]="index" (widthChange)="handleWithChange($event)" [title]="col.headerText"
@@ -57,8 +54,8 @@
       }
     </div>
     <div class="tbody">
-      @if(data.length > 0){
-      @for(item of data; track item){
+      @if(dataList.length > 0){
+      @for(item of dataList; track $index){
       <div class="tr">
         @if(isVisible){
         <div class="td">
@@ -69,7 +66,7 @@
           </button>
         </div>
         }
-        @for(col of columns; let index = $index; track col){
+        @for(col of columns; let index = $index; track $index){
         @if(col.isShow){
         @let value = getFieldAsString(item, col.field!, col.pipe);
         <div class="td" [attr.data-col-index]="index" [style.width.px]="col.width" [title]="value" #tdTbody>

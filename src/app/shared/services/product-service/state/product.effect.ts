@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { addProduct, addProductFailure, addProductSuccess, deleteProductFailure, deleteProducts, deleteProductsSuccess, loadProducts, loadProductSuccess, updateProduct, updateProductFailure, updateProductSuccess } from "./product.action";
-import { catchError, map, of, switchMap, tap } from "rxjs";
+import { addProduct, addProductFailure, addProductSuccess, deleteProductFailure, deleteProducts, deleteProductsSuccess, loadProductFailure, loadProducts, loadProductSuccess, updateProduct, updateProductFailure, updateProductSuccess } from "./product.action";
+import { catchError, delay, map, mergeMap, of, retryWhen, switchMap, tap, throwError } from "rxjs";
 import { ProductService } from "../product-service";
 import { Store } from "@ngrx/store";
 import { selectAllCategories } from "../../category-service/state/category.selector";
@@ -19,11 +19,22 @@ export class ProductEffects {
 
     loadProduct$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(loadProducts, addProductSuccess),
+            ofType(loadProducts),
             switchMap(() =>
                 this.productService.getAllProductsByConditions()
                     .pipe(
+                        retryWhen(errors => 
+                            errors.pipe(
+                                mergeMap((error, attempt) => {
+                                    if (attempt >= 3) {
+                                        return throwError(() => error)
+                                    }
+                                    return of(error).pipe(delay(Math.pow(2, attempt) * 1000))
+                                })
+                            )
+                        ),
                         map(products => loadProductSuccess({ products: products })),
+                        catchError((error: Error) => of(loadProductFailure({ error: error.message })))
                     )
             )
         )

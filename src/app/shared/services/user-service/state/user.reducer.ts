@@ -1,20 +1,30 @@
 import { createReducer, on } from "@ngrx/store";
-import { initialUserState, userAdapter } from "./user.state";
-import { addLoggedInUserToList, removeLoggedInUserFromList, setCurrentUser } from "./user.action";
+import { initialUserState } from "./user.state";
+import { removeLoggedInUser, loadUserSuccess, loadUserFailure, loadUser, onLogin } from "./user.action";
 
 export const userReducer = createReducer(
     initialUserState,
 
-    on(setCurrentUser, (state, { user }) => ({
+    on(onLogin, (state) => ({
         ...state,
-        currentUser: user
+        isLoading: true,
+        isLoggedIn: false,
+        error: null
     })),
 
-    on(addLoggedInUserToList, (state, { user }) =>
-        userAdapter.addOne(user, state)
-    ),
+    on(loadUserSuccess, (state, { user }) => ({
+        ...state,
+        user,
+        isLoading: false, 
+        isLoggedIn: true, 
+        error: null 
+    })),    
 
-    on(removeLoggedInUserFromList, (state, { id }) =>
-        userAdapter.removeOne(id, state)
-    )
+    on(loadUserFailure, (state, { error }) => ({
+        ...state,
+        isLoggedIn: false,
+        error: error
+    })),
+
+    on(removeLoggedInUser, () => initialUserState)
 )

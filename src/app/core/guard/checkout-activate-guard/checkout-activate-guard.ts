@@ -1,8 +1,7 @@
-import { inject } from '@angular/core';
+import { inject, signal } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentUser } from '../../../shared/services/user-service/state/user.selector';
+import { User } from '../../../shared/models/user.model';
 
 export const checkoutActivateGuard: CanActivateFn = () => {
   const store = inject(Store);
@@ -10,7 +9,7 @@ export const checkoutActivateGuard: CanActivateFn = () => {
   const navigation = router.getCurrentNavigation();
   const stateFromPage = navigation?.extras.state;
 
-  let currentUser = toSignal(store.select(selectCurrentUser));
+  let currentUser = signal<User|null>(null);
   let user = currentUser();
 
   const redirectNotFoundPage = () => {

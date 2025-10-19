@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { catchError, forkJoin, Observable, of, switchMap, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 import { CATEGORY_URL } from '../../constants/url.constants';
@@ -10,6 +10,8 @@ import { ERROR_MESSAGES } from '../../constants/message.constants';
 })
 export class CategoryService {
   private http = inject(HttpClient);
+
+  public categoryName = signal<string>('');
 
   public getAllCategoriesByConditions(isDeleted : boolean = false): Observable<Category[]> {
     const params = new HttpParams().set('isDeleted', isDeleted);
@@ -31,7 +33,6 @@ export class CategoryService {
         const isExist = categories.length > 0;
         const isUpdate = !!nextCategory.id;
         const hasNameChanged = prevCategory && (prevCategory.name?.trim() !== nextCategory.name?.trim());
-        console.log(isExist, isUpdate, hasNameChanged)
         if (isExist && (isUpdate && hasNameChanged || !isUpdate)) {
           return throwError(() => new Error(ERROR_MESSAGES.EXISTED_CATEGORY));
         }

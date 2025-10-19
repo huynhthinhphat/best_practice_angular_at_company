@@ -1,4 +1,4 @@
-@let categoryId = selectedCategoryId();
+@let categoryName = selectedCategoryName();
 @let user = currentUser();
 @let expanding = isExpanding();
 @let width = currentWidth();
@@ -13,8 +13,12 @@
     <div>
         @if(!user || user.role === 'User'){
         <ul>
+            <li [ngClass]="{ 'active': categoryName === ''}" (click)="onCategoryClick('')" [title]="textFirstCategory">
+                <i class="fa-solid fa-border-all"></i>
+                {{ textFirstCategory }}
+            </li>
             @for(category of categories(); track category.id){
-            <li [ngClass]="{ 'active': categoryId === category.id}" (click)="onCategoryClick(category.id!)"
+            <li [ngClass]="{ 'active': categoryName === category.name}" (click)="onCategoryClick(category.name!)"
                 [title]="category.name">
                 <i class='fa-solid fa-{{category.icon}}'></i>
                 {{ category.name }}
@@ -24,7 +28,7 @@
         } @else if(user.role === 'Admin'){
         <ul>
             @for(router of routers; track router){
-            <li [ngClass]="{'active': categoryId === router.route}" [routerLink]="['/admin/' + router.route]"
+            <li [ngClass]="{'active': categoryName === router.route}" [routerLink]="['/admin/' + router.route]"
                 [state]="{ isAdmin: true }" (click)="onCategoryClick(router.route)">
                 <i class='fa-solid {{router.icon}}'></i>
                 {{ router.route }}

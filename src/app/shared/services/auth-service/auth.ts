@@ -1,29 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { effect, inject, Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { User } from '../../models/user.model';
 import { USER_URL } from '../../constants/url.constants';
 import { ERROR_MESSAGES } from '../../constants/message.constants';
 import { STORAGE_KEYS } from '../../constants/storage.constants';
 import { StorageService } from '../storage-service/storage-service';
-import { Store } from '@ngrx/store';
-import { setCurrentUser } from '../user-service/state/user.action';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private store = inject(Store);
   private storageService = inject(StorageService);
-
-  public userId = signal<string>('');
-
-  constructor() {
-    effect(() => {
-      this.trackUserSession();
-    })
-  }
 
   public addAccount(user: User): Observable<User> {
     const params = new HttpParams().set('username', user.username!);
@@ -56,32 +45,13 @@ export class AuthService {
     return this.http.get<User>(`${USER_URL}/${userId}`);
   }
 
-  private trackUserSession() {
-    const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
-    if (!user) return;
-
-    this.getAccountByUserId(user.id!).subscribe({
-      next: (user) => {
-        if(!user || !user.id) return;
-
-        this.userId.set(user.id);
-        this.addUserToStore(user);
-      }
-    })
-  }
-
   public getRole(): Observable<string> {
     const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
-    if (!user || !user.id) return of();
+    if (!user || !user.id) return of('User');
 
     return this.getAccountByUserId(user.id).pipe(
       map(user => user.role!),
-      catchError(() => of())
+      catchError(() => of('User'))
     );
-  }
-
-  private addUserToStore(user: User){
-    const { password, ...userWithoutPassword } = user;
-    this.store.dispatch(setCurrentUser({ user: userWithoutPassword }));
   }
 }

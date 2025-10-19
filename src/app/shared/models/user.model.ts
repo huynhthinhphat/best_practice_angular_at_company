@@ -6,4 +6,5 @@ export interface User {
     quantityItems?: number;
     cartId?: string;
     role?: string;
+    isActive?: boolean;
 }

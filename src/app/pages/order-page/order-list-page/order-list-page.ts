@@ -7,7 +7,7 @@ import { Order } from '../../../shared/models/order.model';
 import { AppTabFilter } from '../../../shared/app-tab-filter/app-tab-filter';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentUser } from '../../../shared/services/user-service/state/user.selector';
+import { User } from '../../../shared/models/user.model';
 
 @Component({
   selector: 'app-order-list-page',
@@ -21,7 +21,7 @@ export class OrderListPage {
   private orderService = inject(OrderService);
   private store = inject(Store);
 
-  private currentUser = toSignal(this.store.select(selectCurrentUser));
+  private currentUser = signal<User | null>(null);
   public pagination = this.orderService.pagination;
   public currentPage = signal<number>(1);
   public orders = this.orderService.orders;

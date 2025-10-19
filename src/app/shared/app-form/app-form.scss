@@ -214,18 +214,18 @@ form {
   i {
     color: var(--color-icon)
   }
+}
 
-  small {
+small {
+  font-size: 14px;
+  color: var(--color-error);
+
+  @include respond-to(tablet) {
     font-size: 14px;
-    color: var(--color-error);
+  }
 
-    @include respond-to(tablet) {
-      font-size: 14px;
-    }
-
-    @include respond-to(mobile) {
-      font-size: 13px;
-    }
+  @include respond-to(mobile) {
+    font-size: 13px;
   }
 }
 

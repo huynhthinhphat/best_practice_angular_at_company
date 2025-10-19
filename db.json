@@ -5,8 +5,7 @@
       "fullName": "Huynh Thinh Phat",
       "username": "1",
       "password": "1",
-      "role": "User",
-      "cartId": "1"
+      "role": "User"
     },
     {
       "id": "c105",
@@ -14,20 +13,6 @@
       "username": "admin",
       "password": "1",
       "role": "Admin"
-    },
-    {
-      "id": "4fe1",
-      "fullName": "a",
-      "username": "a",
-      "password": "111111",
-      "role": "User"
-    },
-    {
-      "id": "21a0",
-      "fullName": "aaa",
-      "username": "a1",
-      "password": "111111",
-      "role": "User"
     }
   ],
   "products": [
@@ -41,7 +26,7 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Electronics",
-      "isDeleted": true,
+      "isDeleted": false,
       "updatedAt": "2025-10-14T09:50:05.135Z"
     },
     {
@@ -54,7 +39,7 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Electronics",
-      "isDeleted": true,
+      "isDeleted": false,
       "updatedAt": "2025-10-14T09:48:49.247Z"
     },
     {
@@ -67,7 +52,7 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Electronics",
-      "isDeleted": true,
+      "isDeleted": false,
       "updatedAt": "2025-10-14T09:59:21.279Z"
     },
     {
@@ -80,6 +65,7 @@
       "imageUrl": "https://res.cloudinary.com/dv8bcgtyh/image/upload/v1759457637/x1mhrce8zuz55gbixmki.jpg",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
+      "isDeleted": false,
       "updatedAt": "2025-10-16T14:54:12.365Z"
     },
     {
@@ -93,7 +79,7 @@
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
       "updatedAt": "2025-10-16T04:37:36.586Z",
-      "isDeleted": true
+      "isDeleted": false
     },
     {
       "id": "6",
@@ -105,7 +91,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
-      "updatedAt": "2025-10-16T03:41:19.022Z"
+      "updatedAt": "2025-10-16T03:41:19.022Z",
+      "isDeleted": false
     },
     {
       "id": "7",
@@ -117,7 +104,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
-      "updatedAt": "2025-10-15T17:03:50.270Z"
+      "updatedAt": "2025-10-15T17:03:50.270Z",
+      "isDeleted": false
     },
     {
       "id": "8",
@@ -129,7 +117,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Electronics",
-      "updatedAt": "2025-10-16T03:40:12.541Z"
+      "updatedAt": "2025-10-16T03:40:12.541Z",
+      "isDeleted": false
     },
     {
       "id": "9",
@@ -141,7 +130,8 @@
       "imageUrl": "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp",
       "createdAt": "2025-10-08T00:00:00.000Z",
       "categoryName": "Clothing",
-      "updatedAt": "2025-10-16T19:33:39.082Z"
+      "updatedAt": "2025-10-16T19:33:39.082Z",
+      "isDeleted": false
     },
     {
       "id": "10",
@@ -519,9 +509,9 @@
       "id": "1",
       "name": "Electronics",
       "isDeleted": false,
-      "icon": "bolt",
+      "icon": "house",
       "createdAt": "2025-10-08T00:00:00.000Z",
-      "updatedAt": "2025-10-12T16:42:01.195Z"
+      "updatedAt": "2025-10-17T01:41:32.883Z"
     },
     {
       "id": "2",
@@ -540,121 +530,11 @@
       "updatedAt": "2025-10-12T16:42:01.195Z"
     },
     {
-      "id": "e537",
-      "icon": "house",
-      "name": "123",
-      "createdAt": "2025-10-16T19:15:28.111Z",
-      "isDeleted": false,
-      "updatedAt": "2025-10-16T19:15:36.614Z"
-    },
-    {
-      "id": "fb1f",
-      "icon": "laptop",
-      "name": "acascasc",
-      "createdAt": "2025-10-16T19:16:06.927Z",
-      "isDeleted": true,
-      "updatedAt": "2025-10-16T19:22:36.027Z"
-    },
-    {
-      "id": "31d8",
-      "icon": "gem",
-      "name": "aaaaaaaaa",
-      "createdAt": "2025-10-16T19:22:14.687Z",
-      "isDeleted": true,
-      "updatedAt": "2025-10-16T19:22:33.331Z"
-    },
-    {
-      "id": "7005",
-      "icon": "",
-      "name": "aaaaaaaaa",
-      "createdAt": "2025-10-16T19:22:54.062Z",
-      "isDeleted": true,
-      "updatedAt": "2025-10-16T19:26:20.220Z"
-    },
-    {
-      "id": "3b4c",
-      "icon": "",
-      "name": "aaaaaaaaa",
-      "createdAt": "2025-10-16T19:26:49.045Z",
-      "isDeleted": true
-    },
-    {
-      "id": "308c",
-      "icon": "",
-      "name": "aaaaaaaaa",
-      "createdAt": "2025-10-16T19:27:09.062Z",
-      "isDeleted": true
-    },
-    {
-      "id": "e5e6",
-      "icon": "glasses",
-      "name": "aaaaaaaaa1",
-      "createdAt": "2025-10-16T19:38:44.079Z",
-      "updatedAt": "2025-10-16T19:38:44.079Z",
-      "isDeleted": true
-    },
-    {
-      "id": "165b",
-      "icon": "",
-      "name": "1",
-      "createdAt": "2025-10-16T19:39:13.490Z",
-      "updatedAt": "2025-10-16T19:39:13.490Z",
-      "isDeleted": false
-    },
-    {
-      "id": "f678",
-      "icon": "",
-      "name": "12",
-      "createdAt": "2025-10-16T19:40:06.447Z",
-      "updatedAt": "2025-10-16T19:40:06.447Z",
-      "isDeleted": false
-    },
-    {
-      "id": "9b91",
-      "icon": "",
-      "name": "a",
-      "createdAt": "2025-10-16T19:41:40.444Z",
-      "updatedAt": "2025-10-16T19:41:40.444Z",
-      "isDeleted": false
-    },
-    {
-      "id": "963e",
-      "icon": "",
-      "name": "22",
-      "createdAt": "2025-10-16T19:42:49.817Z",
-      "updatedAt": "2025-10-16T19:42:49.816Z",
-      "isDeleted": false
-    },
-    {
-      "id": "e9b0",
-      "icon": "",
-      "name": "aaa",
-      "createdAt": "2025-10-16T19:44:42.832Z",
-      "updatedAt": "2025-10-16T19:44:42.832Z",
-      "isDeleted": false
-    },
-    {
-      "id": "f7eb",
-      "icon": "",
-      "name": "bbb",
-      "createdAt": "2025-10-16T19:45:07.529Z",
-      "updatedAt": "2025-10-16T19:45:07.529Z",
-      "isDeleted": false
-    },
-    {
-      "id": "5d72",
-      "icon": "ring",
-      "name": "bhn",
-      "createdAt": "2025-10-16T19:45:29.824Z",
-      "updatedAt": "2025-10-16T19:45:29.824Z",
-      "isDeleted": false
-    },
-    {
-      "id": "9a10",
-      "icon": "",
-      "name": "12333",
-      "createdAt": "2025-10-16T19:45:54.023Z",
-      "updatedAt": "2025-10-16T19:45:54.023Z",
+      "id": "415b",
+      "icon": "volleyball",
+      "name": "Sport",
+      "createdAt": "2025-10-17T01:51:09.989Z",
+      "updatedAt": "2025-10-17T01:51:09.989Z",
       "isDeleted": false
     }
   ],

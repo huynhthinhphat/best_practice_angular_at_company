@@ -5,15 +5,19 @@ export const productSelector = createFeatureSelector<ProductState>('product');
 
 export const getSelectors = productAdapter.getSelectors();
 
-export const selectAllProducts = createSelector(
+export const selectProductsByConditions = createSelector(
   productSelector,
-  (state) => [...getSelectors.selectAll(state)]
-) 
-
-export const selectProductsByCondition = createSelector(
-  productSelector,
-  (state: ProductState, props: { startIndex: number; endIndex: number }) => getSelectors.selectAll(state).slice(props.startIndex, props.endIndex)
+  (state: ProductState, props: { productName: string; categoryName: string, startIndex: number; endIndex: number | undefined }) => {
+    return getSelectors.selectAll(state)
+      .filter(product =>
+        product.name?.toLocaleLowerCase().trim().includes(props.productName.toLocaleLowerCase().trim()) &&
+        product.categoryName?.toLocaleLowerCase().trim().includes(props.categoryName.toLocaleLowerCase().trim())
+      )
+      .slice(props.startIndex, props.endIndex)
+  }
 )
+
+
 
 export const selectErrorProduct = createSelector(
   productSelector,

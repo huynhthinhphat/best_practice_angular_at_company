@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../shared/services/auth-service/auth';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { loadCategories } from '../../shared/services/category-service/state/category.action';
+import { loadProducts } from '../../shared/services/product-service/state/product.action';
+import { loadUser } from '../../shared/services/user-service/state/user.action';
 
 @Component({
   selector: 'app-auth-redirect-page',
@@ -9,20 +11,8 @@ import { Router } from '@angular/router';
   styleUrl: './auth-redirect-page.css'
 })
 export class AuthRedirectPage implements OnInit {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private store = inject(Store);
 
   ngOnInit() {
-    this.authService.getRole().subscribe({
-      next: (role: string) => {
-        if (role === 'Admin') {
-          this.router.navigate(['/admin/users']);
-          return;
-        }
-
-        this.router.navigate(['/home']);
-      },
-      error: () => this.router.navigate(['/home'])
-    })
   }
 }

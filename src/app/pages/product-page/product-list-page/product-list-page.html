@@ -25,9 +25,9 @@
 
   <div class="content-list">
     @if(cardView){
-    <app-card-view [maxHeight]="700" [data]="products" (emit)="handleEmit($event)"></app-card-view>
+    <app-card-view [maxHeight]="700" [data]="products!" (emit)="handleEmit($event)"></app-card-view>
     } @else {
-    <app-grid-view [maxHeight]="700" [headers]="headers" [tableData]="products" (actionEmit)="handleActions($event)"
+    <app-grid-view [maxHeight]="700" [headers]="headers" [tableData]="products!" (actionEmit)="handleActions($event)"
       [titleDialog]="titleDialog" [fields]="fields" [buttonLabel]="buttonLabel"
       [isOpenDialog]="openDialog"></app-grid-view>
     }

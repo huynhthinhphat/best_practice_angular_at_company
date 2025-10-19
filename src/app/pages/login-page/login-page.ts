@@ -1,7 +1,6 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AppForm } from '../../shared/app-form/app-form';
 import { User } from '../../shared/models/user.model';
-import { AuthService } from '../../shared/services/auth-service/auth';
 import { Router } from '@angular/router';
 import { FORM, SUCCESS_MESSAGES } from '../../shared/constants/message.constants';
 import { ToastrService } from 'ngx-toastr';
@@ -12,10 +11,8 @@ import { Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { StorageService } from '../../shared/services/storage-service/storage-service';
 import { STORAGE_KEYS } from '../../shared/constants/storage.constants';
-import { CartItem } from '../../shared/models/cart-item.model';
-import { catchError, of, switchMap, tap } from 'rxjs';
-import { setCurrentUser } from '../../shared/services/user-service/state/user.action';
-import { loadCarts } from '../../shared/services/cart-service/state/cart.action';
+import { onLogin } from '../../shared/services/user-service/state/user.action';
+import { selectUser, selectUserErrorInfo } from '../../shared/services/user-service/state/user.selector';
 
 @Component({
   selector: 'app-login-page',
@@ -25,13 +22,10 @@ import { loadCarts } from '../../shared/services/cart-service/state/cart.action'
 })
 export class LoginPage {
   private store = inject(Store);
-  private authService = inject(AuthService);
   private cartService = inject(CartService);
   private storageService = inject(StorageService);
-  private toastrService = inject(ToastrService);
+  private toastr = inject(ToastrService);
   private router = inject(Router);
-
-  public emitState = output<boolean>();
 
   public fields: FormFields[] = [
     {
@@ -56,51 +50,87 @@ export class LoginPage {
   public formLinkMessage = FORM.REGISTER_MESSAGE;
   public formLinkTitle = FORM.REGISTER;
   public formUrl = REGISTER_URL;
+  private roleList: string[] = ['User', 'Admin'];
 
   public handleLogin(user: User) {
     if (!user) return;
 
-    this.authService.getAccount(user)
-      .pipe(
-        tap(user => {
-          if (!user || !user.id) return;
+    this.store.dispatch(onLogin({ user: user }));
 
-          this.authService.userId.set(user.id);
-
-          const { password, ...userWithoutPassword } = user;
-          this.store.dispatch(setCurrentUser({ user: userWithoutPassword }));
-
-          const { role, username, ...userWithoutRoleAndUsername } = userWithoutPassword;
-          this.storageService.saveData<User>(STORAGE_KEYS.USER, userWithoutRoleAndUsername);
-        }),
-        switchMap(user => {
-          if (user.role === 'User') {
-            return this.cartService.getCartItemsByUserId(user.id!)
-              .pipe(
-                tap((cartItems: CartItem[]) => {
-                  if (cartItems.length === 0) return;
-
-                  const cartId = cartItems[0].cartId;
-                  if (!cartId) return;
-
-                  this.storageService.saveData<string>(STORAGE_KEYS.CART, cartId);
-                  this.store.dispatch(loadCarts({ cartItems: cartItems }))
-                })
-              )
-          } else {
-            this.router.navigate(['/admin/users'], { replaceUrl: true });
-            return of(null);
+    this.store.select(selectUserErrorInfo)
+      .subscribe({
+        next: (data) => {
+          const message = data.message as string;
+          if (message) {
+            this.toastr.error(message);
+            return;
           }
-        }),
-        catchError(err => {
-          this.toastrService.error(err.message);
-          return of(null);
-        })
-      ).subscribe({
-        complete: () => {
-          if (user.role === 'User') this.router.navigate(['/'], { replaceUrl: true });
-          this.toastrService.success(SUCCESS_MESSAGES.LOGIN);
+
+          const isLoggedIn = data.isLoggedIn;
+          if (isLoggedIn) {
+            const user = this.storageService.getData<User>(STORAGE_KEYS.USER);
+
+            if (user && user.id) {
+              this.store.select(selectUser, { id: user.id })
+                .subscribe({
+                  next: (user) => {
+                    if (user && user.role) {
+                      let routerLink: string = '';
+
+                      if (user.role === this.roleList[1]) {
+                        routerLink = '/admin/users';
+                      } else {
+                        routerLink = '/home';
+                      }
+                      this.router.navigate([routerLink], { replaceUrl: true });
+                    }
+                  },
+                  complete: () => this.toastr.success(SUCCESS_MESSAGES.LOGIN)
+                })
+            }
+          }
         }
       })
+
+    // this.authService.getAccount(user)
+    //   .pipe(
+    //     tap(user => {
+    //       if (!user || !user.id) return;
+
+    //       const { password, ...userWithoutPassword } = user;
+    //       //this.store.dispatch(setCurrentUser({ user: userWithoutPassword }));
+
+    //       const { role, username, ...userWithoutRoleAndUsername } = userWithoutPassword;
+    //       this.storageService.saveData<User>(STORAGE_KEYS.USER, userWithoutRoleAndUsername);
+    //     }),
+    //     switchMap(user => {
+    //       if (user.role === 'User') {
+    //         return this.cartService.getCartItemsByUserId(user.id!)
+    //           .pipe(
+    //             tap((cartItems: CartItem[]) => {
+    //               if (cartItems.length === 0) return;
+
+    //               const cartId = cartItems[0].cartId;
+    //               if (!cartId) return;
+
+    //               this.storageService.saveData<string>(STORAGE_KEYS.CART, cartId);
+    //               this.store.dispatch(loadCarts({ cartItems: cartItems }))
+    //             })
+    //           )
+    //       } else {
+    //         this.router.navigate(['/admin/users'], { replaceUrl: true });
+    //         return of(null);
+    //       }
+    //     }),
+    //     catchError(err => {
+    //       this.toastrService.error(err.message);
+    //       return of(null);
+    //     })
+    //   ).subscribe({
+    //     complete: () => {
+    //       if (user.role === 'User') this.router.navigate(['/'], { replaceUrl: true });
+    //       this.toastrService.success(SUCCESS_MESSAGES.LOGIN);
+    //     }
+    //   })
   }
 }

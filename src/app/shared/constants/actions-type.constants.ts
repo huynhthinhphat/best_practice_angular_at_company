@@ -1,6 +1,7 @@
 export enum PRODUCT_ACTIONS_TYPES{
     LOAD = '[Product] Load Products',
     LOAD_SUCCESS = '[Product] Load Products Success',
+    LOAD_FAILURE = '[Product] Load Products Failure',
 
     ADD = '[Product] Add Product',
     ADD_SUCCESS = '[Product] Add Product Success',
@@ -32,9 +33,24 @@ export enum CATEGORY_ACTIONS_TYPES{
     DELETE_FAILURE = '[Category] Delete Category Failure'
 }
 
-export enum UI_ACTIONS_TYPES{
-    SET = '[UI] Set Global Error',
-    CLEAR = '[UI] Clear Global Error',
-    OPEN_DIALOG = '[UI] Open Dialog',
-    CLOSE_DIALOG = '[UI] Close Dialog'  
+export enum USER_ACTIONS_TYPES{
+    LOGIN = '[User] Login User',
+
+    LOAD = '[User] Load User',
+    LOAD_SUCCESS = '[User] Load User Success',
+    LOAD_FAILD = '[User] Load User Failure',
+
+    ADD = '[User] Add User',
+    ADD_SUCCESS = '[User] Add User Success',
+    ADD_FAILURE = '[User] Add User Failure',
+
+    UPDATE = '[User] Update User',
+    UPDATE_SUCCESS = '[User] Update User Success',
+    UPDATE_FAILURE = '[User] Update User Failure',
+
+    DELETE = '[User] Delete Users',
+    DELETE_SUCCESS = '[User] Delete Users Success',
+    DELETE_FAILURE = '[User] Delete Users Failure',
+
+    REMOVE = '[User] Remove Logged In User'
 }
